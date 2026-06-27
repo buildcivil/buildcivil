@@ -1,7 +1,7 @@
 'use client'
 
 import { type FormEvent, useState } from 'react'
-import { ArrowRight, CheckCircle2, Loader2, Send, X } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Loader2, MessageCircle, Send, Sparkles, X } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { itemReveal, sectionReveal } from './motion'
 import type { PublicFormDefinition } from '@/lib/form-definitions'
@@ -171,25 +171,31 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
               {heroCopy}
             </p>
 
-            <div className="mt-7 flex justify-center lg:justify-start">
+            <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start">
               <MotionButton
                 type="button"
                 onClick={() => setModalOpen(true)}
-                className="group inline-flex flex-wrap items-center justify-center gap-4 text-[#FFC81E] transition-transform duration-300 hover:-translate-y-0.5 lg:justify-start"
+                className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-[#FEFDDF]/35 bg-[#FEFDDF]/10 px-5 py-3.5 text-sm font-semibold tracking-wide text-[#FEFDDF] backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-[#FFC81E]/55 hover:bg-[#FEFDDF]/16 sm:w-auto sm:px-6 sm:text-base"
                 whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <span className="relative flex h-12 w-12 items-center justify-center rounded-full border border-[#FFC81E]/75 bg-[#73A5CA]/16 sm:h-14 sm:w-14">
-                  <span className="h-3.5 w-3.5 rounded-sm bg-[#E87F24]" />
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC81E]/45 bg-[#73A5CA]/20 transition group-hover:border-[#FFC81E]/70">
+                  <MessageCircle size={18} className="text-[#FFC81E]" />
                 </span>
-                <span className="flex items-center">
-                  <span className="h-px w-8 bg-[#FEFDDF] transition-colors duration-300 group-hover:bg-[#E87F24] sm:w-12" />
-                  <ArrowRight size={16} className="-ml-1 text-[#FEFDDF] transition-colors duration-300 group-hover:text-[#E87F24]" />
-                </span>
-                <span className="text-xl leading-none tracking-tight text-[#E87F24] sm:text-2xl md:text-[2rem]">
-                  {heroCtaLabel}
-                </span>
+                {heroCtaLabel}
+                <ArrowRight size={16} className="text-[#FEFDDF]/80 transition group-hover:translate-x-0.5 group-hover:text-[#FFC81E]" />
               </MotionButton>
+
+              <a
+                href="/buildcivil-ai"
+                className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-[#FEFDDF]/35 bg-[#FEFDDF]/10 px-5 py-3.5 text-sm font-semibold tracking-wide text-[#FEFDDF] backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-[#FFC81E]/55 hover:bg-[#FEFDDF]/16 sm:w-auto sm:px-6 sm:text-base"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC81E]/45 bg-[#73A5CA]/20 transition group-hover:border-[#FFC81E]/70">
+                  <Sparkles size={18} className="text-[#FFC81E]" />
+                </span>
+                AI Cost Estimator
+                <ArrowRight size={16} className="text-[#FEFDDF]/80 transition group-hover:translate-x-0.5 group-hover:text-[#FFC81E]" />
+              </a>
             </div>
           </MotionDiv>
         </div>
