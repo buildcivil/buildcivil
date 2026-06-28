@@ -187,7 +187,7 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
               </MotionButton>
 
               <a
-                href="/buildcivil-ai"
+                href="/ai-cost-estimator"
                 className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-[#FEFDDF]/35 bg-[#FEFDDF]/10 px-5 py-3.5 text-sm font-semibold tracking-wide text-[#FEFDDF] backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-[#FFC81E]/55 hover:bg-[#FEFDDF]/16 sm:w-auto sm:px-6 sm:text-base"
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC81E]/45 bg-[#73A5CA]/20 transition group-hover:border-[#FFC81E]/70">

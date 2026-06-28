@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   outputFileTracingRoot: __dirname,
+  async redirects() {
+    return [
+      {
+        source: '/buildcivil-ai',
+        destination: '/ai-cost-estimator',
+        permanent: true,
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       {

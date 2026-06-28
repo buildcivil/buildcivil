@@ -110,7 +110,7 @@ export const globalLayoutDefaults: GlobalLayoutSettings = {
       { id: 'about', label: 'ABOUT', href: '/about', visible: true },
       { id: 'services', label: 'SERVICES', href: '/services', visible: true },
       { id: 'projects', label: 'PROJECT', href: '/projects', visible: true },
-      { id: 'buildcivil-ai', label: 'AI APP', href: '/buildcivil-ai', visible: true },
+      { id: 'buildcivil-ai', label: 'AI APP', href: '/ai-cost-estimator', visible: true },
       { id: 'contact', label: 'CONTACT', href: '/contact', visible: true },
     ],
     cta: { id: 'header-cta', label: 'CONTACT', href: '/contact', visible: true },

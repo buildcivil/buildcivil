@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     alternates: {
-      canonical: '/buildcivil-ai',
+      canonical: '/ai-cost-estimator',
     },
     openGraph: {
       title,
