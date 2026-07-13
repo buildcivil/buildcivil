@@ -188,14 +188,14 @@ body {
   [class*="bg-white/"],
   [class*="bg-[rgba(255,253,223"],
   [class*="bg-[rgba(254,253,223"]
-):not(.btn-primary):not(.btn-secondary),
+):not(.btn-primary):not(.btn-secondary):not(.on-image-overlay),
 .public-site :where(section, .cms-section-surface) :where(.absolute[class*="rounded"]):where(
   [class*="bg-[#FEFDDF"],
   [class*="bg-[#fff"],
   [class*="bg-white/"],
   [class*="bg-[rgba(255,253,223"],
   [class*="bg-[rgba(254,253,223"]
-) {
+):not(.on-image-overlay) {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -209,7 +209,7 @@ body {
   [class*="bg-white/"],
   [class*="bg-[rgba(255,253,223"],
   [class*="bg-[rgba(254,253,223"]
-):not(.btn-primary):not(.btn-secondary) :where(
+):not(.btn-primary):not(.btn-secondary):not(.on-image-overlay) :where(
   h1,
   h2,
   h3,
@@ -221,14 +221,14 @@ body {
   div,
   li,
   label
-),
+):not(.on-image-overlay):not(.on-image-overlay *),
 .public-site :where(section, .cms-section-surface) :where(.absolute[class*="rounded"]):where(
   [class*="bg-[#FEFDDF"],
   [class*="bg-[#fff"],
   [class*="bg-white/"],
   [class*="bg-[rgba(255,253,223"],
   [class*="bg-[rgba(254,253,223"]
-) :where(
+):not(.on-image-overlay) :where(
   h1,
   h2,
   h3,
@@ -240,7 +240,7 @@ body {
   div,
   li,
   label
-) {
+):not(.on-image-overlay):not(.on-image-overlay *) {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
 }
@@ -255,7 +255,7 @@ body {
   .glass,
   .glass-card,
   .glass-strong
-):not(.absolute):not(.pointer-events-none):not(.btn-primary):not(.btn-secondary) :where(
+):not(.absolute):not(.pointer-events-none):not(.btn-primary):not(.btn-secondary):not(.on-image-overlay) :where(
   h1,
   h2,
   h3,
@@ -267,8 +267,15 @@ body {
   div,
   li,
   label
-):not(.btn-primary):not(.btn-secondary) {
+):not(.btn-primary):not(.btn-secondary):not(.on-image-overlay):not(.on-image-overlay *) {
   color: #1c1712 !important;
+}
+
+/* Photo title overlays: white text on images (title only, not frosted panels) */
+.public-site .on-image-overlay,
+.public-site .on-image-overlay :where(h1, h2, h3, h4, h5, h6, p, span, div) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 .public-site h1,

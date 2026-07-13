@@ -208,9 +208,9 @@ export default function ProjectsPageClient({ content, projects = projectCatalog,
                       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(115,165,202,0.12),transparent_32%),linear-gradient(315deg,rgba(232,127,36,0.12),transparent_28%)] opacity-90" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#1c1712]/42 via-transparent to-transparent" />
 
-                      <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-3 text-[#FEFDDF]">
-                        <div className="max-w-[75%]">
-                          <h3 className="max-w-[11rem] text-[1rem] font-semibold uppercase leading-[1.08] tracking-[0.16em] text-[#FEFDDF] drop-shadow-[0_8px_20px_rgba(28,23,18,0.45)] sm:max-w-[12rem] sm:text-[1.1rem]">
+                      <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-3">
+                        <div className="on-image-overlay max-w-[75%]">
+                          <h3 className="max-w-[11rem] text-[1rem] font-semibold uppercase leading-[1.08] tracking-[0.16em] text-white drop-shadow-[0_8px_20px_rgba(28,23,18,0.45)] sm:max-w-[12rem] sm:text-[1.1rem]">
                             {project.title}
                           </h3>
                         </div>
