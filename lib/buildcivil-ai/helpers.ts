@@ -72,7 +72,19 @@ export function deletePlanFromHistory(id: string): PlanHistoryEntry[] {
   return next
 }
 
+const COST_LINE_LABELS: { key: keyof GeneratedPlan['cost']; label: string }[] = [
+  { key: 'structure', label: 'Structure' },
+  { key: 'finishing', label: 'Finishing' },
+  { key: 'electrical', label: 'Electrical' },
+  { key: 'plumbing', label: 'Plumbing' },
+  { key: 'miscellaneous', label: 'Miscellaneous' },
+]
+
 export function formatPlanAsMessage(plan: GeneratedPlan) {
+  const costLines = COST_LINE_LABELS.filter((item) => plan.cost[item.key] > 0).map(
+    (item) => `• ${item.label}: ${formatInr(plan.cost[item.key])}`,
+  )
+
   const lines = [
     plan.summary,
     '',
@@ -81,11 +93,7 @@ export function formatPlanAsMessage(plan: GeneratedPlan) {
     `Timeline: ${plan.timeline}`,
     '',
     'Cost breakdown (INR):',
-    `• Structure: ${formatInr(plan.cost.structure)}`,
-    `• Finishing: ${formatInr(plan.cost.finishing)}`,
-    `• Electrical: ${formatInr(plan.cost.electrical)}`,
-    `• Plumbing: ${formatInr(plan.cost.plumbing)}`,
-    `• Miscellaneous: ${formatInr(plan.cost.miscellaneous)}`,
+    ...costLines,
     `• Total estimate: ${formatInr(plan.cost.total)}`,
     '',
     'Construction phases:',

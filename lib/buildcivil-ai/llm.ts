@@ -1,6 +1,7 @@
 import OpenAI, { APIError } from 'openai'
 import { z } from 'zod'
 
+import type { CostEstimateResult } from './estimate'
 import type { GeneratedPlan } from './types'
 
 function resolveBaseURL() {
@@ -420,16 +421,43 @@ export async function constructionAssistantResponse(input: {
   throw lastError instanceof Error ? lastError : new Error('Construction chat failed')
 }
 
-export async function generateConstructionPlan(input: Record<string, string>): Promise<GeneratedPlan> {
+function projectTypePlanGuidance(projectType: string) {
+  if (projectType === 'interior') {
+    return [
+      'This is an INTERIOR DESIGN / fit-out project — NOT full building construction.',
+      'Phases must cover design, site prep, carpentry/finishes, and handover only.',
+      'Do NOT invent foundation, RCC frame, full civil structure, or full MEP package phases.',
+      'cost.structure, cost.electrical, and cost.plumbing MUST be 0. Narrative should focus on interiors and finishes only.',
+    ].join(' ')
+  }
+
+  if (projectType === 'renovation') {
+    return [
+      'This is a RENOVATION project — emphasize selective civil works, MEP upgrades, and refinishing.',
+      'Do NOT describe a full new-build from foundation unless structural strengthening is relevant.',
+    ].join(' ')
+  }
+
+  return 'This is a full construction project. Include design/approvals, structure, MEP, finishing, and handover phases.'
+}
+
+export async function generateConstructionPlan(
+  input: Record<string, string>,
+  costEstimate: CostEstimateResult,
+): Promise<GeneratedPlan> {
   if (!apiKey) {
     throw new Error('Missing GEMINI_API_KEY or GOOGLE_AI_API_KEY')
   }
+
+  const projectType = input.projectType || 'residential'
+  const requiredCost = costEstimate.cost
 
   const systemPrompt = [
     'You are a senior Indian construction estimator and project planner.',
     'Return valid JSON only (no markdown, no code fences).',
     'All cost numbers must be in INR (Indian Rupees) as plain numbers without commas.',
-    'Use realistic India-market rates for the given city, project type, area, floors, budget tier, timeline, and finish level.',
+    'CRITICAL: Use the EXACT cost breakdown provided in the user prompt. Do not invent, round differently, or recalculate costs.',
+    'CRITICAL: Tailor summary, phases, and recommendations to the specific project type, city, floors, and budget — never reuse a generic full-build template for interior or renovation.',
     'Total cost must equal structure + finishing + electrical + plumbing + miscellaneous.',
   ].join(' ')
 
@@ -437,14 +465,32 @@ export async function generateConstructionPlan(input: Record<string, string>): P
     'Generate a construction plan from these selections:',
     JSON.stringify(input, null, 2),
     '',
+    'Deterministic cost inputs (MUST use these exact cost numbers):',
+    JSON.stringify(
+      {
+        areaPerFloorSqFt: costEstimate.areaPerFloor,
+        floorCount: costEstimate.floorCount,
+        totalBuiltUpSqFt: costEstimate.totalBuiltUpSqFt,
+        ratePerSqFtInr: costEstimate.ratePerSqFt,
+        cityMultiplier: costEstimate.cityMultiplier,
+        cost: requiredCost,
+      },
+      null,
+      2,
+    ),
+    '',
+    projectTypePlanGuidance(projectType),
+    '',
     'Return a JSON object with keys:',
-    'summary (2-3 sentence overview),',
-    'builtUpArea (string with sq ft),',
-    'carpetArea (estimated carpet area string),',
-    'cost (object with structure, finishing, electrical, plumbing, miscellaneous, total — all numbers in INR),',
-    'timeline (human-readable duration string),',
-    'phases (array of 4-6 objects with name, duration, description for construction phases),',
-    'recommendations (array of 3-5 practical tips),',
+    'summary (2-3 sentence overview that mentions city, floors, project type, and approx total built-up),',
+    `builtUpArea (string; use about ${costEstimate.totalBuiltUpSqFt} sq ft total),`,
+    `carpetArea (about ${Math.round(costEstimate.totalBuiltUpSqFt * 0.75)} sq ft),`,
+    'cost (object — COPY these exact numbers:',
+    JSON.stringify(requiredCost),
+    '),',
+    'timeline (human-readable duration string aligned with the preferred timeline),',
+    'phases (array of 4-6 objects with name, duration, description — scoped to the project type),',
+    'recommendations (array of 3-5 practical tips specific to this selection),',
     'disclaimer (short note that this is an AI estimate and site visit is needed for final quote).',
   ].join('\n')
 
@@ -455,19 +501,10 @@ export async function generateConstructionPlan(input: Record<string, string>): P
     retries: 2,
   })
 
-  const computedTotal =
-    parsed.cost.structure +
-    parsed.cost.finishing +
-    parsed.cost.electrical +
-    parsed.cost.plumbing +
-    parsed.cost.miscellaneous
-
+  // Always trust the deterministic estimator for money figures so city / floors / type stay consistent.
   return {
     ...parsed,
-    cost: {
-      ...parsed.cost,
-      total: computedTotal,
-    },
+    cost: requiredCost,
   }
 }
 

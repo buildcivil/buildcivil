@@ -23,7 +23,7 @@ type BuildCivilAiPlanResultProps = {
   onNewPlan?: () => void
 }
 
-const costLabels: { key: keyof GeneratedPlan['cost']; label: string }[] = [
+const costLabels: { key: Exclude<keyof GeneratedPlan['cost'], 'total'>; label: string }[] = [
   { key: 'structure', label: 'Structure & civil work' },
   { key: 'finishing', label: 'Finishing & interiors' },
   { key: 'electrical', label: 'Electrical & lighting' },
@@ -94,12 +94,14 @@ export default function BuildCivilAiPlanResult({
             <h3 className="text-lg font-bold text-brand-dark">Cost breakdown</h3>
           </div>
           <ul className="mt-5 space-y-3">
-            {costLabels.map((item) => (
-              <li key={item.key} className="flex items-center justify-between gap-3 border-b border-black/5 pb-3 last:border-0 last:pb-0">
-                <span className="text-sm text-black/65">{item.label}</span>
-                <span className="text-sm font-semibold text-brand-dark">{formatInr(plan.cost[item.key])}</span>
-              </li>
-            ))}
+            {costLabels
+              .filter((item) => plan.cost[item.key] > 0)
+              .map((item) => (
+                <li key={item.key} className="flex items-center justify-between gap-3 border-b border-black/5 pb-3 last:border-0 last:pb-0">
+                  <span className="text-sm text-black/65">{item.label}</span>
+                  <span className="text-sm font-semibold text-brand-dark">{formatInr(plan.cost[item.key])}</span>
+                </li>
+              ))}
           </ul>
           <div className="mt-5 rounded-xl bg-brand-dark px-4 py-3 text-white">
             <p className="text-xs uppercase tracking-wide text-white/70">Total estimated cost</p>
