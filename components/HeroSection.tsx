@@ -1,7 +1,7 @@
 'use client'
 
 import { type FormEvent, useState } from 'react'
-import { ArrowRight, CheckCircle2, Loader2, MessageCircle, Send, Sparkles, X } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Loader2, Send, X } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { itemReveal, sectionReveal } from './motion'
 import type { PublicFormDefinition } from '@/lib/form-definitions'
@@ -9,7 +9,7 @@ import type { HomePageContent } from '@/lib/site-pages'
 import { readJsonResponse } from '@/lib/safe-json'
 
 const MotionDiv = motion.div
-const MotionButton = motion.button
+const MotionSection = motion.section
 
 type HeroSectionProps = {
   content?: Partial<HomePageContent['hero']>
@@ -59,17 +59,25 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
   const [form, setForm] = useState(emptyForm)
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle')
   const [error, setError] = useState('')
+
   const heroLabel = content?.label ?? 'Premium construction delivery'
   const heroTitle = content?.title ?? 'Architecture that Speaks Volume'
-  const heroCopy =
-    dedupeRepeatedCopy(content?.copy ??
-    'Modern architecture is a design approach that emphasizes simplicity, functionality, and innovation. Modern architecture is a design approach that emphasizes simplicity, functionality, and innovation.'
-    )
+  const heroCopy = dedupeRepeatedCopy(
+    content?.copy ??
+      'Precision-built homes and spaces across Delhi-NCR, delivered with clear planning, careful finishes, and transparent coordination.',
+  )
   const heroImage =
-    content?.image ?? 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2400&auto=format&fit=crop'
+    content?.image ??
+    'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2400&auto=format&fit=crop'
+  const heroImageAlt = content?.imageAlt ?? 'BuildCivil construction project'
   const heroCtaLabel = content?.ctaLabel ?? 'Get Consultation'
+
   const serviceField = formDefinition?.fields.find((field) => field.name === 'service' || field.id === 'service')
-  const services = serviceField?.options?.length ? serviceField.options : content?.serviceOptions?.length ? content.serviceOptions : defaultServices
+  const services = serviceField?.options?.length
+    ? serviceField.options
+    : content?.serviceOptions?.length
+      ? content.serviceOptions
+      : defaultServices
   const getField = (name: string) => formDefinition?.fields.find((field) => field.name === name || field.id === name)
 
   const needsOther = form.service === 'Other'
@@ -121,84 +129,93 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
   }
 
   return (
-    <MotionDiv
+    <MotionSection
       id="home"
-      className="cms-section-surface relative min-h-screen overflow-hidden"
+      className="cms-section-surface relative min-h-[100svh] overflow-hidden"
       initial="hidden"
       animate="visible"
       variants={sectionReveal}
     >
-      <div
-        className="absolute inset-0 scale-110 bg-cover bg-center opacity-85"
+      {/* Full-bleed photography + atmosphere (inline styles survive public-site CSS overrides) */}
+      <motion.div
+        className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url('${heroImage}')`,
+          backgroundImage: [
+            'linear-gradient(105deg, rgba(28,23,18,0.88) 0%, rgba(28,23,18,0.62) 42%, rgba(28,23,18,0.28) 68%, rgba(28,23,18,0.18) 100%)',
+            'linear-gradient(180deg, rgba(28,23,18,0.35) 0%, transparent 28%, transparent 62%, rgba(28,23,18,0.72) 100%)',
+            'radial-gradient(ellipse at 80% 20%, rgba(232,127,36,0.16), transparent 42%)',
+            `url('${heroImage}')`,
+          ].join(', '),
         }}
+        role="img"
+        aria-label={heroImageAlt}
+        initial={{ scale: 1.06 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#73A5CA]/78 via-[#5d8fb2]/56 to-[#FEFDDF]/20" />
-      <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#73A5CA]/34 via-[#73A5CA]/12 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#1c1712]/88 via-[#1c1712]/38 to-[#FEFDDF]/8" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,200,30,0.28),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(232,127,36,0.14),transparent_34%)]" />
 
-      <div className="relative z-10 flex min-h-screen w-full flex-col justify-end px-5 pb-10 pt-24 sm:px-6 md:px-10 lg:px-16">
-        <div className="mb-5 inline-flex w-fit rounded-full border border-[#FFC81E]/55 bg-[#FEFDDF]/16 px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#FEFDDF] backdrop-blur-md">
-          {heroLabel}
-        </div>
-        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.75fr] lg:items-end">
-          <MotionDiv
-            className="max-w-[1120px] rounded-[32px] bg-[#1c1712]/16 p-4 text-center backdrop-blur-[2px] sm:p-6 md:p-8 lg:bg-transparent lg:p-0 lg:text-left"
-            variants={itemReveal}
+      <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1800px] flex-col justify-end px-5 pb-14 pt-32 sm:px-6 sm:pb-16 md:px-10 lg:px-16 lg:pb-20">
+        <MotionDiv className="on-image-overlay max-w-3xl" variants={itemReveal}>
+          <p className="font-display text-[11px] font-medium uppercase tracking-[0.34em] text-white/70 sm:text-xs">
+            BuildCivil
+            <span className="mx-3 inline-block h-px w-8 translate-y-[-3px] bg-[#E87F24] align-middle sm:w-10" />
+            {heroLabel}
+          </p>
+
+          <h1
+            className="cms-hero-title title-display mt-5 text-white sm:mt-6"
+            style={{
+              fontSize: 'var(--hero-title-size, clamp(2.75rem, 7.5vw, 6.5rem))',
+              lineHeight: 0.94,
+              letterSpacing: '-0.03em',
+            }}
           >
-            <h1
-              className="cms-hero-title title-display text-[#FEFDDF] drop-shadow-[0_10px_30px_rgba(28,23,18,0.75)]"
-              style={{
-                fontSize: 'var(--hero-title-size, clamp(3rem, 10vw, 8.8rem))',
-                lineHeight: 0.9,
-              }}
+            {heroTitle.split('\n').map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </h1>
+
+          <motion.div
+            className="mt-6 h-[3px] w-16 origin-left rounded-full bg-[#E87F24] sm:mt-7 sm:w-20"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          />
+
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/82 sm:mt-7 sm:text-lg sm:leading-8">
+            {heroCopy}
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-4">
+            <button
+              type="button"
+              onClick={() => setModalOpen(true)}
+              className="btn-primary inline-flex items-center justify-center gap-2.5 px-7 py-3.5 text-sm font-semibold"
             >
-              {heroTitle.split('\n').map((line) => (
-                <span key={line} className="block">
-                  {line}
-                </span>
-              ))}
-            </h1>
-          </MotionDiv>
+              {heroCtaLabel}
+              <ArrowRight size={16} />
+            </button>
 
-          <MotionDiv
-            className="rounded-[28px] bg-[#1c1712]/18 p-4 text-center backdrop-blur-[2px] sm:p-5 lg:pb-10 lg:bg-transparent lg:p-0 lg:text-left"
-            variants={itemReveal}
-          >
-            <p className="mx-auto max-w-[480px] text-[1rem] leading-[1.55] text-[#FEFDDF] italic drop-shadow-[0_6px_18px_rgba(28,23,18,0.8)] sm:text-[1.1rem] md:text-[1.35rem] lg:mx-0">
-              {heroCopy}
-            </p>
+            <a
+              href="/ai-cost-estimator"
+              className="inline-flex items-center justify-center gap-2.5 border border-white/35 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10"
+              style={{ borderRadius: 'var(--button-radius, 999px)' }}
+            >
+              AI Cost Estimator
+              <ArrowRight size={16} className="opacity-80" />
+            </a>
+          </div>
+        </MotionDiv>
 
-            <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start">
-              <MotionButton
-                type="button"
-                onClick={() => setModalOpen(true)}
-                className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-[#FEFDDF]/35 bg-[#FEFDDF]/10 px-5 py-3.5 text-sm font-semibold tracking-wide text-[#FEFDDF] backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-[#FFC81E]/55 hover:bg-[#FEFDDF]/16 sm:w-auto sm:px-6 sm:text-base"
-                whileHover={{ y: -4 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC81E]/45 bg-[#73A5CA]/20 transition group-hover:border-[#FFC81E]/70">
-                  <MessageCircle size={18} className="text-[#FFC81E]" />
-                </span>
-                {heroCtaLabel}
-                <ArrowRight size={16} className="text-[#FEFDDF]/80 transition group-hover:translate-x-0.5 group-hover:text-[#FFC81E]" />
-              </MotionButton>
-
-              <a
-                href="/ai-cost-estimator"
-                className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-[#FEFDDF]/35 bg-[#FEFDDF]/10 px-5 py-3.5 text-sm font-semibold tracking-wide text-[#FEFDDF] backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-[#FFC81E]/55 hover:bg-[#FEFDDF]/16 sm:w-auto sm:px-6 sm:text-base"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC81E]/45 bg-[#73A5CA]/20 transition group-hover:border-[#FFC81E]/70">
-                  <Sparkles size={18} className="text-[#FFC81E]" />
-                </span>
-                AI Cost Estimator
-                <ArrowRight size={16} className="text-[#FEFDDF]/80 transition group-hover:translate-x-0.5 group-hover:text-[#FFC81E]" />
-              </a>
-            </div>
-          </MotionDiv>
-        </div>
+        <MotionDiv
+          className="on-image-overlay mt-12 flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-white/45 sm:mt-14"
+          variants={itemReveal}
+        >
+          <span className="h-px w-8 bg-white/35" />
+          Scroll to explore
+        </MotionDiv>
       </div>
 
       {modalOpen ? (
@@ -246,7 +263,8 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
                   <div>
                     <h3 className="text-xl font-black text-[#1c1712]">Enquiry submitted</h3>
                     <p className="mt-2 text-sm leading-6 text-[#6e6256]">
-                      {formDefinition?.success_message ?? 'Thank you. Your service enquiry has been saved and our team will get back to you soon.'}
+                      {formDefinition?.success_message ??
+                        'Thank you. Your service enquiry has been saved and our team will get back to you soon.'}
                     </p>
                   </div>
                 </div>
@@ -277,7 +295,9 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
                   </label>
 
                   <label className="grid gap-2">
-                    <span className="text-sm font-semibold text-[#1c1712]">{getField('phone')?.label ?? 'Phone number'} *</span>
+                    <span className="text-sm font-semibold text-[#1c1712]">
+                      {getField('phone')?.label ?? 'Phone number'} *
+                    </span>
                     <input
                       required
                       value={form.phone}
@@ -320,7 +340,9 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
 
                 {needsOther ? (
                   <label className="grid gap-2">
-                    <span className="text-sm font-semibold text-[#1c1712]">{getField('other_service')?.label ?? 'Other service details'} *</span>
+                    <span className="text-sm font-semibold text-[#1c1712]">
+                      {getField('other_service')?.label ?? 'Other service details'} *
+                    </span>
                     <textarea
                       required
                       value={form.other_service}
@@ -356,6 +378,6 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
           </MotionDiv>
         </div>
       ) : null}
-    </MotionDiv>
+    </MotionSection>
   )
 }
