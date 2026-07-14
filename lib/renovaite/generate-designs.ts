@@ -13,6 +13,8 @@ export type GeneratedDesign = {
   caption: string
 }
 
+type ModelError = Error & { status?: number; isQuota?: boolean; model?: string }
+
 function getApiKey() {
   return (
     process.env.GEMINI_API_KEY ||
@@ -23,11 +25,12 @@ function getApiKey() {
   ).trim()
 }
 
+/** Models currently available for generateContent image output on Gemini Developer API. */
 function imageModelCandidates() {
   const fromEnv = (
     process.env.RENOVAITE_IMAGE_MODEL ||
     process.env.GEMINI_IMAGE_MODEL ||
-    'gemini-2.5-flash-image'
+    ''
   )
     .split(',')
     .map((item) => item.trim())
@@ -35,9 +38,10 @@ function imageModelCandidates() {
 
   const defaults = [
     'gemini-2.5-flash-image',
-    'gemini-2.5-flash-image-preview',
     'gemini-3.1-flash-image',
-    'gemini-2.0-flash-preview-image-generation',
+    'gemini-3.1-flash-image-preview',
+    'gemini-3.1-flash-lite-image',
+    'gemini-3-pro-image',
   ]
 
   return [...new Set([...fromEnv, ...defaults])]
@@ -86,7 +90,16 @@ function buildPrompt(input: GenerateDesignInput, variation: number) {
   ].join('\n')
 }
 
-async function callGeminiImageModel(model: string, apiKey: string, input: GenerateDesignInput, variation: number) {
+function isQuotaMessage(message: string) {
+  return /quota|rate.?limit|billing|exceeded your current/i.test(message)
+}
+
+async function callGeminiImageModel(
+  model: string,
+  apiKey: string,
+  input: GenerateDesignInput,
+  variation: number,
+) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`
 
   const response = await fetch(url, {
@@ -99,8 +112,8 @@ async function callGeminiImageModel(model: string, apiKey: string, input: Genera
           parts: [
             { text: buildPrompt(input, variation) },
             {
-              inline_data: {
-                mime_type: input.mimeType,
+              inlineData: {
+                mimeType: input.mimeType || 'image/jpeg',
                 data: input.imageBase64,
               },
             },
@@ -127,14 +140,19 @@ async function callGeminiImageModel(model: string, apiKey: string, input: Genera
       json?.error?.message ||
       json?.message ||
       `Gemini image model "${model}" failed with status ${response.status}`
-    const error = new Error(message) as Error & { status?: number }
+    const error: ModelError = new Error(message)
     error.status = response.status
+    error.model = model
+    error.isQuota = response.status === 429 || isQuotaMessage(message)
     throw error
   }
 
   const parts = json?.candidates?.[0]?.content?.parts
   if (!Array.isArray(parts)) {
-    throw new Error('Gemini returned no image parts.')
+    throw Object.assign(new Error(`Gemini model "${model}" returned no image parts.`), {
+      status: 502,
+      model,
+    })
   }
 
   let caption = ''
@@ -153,7 +171,10 @@ async function callGeminiImageModel(model: string, apiKey: string, input: Genera
   }
 
   if (!imageBase64) {
-    throw new Error('Gemini response did not include a generated image.')
+    throw Object.assign(new Error(`Gemini model "${model}" did not include a generated image.`), {
+      status: 502,
+      model,
+    })
   }
 
   return {
@@ -180,6 +201,7 @@ export async function generateRenovaiteDesigns(input: GenerateDesignInput): Prom
   const models = imageModelCandidates()
   const designs: GeneratedDesign[] = []
   let lastError: unknown
+  let quotaHit = false
 
   for (let i = 0; i < count; i++) {
     let generated: GeneratedDesign | null = null
@@ -190,15 +212,34 @@ export async function generateRenovaiteDesigns(input: GenerateDesignInput): Prom
         break
       } catch (error) {
         lastError = error
-        const status = typeof error === 'object' && error && 'status' in error ? Number((error as any).status) : 0
-        // Try next model on unsupported / not-found / rate-limit.
-        if (status === 404 || status === 400 || status === 429) continue
+        const status =
+          typeof error === 'object' && error && 'status' in error ? Number((error as ModelError).status) : 0
+        const isQuota =
+          typeof error === 'object' && error && 'isQuota' in error
+            ? Boolean((error as ModelError).isQuota)
+            : false
+
+        if (isQuota) {
+          quotaHit = true
+          // Quota usually applies across image models — stop cycling obsolete/unavailable ones.
+          break
+        }
+
+        // Not found / unsupported on this key — try next candidate.
+        if (status === 404 || status === 400) continue
         throw error
       }
     }
 
     if (!generated) {
-      throw lastError instanceof Error ? lastError : new Error('Unable to generate Renovaite designs.')
+      if (quotaHit) {
+        throw new Error(
+          'Gemini image quota is exhausted (or free-tier image generation is not enabled on this API key). Enable billing in Google AI Studio, wait for the quota reset, then try again. Tip: set RENOVAITE_IMAGE_MODEL=gemini-2.5-flash-image in your env.',
+        )
+      }
+      throw lastError instanceof Error
+        ? lastError
+        : new Error('Unable to generate Renovaite designs with the available Gemini image models.')
     }
 
     designs.push(generated)
