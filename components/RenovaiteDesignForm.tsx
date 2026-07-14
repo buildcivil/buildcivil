@@ -2,12 +2,19 @@
 
 import { type FormEvent, useMemo, useState } from 'react'
 import Image from 'next/image'
-import { CheckCircle2, Loader2, Sparkles, Upload } from 'lucide-react'
+import { CheckCircle2, Download, Loader2, Sparkles, Upload } from 'lucide-react'
 import type { RenovaitePageContent } from '@/lib/site-pages'
 import { readJsonResponse } from '@/lib/safe-json'
 
 type RenovaiteDesignFormProps = {
   content: NonNullable<RenovaitePageContent['form']>
+}
+
+type GeneratedDesignResult = {
+  id: string
+  caption: string
+  mimeType: string
+  imageDataUrl: string
 }
 
 const emptyForm = {
@@ -25,6 +32,7 @@ export default function RenovaiteDesignForm({ content }: RenovaiteDesignFormProp
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle')
   const [error, setError] = useState('')
+  const [designs, setDesigns] = useState<GeneratedDesignResult[]>([])
 
   const roomTypes = content.roomTypes?.length
     ? content.roomTypes
@@ -71,8 +79,15 @@ export default function RenovaiteDesignForm({ content }: RenovaiteDesignFormProp
   function onPickImage(file: File | null) {
     setError('')
     setStatus('idle')
+    setDesigns([])
     setRoomImage(file)
     setPreviewUrl(file ? URL.createObjectURL(file) : null)
+  }
+
+  function resetForAnother() {
+    setStatus('idle')
+    setDesigns([])
+    setError('')
   }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -84,6 +99,7 @@ export default function RenovaiteDesignForm({ content }: RenovaiteDesignFormProp
 
     setStatus('submitting')
     setError('')
+    setDesigns([])
 
     try {
       const body = new FormData()
@@ -100,16 +116,18 @@ export default function RenovaiteDesignForm({ content }: RenovaiteDesignFormProp
         method: 'POST',
         body,
       })
-      const payload = await readJsonResponse<{ error?: string }>(response, {})
-      if (!response.ok) throw new Error(payload.error || 'Unable to submit Renovaite request.')
+      const payload = await readJsonResponse<{
+        error?: string
+        designs?: GeneratedDesignResult[]
+      }>(response, {})
+      if (!response.ok) throw new Error(payload.error || 'Unable to generate Renovaite designs.')
+      if (!payload.designs?.length) throw new Error('No designs were returned. Please try again.')
 
+      setDesigns(payload.designs)
       setStatus('success')
-      setForm(emptyForm)
-      setRoomImage(null)
-      setPreviewUrl(null)
     } catch (err) {
       setStatus('idle')
-      setError(err instanceof Error ? err.message : 'Unable to submit Renovaite request.')
+      setError(err instanceof Error ? err.message : 'Unable to generate Renovaite designs.')
     }
   }
 
@@ -131,7 +149,10 @@ export default function RenovaiteDesignForm({ content }: RenovaiteDesignFormProp
             {sideImages.length ? (
               <div className="mt-8 grid grid-cols-2 gap-3">
                 {sideImages.map((src) => (
-                  <div key={src} className="relative h-36 overflow-hidden rounded-[22px] border border-[#73A5CA]/12 sm:h-44">
+                  <div
+                    key={src}
+                    className="relative h-36 overflow-hidden rounded-[22px] border border-[#73A5CA]/12 sm:h-44"
+                  >
                     <Image src={src} alt="Renovaite inspiration" fill className="object-cover" sizes="240px" unoptimized />
                   </div>
                 ))}
@@ -140,24 +161,71 @@ export default function RenovaiteDesignForm({ content }: RenovaiteDesignFormProp
           </div>
 
           <div className="rounded-[30px] border border-[#73A5CA]/14 bg-white p-5 shadow-[0_18px_48px_rgba(28,23,18,0.08)] sm:p-7">
-            {status === 'success' ? (
-              <div className="rounded-[24px] border border-[#73A5CA]/18 bg-[#f7fafc] p-5">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 size={22} className="mt-0.5 shrink-0 text-[#73A5CA]" />
-                  <div>
-                    <h3 className="text-xl font-semibold text-[#1c1712]">Request received</h3>
-                    <p className="mt-2 text-sm leading-6 text-[#6e6256]">
-                      {content.successMessage ??
-                        'Thanks — your Renovaite request is in. Our team will follow up shortly.'}
-                    </p>
+            {status === 'success' && designs.length ? (
+              <div className="space-y-5">
+                <div className="rounded-[24px] border border-[#73A5CA]/18 bg-[#f7fafc] p-5">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 size={22} className="mt-0.5 shrink-0 text-[#73A5CA]" />
+                    <div>
+                      <h3 className="text-xl font-semibold text-[#1c1712]">Designs ready</h3>
+                      <p className="mt-2 text-sm leading-6 text-[#6e6256]">
+                        {content.successMessage ??
+                          'Your Renovaite concepts are ready. Review them below — a BuildCivil team member can help turn any concept into a real renovation plan.'}
+                      </p>
+                    </div>
                   </div>
                 </div>
+
+                {previewUrl ? (
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.22em] text-[#5d8fb2]">Original room</p>
+                    <div className="relative mt-3 h-44 overflow-hidden rounded-[22px] border border-[#73A5CA]/12">
+                      <Image src={previewUrl} alt="Original room" fill className="object-cover" unoptimized />
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="grid gap-4">
+                  {designs.map((design, index) => (
+                    <article
+                      key={design.id}
+                      className="overflow-hidden rounded-[24px] border border-[#73A5CA]/14 bg-[#faf9f5]"
+                    >
+                      <div className="relative h-56 sm:h-72">
+                        <Image
+                          src={design.imageDataUrl}
+                          alt={`Renovaite design ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      </div>
+                      <div className="flex flex-wrap items-center justify-between gap-3 p-4">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.22em] text-[#5d8fb2]">
+                            Concept {index + 1}
+                          </p>
+                          <p className="mt-1 text-sm leading-6 text-[#6e6256]">{design.caption}</p>
+                        </div>
+                        <a
+                          href={design.imageDataUrl}
+                          download={`renovaite-design-${index + 1}.png`}
+                          className="inline-flex items-center gap-2 rounded-full border border-[#73A5CA]/20 bg-white px-4 py-2 text-sm font-semibold text-[#1c1712] transition hover:border-[#E87F24]/35 hover:text-[#E87F24]"
+                        >
+                          <Download size={15} />
+                          Download
+                        </a>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+
                 <button
                   type="button"
-                  onClick={() => setStatus('idle')}
-                  className="btn-primary mt-5 inline-flex px-5 py-3 text-sm font-semibold"
+                  onClick={resetForAnother}
+                  className="btn-primary inline-flex px-5 py-3 text-sm font-semibold"
                 >
-                  Submit another
+                  Generate another set
                 </button>
               </div>
             ) : (
@@ -281,9 +349,16 @@ export default function RenovaiteDesignForm({ content }: RenovaiteDesignFormProp
                   disabled={!canSubmit}
                   className="btn-primary mt-2 inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-55"
                 >
-                  {status === 'submitting' ? <Loader2 size={16} className="animate-spin" /> : null}
-                  {content.submitLabel ?? 'Generate Designs'}
+                  {status === 'submitting' ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
+                  {status === 'submitting'
+                    ? `Generating ${form.numDesigns} design${form.numDesigns === '1' ? '' : 's'}…`
+                    : content.submitLabel ?? 'Generate Designs'}
                 </button>
+                {status === 'submitting' ? (
+                  <p className="text-xs leading-5 text-[#6e6256]">
+                    This usually takes 15–45 seconds per concept as Gemini redesigns your room photo.
+                  </p>
+                ) : null}
               </form>
             )}
           </div>
