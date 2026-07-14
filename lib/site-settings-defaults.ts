@@ -111,6 +111,7 @@ export const globalLayoutDefaults: GlobalLayoutSettings = {
       { id: 'services', label: 'SERVICES', href: '/services', visible: true },
       { id: 'projects', label: 'PROJECT', href: '/projects', visible: true },
       { id: 'buildcivil-ai', label: 'AI APP', href: '/ai-cost-estimator', visible: true },
+      { id: 'renovaite', label: 'RENOVAITE', href: '/renovaite', visible: true },
       { id: 'contact', label: 'CONTACT', href: '/contact', visible: true },
     ],
     cta: { id: 'header-cta', label: 'CONTACT', href: '/contact', visible: true },

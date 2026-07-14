@@ -25,6 +25,7 @@ import {
   Search,
   Settings,
   ShieldCheck,
+  Sparkles,
   Type,
   Users,
   Wrench,
@@ -156,6 +157,7 @@ type ViewKey =
   | 'page-services'
   | 'page-projects'
   | 'page-contact'
+  | 'page-renovaite'
   | TableKey
   | 'packages'
   | 'media'
@@ -384,6 +386,7 @@ const tabs: { key: ViewKey; label: string; icon: ComponentType<{ size?: number; 
   { key: 'page-services', label: 'Services Page', icon: Layers3 },
   { key: 'page-projects', label: 'Projects Page', icon: FolderKanban },
   { key: 'page-contact', label: 'Contact Page', icon: MessageSquareText },
+  { key: 'page-renovaite', label: 'Renovaite Page', icon: Sparkles },
   { key: 'pages', label: 'Site Pages', icon: FileText },
   { key: 'sections-builder', label: 'Sections Builder', icon: Brush },
   { key: 'settings', label: 'Header & Footer', icon: Settings },
@@ -426,6 +429,7 @@ const sidebarGroups: Array<{
       { key: 'page-services', label: 'Services', icon: Layers3 },
       { key: 'page-projects', label: 'Projects', icon: FolderKanban },
       { key: 'page-contact', label: 'Contact', icon: MessageSquareText },
+      { key: 'page-renovaite', label: 'Renovaite', icon: Sparkles },
     ],
   },
   {
@@ -479,6 +483,7 @@ const roleViewAccess: Record<string, ViewKey[]> = {
     'page-services',
     'page-projects',
     'page-contact',
+    'page-renovaite',
     'projects',
     'services',
     'packages',
@@ -497,7 +502,7 @@ const roleViewAccess: Record<string, ViewKey[]> = {
   project_manager: ['overview', 'projects', 'services', 'media', 'seo-center', 'help-guide'],
   media_manager: ['overview', 'media', 'help-guide'],
   leads_manager: ['overview', 'enquiries', 'package-quotes', 'newsletter', 'messages', 'help-guide'],
-  editor: ['overview', 'page-home', 'page-about', 'page-services', 'page-projects', 'page-contact', 'projects', 'services', 'media', 'seo-center', 'policy-pages', 'help-guide'],
+  editor: ['overview', 'page-home', 'page-about', 'page-services', 'page-projects', 'page-contact', 'page-renovaite', 'projects', 'services', 'media', 'seo-center', 'policy-pages', 'help-guide'],
 }
 
 function canView(role: string | undefined, key: ViewKey) {
@@ -1082,7 +1087,7 @@ export default function AdminDashboardClient() {
         safeLoad(
           'pages',
           'Pages',
-          canView(role, 'pages') || canView(role, 'page-home') || canView(role, 'page-about') || canView(role, 'page-services') || canView(role, 'page-projects') || canView(role, 'page-contact')
+          canView(role, 'pages') || canView(role, 'page-home') || canView(role, 'page-about') || canView(role, 'page-services') || canView(role, 'page-projects') || canView(role, 'page-contact') || canView(role, 'page-renovaite')
             ? api<AdminResponse<PageRow>>('pages')
             : Promise.resolve(emptyResponse<PageRow>('pages')),
           emptyResponse<PageRow>('pages'),
@@ -1741,6 +1746,8 @@ export default function AdminDashboardClient() {
             {!loading && activeTab === 'page-projects' ? <AdminSimplePageEditor slug="projects" /> : null}
 
             {!loading && activeTab === 'page-contact' ? <AdminSimplePageEditor slug="contact" /> : null}
+
+            {!loading && activeTab === 'page-renovaite' ? <AdminSimplePageEditor slug="renovaite" /> : null}
 
             {!loading && activeTab === 'projects' ? (
               <AdminProjectLibraryPanel

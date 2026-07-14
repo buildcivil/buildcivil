@@ -1,6 +1,6 @@
 import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
 
-export type SitePageSlug = 'home' | 'about' | 'services' | 'projects' | 'contact'
+export type SitePageSlug = 'home' | 'about' | 'services' | 'projects' | 'contact' | 'renovaite'
 
 export type SitePageRecord = {
   id: string
@@ -175,6 +175,39 @@ export type ContactPageContent = {
     email: string
     phone: string
   }
+}
+
+export type RenovaiteSliderItem = {
+  title: string
+  copy: string
+  beforeImage: string
+  afterImage: string
+  beforeLabel?: string
+  afterLabel?: string
+}
+
+export type RenovaitePageContent = {
+  seo?: PageSeoContent
+  sectionSettings?: Record<string, Record<string, unknown>>
+  hero: { label?: string; title: string; copy: string; image: string }
+  slider: {
+    label?: string
+    title: string
+    copy: string
+    items: RenovaiteSliderItem[]
+  }
+  form: {
+    label?: string
+    title: string
+    copy: string
+    submitLabel?: string
+    successMessage?: string
+    sideImages?: string[]
+    roomTypes?: Array<{ value: string; label: string }>
+    designStyles?: Array<{ value: string; label: string }>
+    designCounts?: Array<{ value: string; label: string }>
+  }
+  cta?: { title?: string; copy?: string; label?: string; href?: string }
 }
 
 type PageCatalogItem = Omit<SitePageRecord, 'id'>
@@ -625,6 +658,84 @@ const contactContent = {
   },
 }
 
+const renovaiteContent: RenovaitePageContent = {
+  seo: {
+    title: 'Renovaite by BuildCivil | AI Interior Design Studio',
+    description:
+      'Upload a room photo, pick a style, and explore before/after renovations with Renovaite — BuildCivil’s AI-assisted interior design experience.',
+  },
+  hero: {
+    label: 'Renovaite',
+    title: 'AI-assisted interiors, ready for real renovation.',
+    copy: 'Upload your room, choose a design direction, and preview transformations with before/after clarity — built for homeowners planning their next upgrade.',
+    image:
+      'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=2000&auto=format&fit=crop',
+  },
+  slider: {
+    label: 'Before & after',
+    title: 'See the renovation shift in one sweep.',
+    copy: 'Drag the slider to compare the existing room with a Renovaite-styled finish. Each pair is curated for clarity, material tone, and spatial rhythm.',
+    items: [
+      {
+        title: 'Living room refresh',
+        copy: 'Warmer lighting, cleaner lines, and a calmer material palette that lifts everyday living without losing comfort.',
+        beforeImage:
+          'https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=1600&auto=format&fit=crop',
+        afterImage:
+          'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1600&auto=format&fit=crop',
+        beforeLabel: 'Before',
+        afterLabel: 'After',
+      },
+      {
+        title: 'Bedroom calm upgrade',
+        copy: 'Soft neutrals, refined joinery cues, and a quieter layout that makes rest feel intentional.',
+        beforeImage:
+          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=1600&auto=format&fit=crop',
+        afterImage:
+          'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=1600&auto=format&fit=crop',
+        beforeLabel: 'Before',
+        afterLabel: 'After',
+      },
+    ],
+  },
+  form: {
+    label: 'Generate designs',
+    title: 'Start with your room photo.',
+    copy: 'Share a clear photo, pick the room type and style, and tell us how many concepts you want. Our team will follow up with tailored Renovaite directions.',
+    submitLabel: 'Generate Designs',
+    successMessage:
+      'Thanks — your Renovaite request is in. Our team will review your room details and get back with next steps shortly.',
+    sideImages: [
+      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=900&auto=format&fit=crop',
+    ],
+    roomTypes: [
+      { value: 'bedroom', label: 'Bedroom' },
+      { value: 'balcony', label: 'Balcony' },
+      { value: 'bathroom', label: 'Bathroom' },
+      { value: 'living', label: 'Living room' },
+      { value: 'kitchen', label: 'Kitchen' },
+    ],
+    designStyles: [
+      { value: 'eclectic', label: 'Eclectic' },
+      { value: 'modern', label: 'Modern' },
+      { value: 'scandinavian', label: 'Scandinavian' },
+      { value: 'contemporary', label: 'Contemporary' },
+    ],
+    designCounts: [
+      { value: '1', label: '1' },
+      { value: '2', label: '2' },
+      { value: '3', label: '3' },
+    ],
+  },
+  cta: {
+    title: 'Prefer a full renovation walkthrough?',
+    copy: 'Talk to BuildCivil for site-ready planning, budgeting, and execution support around your Renovaite concept.',
+    label: 'Talk to BuildCivil',
+    href: '/contact',
+  },
+}
+
 const pageCatalog: PageCatalogItem[] = [
   {
     slug: 'home',
@@ -680,6 +791,17 @@ const pageCatalog: PageCatalogItem[] = [
     content: contactContent,
     published: true,
     sort_order: 4,
+  },
+  {
+    slug: 'renovaite',
+    title: 'Renovaite',
+    hero_label: renovaiteContent.hero.label ?? 'Renovaite',
+    hero_title: renovaiteContent.hero.title,
+    hero_copy: renovaiteContent.hero.copy,
+    hero_image: renovaiteContent.hero.image,
+    content: renovaiteContent,
+    published: true,
+    sort_order: 5,
   },
 ]
 

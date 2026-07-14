@@ -25,16 +25,16 @@ export default function NavbarClient({ settings }: NavbarClientProps) {
 		"border-[#73A5CA]/12 bg-white text-[#1c1712] shadow-[0_12px_28px_rgba(28,23,18,0.08)]";
 
 	const linkClass =
-		"font-display text-sm uppercase tracking-[0.2em] text-[#1c1712]/82 transition-colors duration-300 hover:text-[#E87F24] xl:text-base";
+		"whitespace-nowrap font-display text-sm uppercase tracking-[0.12em] text-[#1c1712]/82 transition-colors duration-300 hover:text-[#E87F24] xl:text-[0.95rem] 2xl:text-base";
 
 	const brandPrimary = "text-[#1c1712]";
 	const brandAccent = "text-[#E87F24]";
 	const buttonClass =
-		"btn-primary hidden min-w-[154px] items-center justify-center gap-3 px-4 py-3 text-sm font-medium tracking-[0.1em] transition-all duration-300 hover:shadow-[0_10px_24px_rgba(232,127,36,0.2)] xl:inline-flex 2xl:min-w-[164px] 2xl:px-5 2xl:tracking-[0.12em]";
+		"btn-primary hidden min-w-[140px] shrink-0 items-center justify-center gap-2 px-4 py-3 text-sm font-medium tracking-[0.08em] transition-all duration-300 hover:shadow-[0_10px_24px_rgba(232,127,36,0.2)] xl:inline-flex 2xl:min-w-[154px] 2xl:gap-3 2xl:px-5 2xl:tracking-[0.1em]";
 	const desktopLogoWidth = scaleDimension(
 		resolveDimension(settings.brand.desktopWidth, 180, 96, 360),
-		1.5,
-		540,
+		1.35,
+		420,
 	);
 	const tabletLogoWidth = scaleDimension(
 		resolveDimension(settings.brand.tabletWidth, 150, 92, 280),
@@ -109,9 +109,9 @@ export default function NavbarClient({ settings }: NavbarClientProps) {
 				className={`fixed left-0 right-0 z-50 px-0 pt-0 transition-all duration-500 ${showMobileTopBar ? "top-11 xl:top-12" : "top-0"}`}
 			>
 				<div
-					className={`mx-auto flex w-full max-w-none items-center justify-between border-b px-4 py-2.5 transition-all duration-500 md:px-7 lg:px-10 ${shellClass}`}
+					className={`mx-auto flex w-full max-w-none items-center justify-between gap-4 border-b px-3 py-2.5 transition-all duration-500 sm:px-5 md:px-6 lg:px-8 xl:gap-6 xl:px-10 2xl:px-12 ${shellClass}`}
 				>
-					<a href={settings.brand.href} className="flex items-center gap-3 group">
+					<a href={settings.brand.href} className="group flex shrink-0 items-center gap-3">
 						{settings.brand.showImageLogo && settings.brand.logoUrl ? (
 							<>
 								<span
@@ -195,8 +195,8 @@ export default function NavbarClient({ settings }: NavbarClientProps) {
 						) : null}
 					</a>
 
-					<div className="hidden flex-1 items-center justify-center xl:flex">
-						<div className="flex items-center gap-8 2xl:gap-14">
+					<div className="hidden min-w-0 flex-1 items-center justify-center xl:flex">
+						<div className="flex flex-nowrap items-center justify-center gap-4 xl:gap-5 2xl:gap-8">
 							{navLinks.map((link) => (
 								<a key={link.id} href={link.href} className={linkClass}>
 									{link.label}
@@ -211,7 +211,7 @@ export default function NavbarClient({ settings }: NavbarClientProps) {
 							<ArrowRight size={18} strokeWidth={2.3} />
 						</a>
 					) : (
-						<div className="hidden min-w-[154px] xl:block 2xl:min-w-[184px]" />
+						<div className="hidden min-w-[140px] shrink-0 xl:block 2xl:min-w-[154px]" />
 					)}
 
 					<button

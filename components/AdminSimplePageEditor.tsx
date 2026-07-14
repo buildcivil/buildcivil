@@ -8,7 +8,7 @@ import AdminMediaPicker from './AdminMediaPicker'
 import { publishRefresh } from '@/lib/admin-publish'
 import { readJsonResponse } from '@/lib/safe-json'
 
-type PageSlug = 'about' | 'services' | 'projects' | 'contact'
+type PageSlug = 'about' | 'services' | 'projects' | 'contact' | 'renovaite'
 type PageRow = {
   id: string
   slug: string
@@ -49,6 +49,11 @@ const pageLabels: Record<PageSlug, { label: string; route: string; description: 
     route: '/contact',
     description: 'Manage hero text, contact cards, inquiry intro, map details, and supporting contact copy.',
   },
+  renovaite: {
+    label: 'Renovaite page',
+    route: '/renovaite',
+    description: 'Manage Renovaite hero, before/after sliders, design request form options, and CTA.',
+  },
 }
 
 const editableSections: Record<PageSlug, string[]> = {
@@ -56,6 +61,7 @@ const editableSections: Record<PageSlug, string[]> = {
   services: ['hero', 'intro', 'stats', 'visual', 'ctas'],
   projects: ['hero', 'intro', 'categories', 'stats', 'cta'],
   contact: ['hero', 'contactCards', 'form', 'officeHighlights', 'location'],
+  renovaite: ['hero', 'slider', 'form', 'cta'],
 }
 
 const inputClass =
@@ -322,7 +328,8 @@ function PagePreview({ page, content, slug }: { page: PageRow | null; content: R
                 Array.isArray(sectionContent.principles) ? sectionContent.principles :
                 Array.isArray(sectionContent.contactCards) ? sectionContent.contactCards :
                 Array.isArray(sectionContent.officeHighlights) ? sectionContent.officeHighlights :
-                []
+                Array.isArray(sectionContent.sideImages) ? sectionContent.sideImages :
+                Array.isArray(sectionContent.roomTypes) ? sectionContent.roomTypes : []
               return (
                 <div key={section} className="rounded-[18px] border border-[#73A5CA]/12 bg-white/70 p-4">
                   <div className="text-[10px] uppercase tracking-[0.22em] text-[#5d8fb2]">{section.replace(/([A-Z])/g, ' $1')}</div>
@@ -370,7 +377,7 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
   const warnings = useMemo(() => {
     const output: string[] = []
     if (!content.hero?.title?.trim()) output.push('Hero heading is required.')
-    if ((slug === 'about' || slug === 'services' || slug === 'projects') && !content.hero?.image?.trim()) output.push('Hero cover image is missing.')
+    if ((slug === 'about' || slug === 'services' || slug === 'projects' || slug === 'renovaite') && !content.hero?.image?.trim()) output.push('Hero cover image is missing.')
     return output
   }, [content, slug])
 
@@ -649,6 +656,103 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
               </div>
               <div className="rounded-[24px] border border-[#D8FF6A]/15 bg-[#D8FF6A]/8 p-4 text-sm leading-6 text-white/58">
                 Contact form labels, placeholders, dropdowns, and required fields are managed from Theme &amp; Settings &gt; Forms &amp; Fields.
+              </div>
+            </>
+          ) : null}
+
+          {slug === 'renovaite' ? (
+            <>
+              <SeoEditor content={content} update={update} />
+              <StyleControls content={content} update={update} sections={editableSections[slug]} />
+              <TextSection
+                title="Slider section intro"
+                data={{ title: content.slider?.title ?? '', copy: content.slider?.copy ?? '' }}
+                onChange={(key, value) => update(['slider', key], value)}
+              />
+              <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Slider label</div>
+                <div className="mt-6">
+                  <Field label="Section label">
+                    <TextInput value={content.slider?.label ?? ''} onChange={(e) => update(['slider', 'label'], e.target.value)} />
+                  </Field>
+                </div>
+              </div>
+              <RepeatBlock
+                title="Before / after slides"
+                items={content.slider?.items ?? []}
+                blank={{
+                  title: 'New comparison',
+                  copy: 'Describe this renovation shift.',
+                  beforeImage: '',
+                  afterImage: '',
+                  beforeLabel: 'Before',
+                  afterLabel: 'After',
+                }}
+                onChange={(items) => update(['slider', 'items'], items)}
+                render={(item, _index, patch) => (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Title"><TextInput value={item.title ?? ''} onChange={(e) => patch({ title: e.target.value })} /></Field>
+                    <Field label="Copy"><TextInput value={item.copy ?? ''} onChange={(e) => patch({ copy: e.target.value })} /></Field>
+                    <ImageField label="Before image" value={item.beforeImage ?? ''} onChange={(url) => patch({ beforeImage: url })} />
+                    <ImageField label="After image" value={item.afterImage ?? ''} onChange={(url) => patch({ afterImage: url })} />
+                    <Field label="Before label"><TextInput value={item.beforeLabel ?? ''} onChange={(e) => patch({ beforeLabel: e.target.value })} /></Field>
+                    <Field label="After label"><TextInput value={item.afterLabel ?? ''} onChange={(e) => patch({ afterLabel: e.target.value })} /></Field>
+                  </div>
+                )}
+              />
+              <TextSection
+                title="Design form intro"
+                data={{ title: content.form?.title ?? '', copy: content.form?.copy ?? '' }}
+                onChange={(key, value) => update(['form', key], value)}
+              />
+              <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Form settings</div>
+                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                  <Field label="Section label"><TextInput value={content.form?.label ?? ''} onChange={(e) => update(['form', 'label'], e.target.value)} /></Field>
+                  <Field label="Submit button"><TextInput value={content.form?.submitLabel ?? ''} onChange={(e) => update(['form', 'submitLabel'], e.target.value)} /></Field>
+                  <Field label="Success message"><TextArea value={content.form?.successMessage ?? ''} onChange={(e) => update(['form', 'successMessage'], e.target.value)} /></Field>
+                </div>
+              </div>
+              <RepeatBlock
+                title="Form side images"
+                items={(content.form?.sideImages ?? []).map((image: string) => ({ image }))}
+                blank={{ image: '' }}
+                onChange={(items) => update(['form', 'sideImages'], items.map((item) => item.image).filter(Boolean))}
+                render={(item, _index, patch) => (
+                  <ImageField label="Image" value={item.image ?? ''} onChange={(url) => patch({ image: url })} />
+                )}
+              />
+              <RepeatBlock
+                title="Room type options"
+                items={content.form?.roomTypes ?? []}
+                blank={{ value: 'room', label: 'Room' }}
+                onChange={(items) => update(['form', 'roomTypes'], items)}
+                render={(item, _index, patch) => (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Value"><TextInput value={item.value ?? ''} onChange={(e) => patch({ value: e.target.value })} /></Field>
+                    <Field label="Label"><TextInput value={item.label ?? ''} onChange={(e) => patch({ label: e.target.value })} /></Field>
+                  </div>
+                )}
+              />
+              <RepeatBlock
+                title="Design style options"
+                items={content.form?.designStyles ?? []}
+                blank={{ value: 'modern', label: 'Modern' }}
+                onChange={(items) => update(['form', 'designStyles'], items)}
+                render={(item, _index, patch) => (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Value"><TextInput value={item.value ?? ''} onChange={(e) => patch({ value: e.target.value })} /></Field>
+                    <Field label="Label"><TextInput value={item.label ?? ''} onChange={(e) => patch({ label: e.target.value })} /></Field>
+                  </div>
+                )}
+              />
+              <TextSection title="Bottom CTA" data={content.cta ?? {}} onChange={(key, value) => update(['cta', key], value)} />
+              <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">CTA button</div>
+                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                  <Field label="Button text"><TextInput value={content.cta?.label ?? ''} onChange={(e) => update(['cta', 'label'], e.target.value)} /></Field>
+                  <Field label="Button link"><TextInput value={content.cta?.href ?? ''} onChange={(e) => update(['cta', 'href'], e.target.value)} /></Field>
+                </div>
               </div>
             </>
           ) : null}

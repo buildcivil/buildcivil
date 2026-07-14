@@ -142,7 +142,7 @@ const modeCopy: Record<CmsMode, { eyebrow: string; title: string; copy: string }
   },
 }
 
-const pageOptions = ['home', 'about', 'services', 'projects', 'contact']
+const pageOptions = ['home', 'about', 'services', 'projects', 'contact', 'renovaite']
 const locationOptions = ['header', 'footer_company', 'footer_legal', 'footer_social']
 
 const inputClass =
