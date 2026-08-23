@@ -136,9 +136,9 @@ type SectionSettings = {
 }
 
 const inputClass =
-  'w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+  'w-full rounded-[16px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 const textareaClass =
-  'min-h-[118px] w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm leading-6 text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+  'min-h-[118px] w-full rounded-[16px] border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 
 const sections: Array<{ key: SectionKey; label: string; description: string }> = [
   { key: 'hero', label: 'Hero', description: 'Cover image, headline, copy, button, and enquiry dropdown.' },
@@ -289,7 +289,7 @@ function SolidColorInput({
         type="color"
         value={pickerValue}
         onChange={(event) => onChange(event.target.value.toUpperCase())}
-        className="h-12 w-full cursor-pointer rounded-[16px] border border-white/10 bg-[#0f0f0f] p-2"
+        className="h-12 w-full cursor-pointer rounded-[16px] border border-slate-200 bg-slate-50 p-2"
         aria-label="Choose solid background color"
       />
       <TextInput
@@ -306,8 +306,8 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
   return (
     <label className="block">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/50">{label}</span>
-        {hint ? <span className="text-xs text-white/32">{hint}</span> : null}
+        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{label}</span>
+        {hint ? <span className="text-xs text-slate-500">{hint}</span> : null}
       </div>
       {children}
     </label>
@@ -337,11 +337,11 @@ function SectionControl({
   }
 
   return (
-    <div className="rounded-[24px] border border-white/8 bg-white/[0.035] p-4">
+    <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <div className="text-[11px] uppercase tracking-[0.24em] text-white/35">Section controls</div>
-          <p className="mt-1 text-sm text-white/58">Manage visibility and presentation preferences.</p>
+          <div className="text-[11px] uppercase tracking-[0.24em] text-slate-400">Section controls</div>
+          <p className="mt-1 text-sm text-slate-500">Manage visibility and presentation preferences.</p>
         </div>
         <button
           type="button"
@@ -352,7 +352,7 @@ function SectionControl({
             })
           }
           className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${
-            visible ? 'bg-[#D8FF6A] text-[#111]' : 'border border-white/10 bg-white/5 text-white/60'
+            visible ? 'bg-[#E87F24] text-white' : 'border border-slate-200 bg-slate-50 text-slate-500'
           }`}
         >
           {visible ? <Eye size={14} /> : <EyeOff size={14} />}
@@ -368,7 +368,7 @@ function SectionControl({
               placeholder="32px"
             />
           </Field>
-          <p className="mt-2 text-xs leading-5 text-white/35">
+          <p className="mt-2 text-xs leading-5 text-slate-400">
             Leave empty to use the default website size. You can use values like 28px, 32px, 40px, or clamp(32px, 5vw, 72px).
           </p>
         </div>
@@ -394,10 +394,10 @@ function SectionControl({
 function MoveButtons({ onUp, onDown, onDuplicate, onDelete }: { onUp: () => void; onDown: () => void; onDuplicate: () => void; onDelete: () => void }) {
   return (
     <div className="flex flex-wrap gap-2">
-      <button type="button" onClick={onUp} className="rounded-full border border-white/10 bg-white/5 p-2 text-white/60"><ArrowUp size={14} /></button>
-      <button type="button" onClick={onDown} className="rounded-full border border-white/10 bg-white/5 p-2 text-white/60"><ArrowDown size={14} /></button>
-      <button type="button" onClick={onDuplicate} className="rounded-full border border-white/10 bg-white/5 p-2 text-white/60"><Copy size={14} /></button>
-      <button type="button" onClick={onDelete} className="rounded-full border border-[#E87F24]/30 bg-[#E87F24]/10 p-2 text-[#FFBC8C]"><Trash2 size={14} /></button>
+      <button type="button" onClick={onUp} className="rounded-full border border-slate-200 bg-slate-50 p-2 text-slate-500"><ArrowUp size={14} /></button>
+      <button type="button" onClick={onDown} className="rounded-full border border-slate-200 bg-slate-50 p-2 text-slate-500"><ArrowDown size={14} /></button>
+      <button type="button" onClick={onDuplicate} className="rounded-full border border-slate-200 bg-slate-50 p-2 text-slate-500"><Copy size={14} /></button>
+      <button type="button" onClick={onDelete} className="rounded-full border border-orange-200 bg-orange-50 p-2 text-orange-700"><Trash2 size={14} /></button>
     </div>
   )
 }
@@ -412,11 +412,11 @@ function SectionShell({
   children: ReactNode
 }) {
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <div>
-        <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Guided editor</div>
-        <h3 className="mt-2 text-2xl font-black tracking-[-0.04em] text-white">{title}</h3>
-        <p className="mt-2 text-sm leading-6 text-white/52">{copy}</p>
+        <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">Guided editor</div>
+        <h3 className="mt-2 text-2xl font-black tracking-[-0.04em] text-slate-900">{title}</h3>
+        <p className="mt-2 text-sm leading-6 text-slate-500">{copy}</p>
       </div>
       <div className="mt-6 space-y-5">{children}</div>
     </div>
@@ -449,9 +449,9 @@ function SeoEditor({ content, onChange }: { content: HomeContent; onChange: (nex
       </Field>
       <div className="rounded-[22px] border border-[#73A5CA]/15 bg-[#73A5CA]/8 p-4">
         <div className="text-[10px] uppercase tracking-[0.22em] text-[#9ec7e7]">Search preview</div>
-        <h4 className="mt-3 line-clamp-2 text-lg font-black text-[#F5F3EB]">{seo.title || content.hero.title || 'Homepage title'}</h4>
-        <p className="mt-2 text-xs text-[#D8FF6A]/70">buildcivil.in/</p>
-        <p className="mt-2 line-clamp-3 text-sm leading-6 text-white/54">{seo.description || content.hero.copy || 'Homepage description appears here.'}</p>
+        <h4 className="mt-3 line-clamp-2 text-lg font-black text-slate-900">{seo.title || content.hero.title || 'Homepage title'}</h4>
+        <p className="mt-2 text-xs text-[#E87F24]/70">buildcivil.in/</p>
+        <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-500">{seo.description || content.hero.copy || 'Homepage description appears here.'}</p>
       </div>
     </SectionShell>
   )
@@ -460,10 +460,10 @@ function SeoEditor({ content, onChange }: { content: HomeContent; onChange: (nex
 function FullHomePreview({ content }: { content: HomeContent }) {
   const visibleSections = sections.filter((section) => content.sectionVisibility?.[section.key] ?? section.key !== 'team')
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-      <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Full draft homepage</div>
-      <p className="mt-2 text-sm leading-6 text-white/48">This preview uses your unsaved draft fields, so you can check section flow before publishing.</p>
-      <div className="mt-4 max-h-[640px] overflow-auto rounded-[22px] border border-white/10 bg-[#FEFDDF] p-4 text-[#1c1712]">
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Full draft homepage</div>
+      <p className="mt-2 text-sm leading-6 text-slate-500">This preview uses your unsaved draft fields, so you can check section flow before publishing.</p>
+      <div className="mt-4 max-h-[640px] overflow-auto rounded-[22px] border border-slate-200 bg-[#FEFDDF] p-4 text-[#1c1712]">
         <div className="rounded-[24px] bg-[#73A5CA]/18 p-5">
           <div className="text-[10px] uppercase tracking-[0.24em] text-[#5d8fb2]">{content.hero.label}</div>
           <h3 className="mt-3 text-4xl font-black leading-none">{content.hero.title.split('\n')[0]}</h3>
@@ -548,13 +548,13 @@ function HeroSectionEditor({ content, onChange }: { content: HomeContent; onChan
         <ImageField label="Cover image" value={hero.image} onChange={(url) => patch({ hero: { ...hero, image: url } })} />
         <Field label="Image alt text"><TextInput value={hero.imageAlt ?? ''} onChange={(e) => patch({ hero: { ...hero, imageAlt: e.target.value } })} /></Field>
       </div>
-      <div className="rounded-[24px] border border-white/8 bg-white/[0.035] p-4">
+      <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-4">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h4 className="text-lg font-black text-white">Service dropdown options</h4>
-            <p className="mt-1 text-sm text-white/45">These appear in the hero enquiry popup.</p>
+            <h4 className="text-lg font-black text-slate-900">Service dropdown options</h4>
+            <p className="mt-1 text-sm text-slate-500">These appear in the hero enquiry popup.</p>
           </div>
-          <button type="button" onClick={() => patch({ hero: { ...hero, serviceOptions: [...options, 'New option'] } })} className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-4 py-2 text-sm font-semibold text-[#111]">
+          <button type="button" onClick={() => patch({ hero: { ...hero, serviceOptions: [...options, 'New option'] } })} className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-4 py-2 text-sm font-semibold text-white">
             <Plus size={14} /> Add option
           </button>
         </div>
@@ -562,7 +562,7 @@ function HeroSectionEditor({ content, onChange }: { content: HomeContent; onChan
           {options.map((option, index) => (
             <div key={`${option}-${index}`} className="flex gap-3">
               <TextInput value={option} onChange={(event) => patch({ hero: { ...hero, serviceOptions: options.map((item, itemIndex) => itemIndex === index ? event.target.value : item) } })} />
-              <button type="button" onClick={() => patch({ hero: { ...hero, serviceOptions: options.filter((_, itemIndex) => itemIndex !== index) } })} className="rounded-[16px] border border-[#E87F24]/30 px-3 text-[#FFBC8C]">
+              <button type="button" onClick={() => patch({ hero: { ...hero, serviceOptions: options.filter((_, itemIndex) => itemIndex !== index) } })} className="rounded-[16px] border border-orange-200 px-3 text-orange-700">
                 <Trash2 size={15} />
               </button>
             </div>
@@ -623,8 +623,8 @@ function HomeSectionEditor({
             </div>
           </CardEditor>
         ))}
-        <div className="rounded-[24px] border border-white/8 bg-white/[0.035] p-4">
-          <h4 className="text-lg font-black text-white">Sustainability card</h4>
+        <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-4">
+          <h4 className="text-lg font-black text-slate-900">Sustainability card</h4>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             <Field label="Icon"><TextInput value={about.sustainability?.icon ?? ''} onChange={(e) => patch({ about: { ...about, sustainability: { ...(about.sustainability ?? { title: '', copy: '' }), icon: e.target.value } } })} /></Field>
             <Field label="Title"><TextInput value={about.sustainability?.title ?? ''} onChange={(e) => patch({ about: { ...about, sustainability: { ...(about.sustainability ?? { copy: '' }), title: e.target.value } } })} /></Field>
@@ -647,7 +647,7 @@ function HomeSectionEditor({
         <RepeatHeader title="Slides" onAdd={() => updateList('showcase', 'slides', [...slides, publishedProjects[0] ? slideFromProject(publishedProjects[0]) : { title: 'New project', label: 'residential', image: '', imageAlt: '', metric: '100+', metricLabel: 'metric label', description: 'Short project description.' }])} />
         {slides.map((slide, index) => (
           <CardEditor key={index} title={`Slide ${index + 1}`} onMove={moveHandlers(slides, index, (items) => updateList('showcase', 'slides', items))}>
-            <div className="rounded-[20px] border border-[#D8FF6A]/15 bg-[#D8FF6A]/8 p-4">
+            <div className="rounded-[20px] border border-[#E87F24]/20 bg-[#E87F24]/8 p-4">
               <Field label="Project Library source">
                 <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
                   <select
@@ -672,13 +672,13 @@ function HomeSectionEditor({
                       if (!project) return
                       updateList('showcase', 'slides', [...slides, slideFromProject(project)])
                     }}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#D8FF6A] px-4 py-3 text-sm font-semibold text-[#111] disabled:cursor-not-allowed disabled:opacity-45"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#E87F24] px-4 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-45"
                   >
                     <Plus size={14} /> Add from library
                   </button>
                 </div>
               </Field>
-              <p className="mt-2 text-xs leading-5 text-white/48">
+              <p className="mt-2 text-xs leading-5 text-slate-500">
                 Linked slides pull the latest title, image, category, and description from Project Library after publish.
               </p>
             </div>
@@ -773,7 +773,7 @@ function HomeSectionEditor({
         <Field label="Heading"><TextInput value={plans.title ?? ''} onChange={(e) => patch({ plans: { ...plans, title: e.target.value } })} /></Field>
         <Field label="Text"><TextArea value={plans.copy ?? ''} onChange={(e) => patch({ plans: { ...plans, copy: e.target.value } })} /></Field>
         <Field label="Card button label"><TextInput value={plans.ctaLabel ?? 'Get Details'} onChange={(e) => patch({ plans: { ...plans, ctaLabel: e.target.value } })} /></Field>
-        <div className="rounded-[22px] border border-[#D8FF6A]/15 bg-[#D8FF6A]/8 p-4 text-sm leading-6 text-white/58">
+        <div className="rounded-[22px] border border-[#E87F24]/20 bg-[#E87F24]/8 p-4 text-sm leading-6 text-slate-500">
           Pricing, features, and materials are edited from the Packages tab so package data stays reusable across the site.
         </div>
       </SectionShell>
@@ -861,12 +861,12 @@ function HomeSectionEditor({
 
 function RepeatHeader({ title, onAdd }: { title: string; onAdd: () => void }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-white/8 bg-white/[0.035] p-4">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-slate-200 bg-slate-50 p-4">
       <div>
-        <h4 className="text-lg font-black text-white">{title}</h4>
-        <p className="mt-1 text-sm text-white/42">Add, duplicate, delete, and reorder items.</p>
+        <h4 className="text-lg font-black text-slate-900">{title}</h4>
+        <p className="mt-1 text-sm text-slate-400">Add, duplicate, delete, and reorder items.</p>
       </div>
-      <button type="button" onClick={onAdd} className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-4 py-2 text-sm font-semibold text-[#111]">
+      <button type="button" onClick={onAdd} className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-4 py-2 text-sm font-semibold text-white">
         <Plus size={14} />
         Add item
       </button>
@@ -884,9 +884,9 @@ function CardEditor({
   children: ReactNode
 }) {
   return (
-    <div className="rounded-[24px] border border-white/8 bg-white/[0.035] p-4">
+    <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-4">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h4 className="text-base font-black text-white">{title}</h4>
+        <h4 className="text-base font-black text-slate-900">{title}</h4>
         <MoveButtons onUp={onMove.up} onDown={onMove.down} onDuplicate={onMove.duplicate} onDelete={onMove.delete} />
       </div>
       <div className="space-y-4">{children}</div>
@@ -942,16 +942,16 @@ function PreviewCard({ content, active, device }: { content: HomeContent; active
   const image = active === 'hero' ? content.hero.image : active === 'faq' ? content.faq.image : active === 'showcase' ? content.showcase.slides?.[0]?.image : ''
 
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-white/40">
-            <Monitor size={13} className="text-[#D8FF6A]" />
+          <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-slate-400">
+            <Monitor size={13} className="text-[#E87F24]" />
             Live section preview
           </div>
-          <h3 className="mt-2 text-xl font-black text-white">{section?.label}</h3>
+          <h3 className="mt-2 text-xl font-black text-slate-900">{section?.label}</h3>
         </div>
-        <span className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${visible ? 'bg-[#D8FF6A] text-[#111]' : 'bg-white/8 text-white/55'}`}>
+        <span className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${visible ? 'bg-[#E87F24] text-white' : 'bg-slate-100 text-slate-500'}`}>
           {visible ? 'Visible' : 'Hidden'}
         </span>
       </div>
@@ -961,7 +961,7 @@ function PreviewCard({ content, active, device }: { content: HomeContent; active
             <Image src={image} alt={String(data.imageAlt ?? data.title ?? 'Preview image')} fill className="object-cover" sizes="640px" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#1c1712]/70 to-transparent" />
             <div className="absolute bottom-4 left-4 right-4">
-              <div className="w-fit rounded-full border border-white/35 bg-white/18 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-[#FEFDDF] backdrop-blur-md">
+              <div className="w-fit rounded-full border border-slate-200 bg-white/18 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-[#FEFDDF] backdrop-blur-md">
                 {data.label ?? data.kicker ?? data.imageBadge ?? section?.label}
               </div>
               <h4 className="mt-3 text-3xl font-black leading-none text-[#FEFDDF]">{String(data.title ?? section?.label ?? 'Section title').split('\n')[0]}</h4>
@@ -1080,46 +1080,46 @@ export default function AdminHomePageEditor() {
   }
 
   if (loading) {
-    return <div className="mt-6 rounded-[28px] border border-white/8 bg-white/5 px-6 py-12 text-center text-sm text-white/55">Loading Home editor...</div>
+    return <div className="mt-6 rounded-[28px] border border-slate-200 bg-slate-50 px-6 py-12 text-center text-sm text-slate-500">Loading Home editor...</div>
   }
 
   return (
     <section className="mt-6 space-y-5">
-      <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+      <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div>
-            <div className="inline-flex rounded-full border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#D8FF6A]">
+            <div className="inline-flex rounded-full border border-emerald-200 bg-orange-50 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#E87F24]">
               Pages / Home
             </div>
-            <h2 className="mt-4 text-3xl font-black tracking-[-0.05em] text-white sm:text-5xl">Home page editor</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-white/56 sm:text-base">
+            <h2 className="mt-4 text-3xl font-black tracking-[-0.05em] text-slate-900 sm:text-5xl">Home page editor</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base">
               Manage every homepage section with clear fields, media picker support, and a right-side preview before publishing.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button type="button" onClick={load} disabled={saving} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/70 disabled:opacity-50">
+            <button type="button" onClick={load} disabled={saving} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-600 disabled:opacity-50">
               <RotateCcw size={15} /> Reload
             </button>
-            <button type="button" onClick={() => save(false)} disabled={saving} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/70 disabled:opacity-50">
+            <button type="button" onClick={() => save(false)} disabled={saving} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-600 disabled:opacity-50">
               <Save size={15} /> Save Draft
             </button>
-            <button type="button" onClick={() => save(true)} disabled={saving} className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-50">
+            <button type="button" onClick={() => save(true)} disabled={saving} className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">
               Publish <ArrowRight size={15} />
             </button>
           </div>
         </div>
-        {error ? <div className="mt-5 rounded-[20px] border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">{error}</div> : null}
-        {notice ? <div className="mt-5 rounded-[20px] border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-[#D8FF6A]">{notice}</div> : null}
+        {error ? <div className="mt-5 rounded-[20px] border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800">{error}</div> : null}
+        {notice ? <div className="mt-5 rounded-[20px] border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-[#E87F24]">{notice}</div> : null}
         {warnings.length ? (
-          <div className="mt-5 rounded-[20px] border border-[#FFC81E]/25 bg-[#FFC81E]/8 px-4 py-3 text-sm leading-6 text-[#F6DA8A]">
+          <div className="mt-5 rounded-[20px] border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-700">
             {warnings.map((warning) => <div key={warning}>- {warning}</div>)}
           </div>
         ) : null}
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)_minmax(360px,0.9fr)]">
-        <aside className="rounded-[30px] border border-white/8 bg-[#171719] p-3 shadow-[0_18px_60px_rgba(0,0,0,0.28)] xl:sticky xl:top-6 xl:self-start">
-          <div className="px-3 pb-3 pt-2 text-[11px] uppercase tracking-[0.26em] text-white/36">Home sections</div>
+        <aside className="rounded-[30px] border border-slate-200 bg-white p-3 shadow-sm xl:sticky xl:top-6 xl:self-start">
+          <div className="px-3 pb-3 pt-2 text-[11px] uppercase tracking-[0.26em] text-slate-400">Home sections</div>
           <div className="space-y-2">
             {sections.map((section) => {
               const isActive = active === section.key
@@ -1130,14 +1130,14 @@ export default function AdminHomePageEditor() {
                   type="button"
                   onClick={() => setActive(section.key)}
                   className={`w-full rounded-[22px] border p-3 text-left transition ${
-                    isActive ? 'border-[#D8FF6A]/45 bg-[#D8FF6A]/10' : 'border-white/8 bg-white/5 hover:border-white/14'
+                    isActive ? 'border-[#E87F24]/40 bg-orange-50' : 'border-slate-200 bg-slate-50 hover:border-slate-200'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-sm font-semibold text-white">{section.label}</span>
-                    <span className={`h-2 w-2 rounded-full ${visible ? 'bg-[#D8FF6A]' : 'bg-white/25'}`} />
+                    <span className="text-sm font-semibold text-slate-900">{section.label}</span>
+                    <span className={`h-2 w-2 rounded-full ${visible ? 'bg-[#E87F24]' : 'bg-white/25'}`} />
                   </div>
-                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-white/42">{section.description}</p>
+                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-400">{section.description}</p>
                 </button>
               )
             })}
@@ -1147,7 +1147,7 @@ export default function AdminHomePageEditor() {
         <SectionEditor active={active} content={content} onChange={setContent} projectOptions={projectOptions} />
 
         <div className="space-y-4 xl:sticky xl:top-6 xl:self-start">
-          <div className="rounded-[30px] border border-white/8 bg-[#171719] p-3">
+          <div className="rounded-[30px] border border-slate-200 bg-white p-3">
             <div className="grid grid-cols-3 gap-2">
               {[
                 { key: 'desktop' as const, label: 'Desktop', icon: Monitor },
@@ -1159,7 +1159,7 @@ export default function AdminHomePageEditor() {
                   type="button"
                   onClick={() => setDevice(item.key)}
                   className={`inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ${
-                    device === item.key ? 'bg-[#D8FF6A] text-[#111]' : 'border border-white/8 bg-white/5 text-white/58'
+                    device === item.key ? 'bg-[#E87F24] text-white' : 'border border-slate-200 bg-slate-50 text-slate-500'
                   }`}
                 >
                   <item.icon size={13} />
@@ -1170,7 +1170,7 @@ export default function AdminHomePageEditor() {
           </div>
           <PreviewCard content={content} active={active} device={device} />
           <FullHomePreview content={content} />
-          <div className="rounded-[24px] border border-white/8 bg-white/[0.035] p-4 text-sm leading-6 text-white/48">
+          <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-500">
             Preview cards are designed for fast editing. The public homepage keeps its current premium layout after publish.
           </div>
         </div>

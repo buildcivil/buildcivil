@@ -65,9 +65,9 @@ const editableSections: Record<PageSlug, string[]> = {
 }
 
 const inputClass =
-  'w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+  'w-full rounded-[16px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 const textareaClass =
-  'min-h-[112px] w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm leading-6 text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+  'min-h-[112px] w-full rounded-[16px] border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T
@@ -108,7 +108,7 @@ function SolidColorInput({
         type="color"
         value={pickerValue}
         onChange={(event) => onChange(event.target.value.toUpperCase())}
-        className="h-12 w-full cursor-pointer rounded-[16px] border border-white/10 bg-[#0f0f0f] p-2"
+        className="h-12 w-full cursor-pointer rounded-[16px] border border-slate-200 bg-slate-50 p-2"
         aria-label="Choose solid background color"
       />
       <TextInput
@@ -125,8 +125,8 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
   return (
     <label className="block">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/50">{label}</span>
-        {hint ? <span className="text-xs text-white/32">{hint}</span> : null}
+        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">{label}</span>
+        {hint ? <span className="text-xs text-slate-500">{hint}</span> : null}
       </div>
       {children}
     </label>
@@ -145,9 +145,9 @@ function ImageField({ label, value, onChange }: { label: string; value: string; 
 function SeoEditor({ content, update }: { content: Record<string, any>; update: (path: string[], value: unknown) => void }) {
   const seo = content.seo ?? {}
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-      <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">SEO settings</div>
-      <p className="mt-2 text-sm leading-6 text-white/48">Control how this page appears in Google, WhatsApp, and social sharing.</p>
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">SEO settings</div>
+      <p className="mt-2 text-sm leading-6 text-slate-500">Control how this page appears in Google, WhatsApp, and social sharing.</p>
       <div className="mt-6 grid gap-4">
         <Field label="SEO title" hint={`${String(seo.title ?? '').length}/60`}>
           <TextInput value={seo.title ?? ''} onChange={(e) => update(['seo', 'title'], e.target.value)} placeholder="Page title for search" />
@@ -164,13 +164,13 @@ function SeoEditor({ content, update }: { content: Record<string, any>; update: 
 function StyleControls({ content, update, sections }: { content: Record<string, any>; update: (path: string[], value: unknown) => void; sections: string[] }) {
   const settings = content.sectionSettings ?? {}
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-      <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Section style controls</div>
-      <p className="mt-2 text-sm leading-6 text-white/48">Safe presentation fields for each page section. These are stored with the page CMS and ready for deeper public styling.</p>
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">Section style controls</div>
+      <p className="mt-2 text-sm leading-6 text-slate-500">Safe presentation fields for each page section. These are stored with the page CMS and ready for deeper public styling.</p>
       <div className="mt-5 space-y-4">
         {sections.map((section) => (
-          <div key={section} className="rounded-[22px] border border-white/8 bg-white/[0.035] p-4">
-            <div className="text-sm font-black capitalize text-white">{section}</div>
+          <div key={section} className="rounded-[22px] border border-slate-200 bg-slate-50 p-4">
+            <div className="text-sm font-black capitalize text-slate-900">{section}</div>
             <div className="mt-3 grid gap-3 md:grid-cols-4">
               <Field label="Visible">
                 <select className={inputClass} value={String(settings[section]?.visible ?? true)} onChange={(e) => update(['sectionSettings', section, 'visible'], e.target.value === 'true')}>
@@ -197,7 +197,7 @@ function StyleControls({ content, update, sections }: { content: Record<string, 
                     placeholder="32px"
                   />
                 </Field>
-                <p className="mt-2 text-xs leading-5 text-white/35">
+                <p className="mt-2 text-xs leading-5 text-slate-400">
                   Leave empty to use the default website size. You can use values like 28px, 32px, 40px, or clamp(32px, 5vw, 72px).
                 </p>
               </div>
@@ -257,27 +257,27 @@ function RepeatBlock<T>({
   }
 
   return (
-    <div className="rounded-[26px] border border-white/8 bg-white/[0.035] p-4">
+    <div className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h4 className="text-lg font-black text-white">{title}</h4>
-          <p className="mt-1 text-sm text-white/42">Add, duplicate, delete, and reorder items.</p>
+          <h4 className="text-lg font-black text-slate-900">{title}</h4>
+          <p className="mt-1 text-sm text-slate-400">Add, duplicate, delete, and reorder items.</p>
         </div>
-        <button type="button" onClick={() => onChange([...items, clone(blank)])} className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-4 py-2 text-sm font-semibold text-[#111]">
+        <button type="button" onClick={() => onChange([...items, clone(blank)])} className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-4 py-2 text-sm font-semibold text-white">
           <Plus size={14} />
           Add item
         </button>
       </div>
       <div className="mt-4 space-y-4">
         {items.map((item, index) => (
-          <div key={index} className="rounded-[22px] border border-white/8 bg-[#0f0f0f] p-4">
+          <div key={index} className="rounded-[22px] border border-slate-200 bg-slate-50 p-4">
             <div className="mb-4 flex items-center justify-between gap-3">
-              <div className="text-sm font-semibold text-white/72">Item {index + 1}</div>
+              <div className="text-sm font-semibold text-slate-500">Item {index + 1}</div>
               <div className="flex gap-2">
-                <button type="button" onClick={() => move(index, -1)} className="rounded-full border border-white/10 bg-white/5 p-2 text-white/60"><ArrowUp size={13} /></button>
-                <button type="button" onClick={() => move(index, 1)} className="rounded-full border border-white/10 bg-white/5 p-2 text-white/60"><ArrowDown size={13} /></button>
-                <button type="button" onClick={() => onChange([...items.slice(0, index + 1), clone(item), ...items.slice(index + 1)])} className="rounded-full border border-white/10 bg-white/5 p-2 text-white/60"><Copy size={13} /></button>
-                <button type="button" onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))} className="rounded-full border border-[#E87F24]/30 bg-[#E87F24]/10 p-2 text-[#FFBC8C]"><Trash2 size={13} /></button>
+                <button type="button" onClick={() => move(index, -1)} className="rounded-full border border-slate-200 bg-slate-50 p-2 text-slate-500"><ArrowUp size={13} /></button>
+                <button type="button" onClick={() => move(index, 1)} className="rounded-full border border-slate-200 bg-slate-50 p-2 text-slate-500"><ArrowDown size={13} /></button>
+                <button type="button" onClick={() => onChange([...items.slice(0, index + 1), clone(item), ...items.slice(index + 1)])} className="rounded-full border border-slate-200 bg-slate-50 p-2 text-slate-500"><Copy size={13} /></button>
+                <button type="button" onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))} className="rounded-full border border-orange-200 bg-orange-50 p-2 text-orange-700"><Trash2 size={13} /></button>
               </div>
             </div>
             {render(item, index, (patch) => onChange(items.map((row, itemIndex) => itemIndex === index ? { ...row, ...patch } : row)))}
@@ -292,12 +292,12 @@ function PagePreview({ page, content, slug }: { page: PageRow | null; content: R
   const hero = content.hero ?? {}
   const sectionKeys = editableSections[slug].filter((section) => section !== 'hero')
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-      <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-white/40">
-        <Monitor size={13} className="text-[#D8FF6A]" />
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-slate-400">
+        <Monitor size={13} className="text-[#E87F24]" />
         Full draft page preview
       </div>
-      <p className="mt-2 text-sm leading-6 text-white/48">
+      <p className="mt-2 text-sm leading-6 text-slate-500">
         This preview uses unsaved fields from this editor, so you can check page flow before publishing.
       </p>
       <div className="mt-5 overflow-hidden rounded-[26px] border border-[#73A5CA]/16 bg-[#FEFDDF] text-[#1c1712]">
@@ -311,7 +311,7 @@ function PagePreview({ page, content, slug }: { page: PageRow | null; content: R
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#1c1712]/78 to-transparent" />
           <div className="absolute bottom-5 left-5 right-5">
-            <div className="w-fit rounded-full border border-white/35 bg-white/18 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-[#FEFDDF] backdrop-blur-md">
+            <div className="w-fit rounded-full border border-slate-200 bg-white/18 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-[#FEFDDF] backdrop-blur-md">
               {hero.label || page?.hero_label || pageLabels[slug].label}
             </div>
             <h3 className="mt-3 text-4xl font-black leading-none text-[#FEFDDF]">{hero.title || page?.hero_title}</h3>
@@ -356,10 +356,10 @@ function PagePreview({ page, content, slug }: { page: PageRow | null; content: R
 
 function FullPagePreview({ route }: { route: string }) {
   return (
-    <div className="mt-4 rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-      <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Full live page</div>
-      <p className="mt-2 text-sm leading-6 text-white/48">This shows the currently published page. Draft cards above update before saving.</p>
-      <div className="mt-4 overflow-hidden rounded-[22px] border border-white/10 bg-white">
+    <div className="mt-4 rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Full live page</div>
+      <p className="mt-2 text-sm leading-6 text-slate-500">This shows the currently published page. Draft cards above update before saving.</p>
+      <div className="mt-4 overflow-hidden rounded-[22px] border border-slate-200 bg-white">
         <iframe src={route} title="Published page preview" className="h-[560px] w-full bg-white" />
       </div>
     </div>
@@ -438,43 +438,43 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
   }
 
   if (loading) {
-    return <div className="mt-6 rounded-[28px] border border-white/8 bg-white/5 px-6 py-12 text-center text-sm text-white/55">Loading {meta.label}...</div>
+    return <div className="mt-6 rounded-[28px] border border-slate-200 bg-slate-50 px-6 py-12 text-center text-sm text-slate-500">Loading {meta.label}...</div>
   }
 
   const hero = content.hero ?? {}
 
   return (
     <section className="mt-6 space-y-5">
-      <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+      <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div>
-            <div className="inline-flex rounded-full border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#D8FF6A]">
+            <div className="inline-flex rounded-full border border-emerald-200 bg-orange-50 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#E87F24]">
               Pages / {meta.label.replace(' page', '')}
             </div>
-            <h2 className="mt-4 text-3xl font-black tracking-[-0.05em] text-white sm:text-5xl">{meta.label} editor</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-white/56 sm:text-base">{meta.description}</p>
+            <h2 className="mt-4 text-3xl font-black tracking-[-0.05em] text-slate-900 sm:text-5xl">{meta.label} editor</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base">{meta.description}</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button type="button" onClick={load} disabled={saving} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/70 disabled:opacity-50">
+            <button type="button" onClick={load} disabled={saving} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-600 disabled:opacity-50">
               <RotateCcw size={15} /> Reload
             </button>
-            <button type="button" onClick={() => save(false)} disabled={saving} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/70 disabled:opacity-50">
+            <button type="button" onClick={() => save(false)} disabled={saving} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-600 disabled:opacity-50">
               <Save size={15} /> Save Draft
             </button>
-            <button type="button" onClick={() => save(true)} disabled={saving} className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-50">
+            <button type="button" onClick={() => save(true)} disabled={saving} className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">
               Publish <ArrowRight size={15} />
             </button>
           </div>
         </div>
-        {error ? <div className="mt-5 rounded-[20px] border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">{error}</div> : null}
-        {notice ? <div className="mt-5 rounded-[20px] border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-[#D8FF6A]">{notice}</div> : null}
-        {warnings.length ? <div className="mt-5 rounded-[20px] border border-[#FFC81E]/25 bg-[#FFC81E]/8 px-4 py-3 text-sm leading-6 text-[#F6DA8A]">{warnings.map((warning) => <div key={warning}>- {warning}</div>)}</div> : null}
+        {error ? <div className="mt-5 rounded-[20px] border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800">{error}</div> : null}
+        {notice ? <div className="mt-5 rounded-[20px] border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-[#E87F24]">{notice}</div> : null}
+        {warnings.length ? <div className="mt-5 rounded-[20px] border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-700">{warnings.map((warning) => <div key={warning}>- {warning}</div>)}</div> : null}
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(360px,0.9fr)]">
         <div className="space-y-5">
-          <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-            <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Hero section</div>
+          <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">Hero section</div>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               <Field label="Hero label"><TextInput value={hero.label ?? page?.hero_label ?? ''} onChange={(e) => update(['hero', 'label'], e.target.value)} /></Field>
               <Field label="Hero heading"><TextInput value={hero.title ?? page?.hero_title ?? ''} onChange={(e) => update(['hero', 'title'], e.target.value)} /></Field>
@@ -552,8 +552,8 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
                     )}
                   />
                   <TextSection title="Hero visual card" data={content.visual ?? {}} onChange={(key, value) => update(['visual', key], value)} />
-                  <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-                    <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Hero buttons</div>
+                  <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                    <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">Hero buttons</div>
                     <div className="mt-6 grid gap-4 md:grid-cols-2">
                       <Field label="Primary button text"><TextInput value={content.ctas?.primaryLabel ?? ''} onChange={(e) => update(['ctas', 'primaryLabel'], e.target.value)} /></Field>
                       <Field label="Primary button link"><TextInput value={content.ctas?.primaryHref ?? ''} onChange={(e) => update(['ctas', 'primaryHref'], e.target.value)} /></Field>
@@ -587,8 +587,8 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
                     )}
                   />
                   <TextSection title="Bottom CTA section" data={content.cta ?? {}} onChange={(key, value) => update(['cta', key], value)} />
-                  <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-                    <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">CTA button</div>
+                  <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                    <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">CTA button</div>
                     <div className="mt-6 grid gap-4 md:grid-cols-2">
                       <Field label="Button text"><TextInput value={content.cta?.label ?? ''} onChange={(e) => update(['cta', 'label'], e.target.value)} /></Field>
                       <Field label="Button link"><TextInput value={content.cta?.href ?? ''} onChange={(e) => update(['cta', 'href'], e.target.value)} /></Field>
@@ -596,7 +596,7 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
                   </div>
                 </>
               ) : null}
-              <div className="rounded-[24px] border border-[#D8FF6A]/15 bg-[#D8FF6A]/8 p-4 text-sm leading-6 text-white/58">
+              <div className="rounded-[24px] border border-[#E87F24]/20 bg-[#E87F24]/8 p-4 text-sm leading-6 text-slate-500">
                 {slug === 'services'
                   ? 'Individual service cards and detail pages are managed from Content > Service Library, including galleries, stats, process steps, and images.'
                   : 'Individual project cards and detail pages are managed from Content > Project Library, including galleries, highlights, stats, and images.'}
@@ -640,9 +640,9 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
                   </div>
                 )}
               />
-              <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-                <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Map and location panel</div>
-                <p className="mt-2 text-sm leading-6 text-white/48">Use an embeddable Google Maps URL and customer-friendly location copy.</p>
+              <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">Map and location panel</div>
+                <p className="mt-2 text-sm leading-6 text-slate-500">Use an embeddable Google Maps URL and customer-friendly location copy.</p>
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
                   <Field label="Small label"><TextInput value={content.location?.label ?? ''} onChange={(event) => update(['location', 'label'], event.target.value)} /></Field>
                   <Field label="Heading"><TextInput value={content.location?.title ?? ''} onChange={(event) => update(['location', 'title'], event.target.value)} /></Field>
@@ -654,7 +654,7 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
                   <Field label="Detail copy"><TextArea value={content.location?.detailCopy ?? ''} onChange={(event) => update(['location', 'detailCopy'], event.target.value)} /></Field>
                 </div>
               </div>
-              <div className="rounded-[24px] border border-[#D8FF6A]/15 bg-[#D8FF6A]/8 p-4 text-sm leading-6 text-white/58">
+              <div className="rounded-[24px] border border-[#E87F24]/20 bg-[#E87F24]/8 p-4 text-sm leading-6 text-slate-500">
                 Contact form labels, placeholders, dropdowns, and required fields are managed from Theme &amp; Settings &gt; Forms &amp; Fields.
               </div>
             </>
@@ -669,8 +669,8 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
                 data={{ title: content.slider?.title ?? '', copy: content.slider?.copy ?? '' }}
                 onChange={(key, value) => update(['slider', key], value)}
               />
-              <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-                <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Slider label</div>
+              <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">Slider label</div>
                 <div className="mt-6">
                   <Field label="Section label">
                     <TextInput value={content.slider?.label ?? ''} onChange={(e) => update(['slider', 'label'], e.target.value)} />
@@ -705,8 +705,8 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
                 data={{ title: content.form?.title ?? '', copy: content.form?.copy ?? '' }}
                 onChange={(key, value) => update(['form', key], value)}
               />
-              <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-                <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Form settings</div>
+              <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">Form settings</div>
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
                   <Field label="Section label"><TextInput value={content.form?.label ?? ''} onChange={(e) => update(['form', 'label'], e.target.value)} /></Field>
                   <Field label="Submit button"><TextInput value={content.form?.submitLabel ?? ''} onChange={(e) => update(['form', 'submitLabel'], e.target.value)} /></Field>
@@ -747,8 +747,8 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
                 )}
               />
               <TextSection title="Bottom CTA" data={content.cta ?? {}} onChange={(key, value) => update(['cta', key], value)} />
-              <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-                <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">CTA button</div>
+              <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">CTA button</div>
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
                   <Field label="Button text"><TextInput value={content.cta?.label ?? ''} onChange={(e) => update(['cta', 'label'], e.target.value)} /></Field>
                   <Field label="Button link"><TextInput value={content.cta?.href ?? ''} onChange={(e) => update(['cta', 'href'], e.target.value)} /></Field>
@@ -769,8 +769,8 @@ export default function AdminSimplePageEditor({ slug }: { slug: PageSlug }) {
 
 function TextSection({ title, data, onChange }: { title: string; data: Record<string, any>; onChange: (key: string, value: string) => void }) {
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-      <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">{title}</div>
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">{title}</div>
       <div className="mt-6 grid gap-4">
         <Field label="Heading"><TextInput value={data.title ?? ''} onChange={(e) => onChange('title', e.target.value)} /></Field>
         <Field label="Text"><TextArea value={data.copy ?? ''} onChange={(e) => onChange('copy', e.target.value)} /></Field>
@@ -782,8 +782,8 @@ function TextSection({ title, data, onChange }: { title: string; data: Record<st
 function TeamMiniEditor({ content, update }: { content: Record<string, any>; update: (path: string[], value: unknown) => void }) {
   const team = content.team ?? {}
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-      <div className="text-[11px] uppercase tracking-[0.26em] text-[#D8FF6A]/70">Team section</div>
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div className="text-[11px] uppercase tracking-[0.26em] text-[#E87F24]/70">Team section</div>
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <Field label="Kicker"><TextInput value={team.kicker ?? ''} onChange={(e) => update(['team', 'kicker'], e.target.value)} /></Field>
         <Field label="Heading"><TextInput value={team.title ?? ''} onChange={(e) => update(['team', 'title'], e.target.value)} /></Field>

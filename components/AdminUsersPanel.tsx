@@ -1,8 +1,21 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { ArrowRight, ShieldCheck, Trash2, UserPlus } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { ShieldCheck, Trash2, UserPlus } from 'lucide-react'
 import { readJsonResponse } from '@/lib/safe-json'
+import {
+  AdminAlert,
+  AdminBadge,
+  AdminButton,
+  AdminCard,
+  AdminConfirmDialog,
+  AdminEmptyState,
+  AdminField,
+  AdminInput,
+  AdminPageHeader,
+  AdminSelect,
+} from '@/components/admin/ui'
+import { cn } from '@/lib/cn'
 
 type AdminUserRow = {
   id: string
@@ -11,6 +24,7 @@ type AdminUserRow = {
   role: 'super_admin' | 'admin' | 'editor' | 'content_manager' | 'leads_manager' | 'media_manager' | 'project_manager'
   status: 'active' | 'disabled'
   created_at?: string
+  last_login_at?: string
 }
 
 type AdminResponse = {
@@ -19,24 +33,15 @@ type AdminResponse = {
   error?: string
 }
 
-const inputClass =
-  'w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+type Draft = Partial<AdminUserRow> & { password?: string }
 
-const emptyDraft = (): Partial<AdminUserRow> => ({
+const emptyDraft = (): Draft => ({
   email: '',
   name: '',
   role: 'editor',
   status: 'active',
+  password: '',
 })
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      <div className="mb-2 text-xs uppercase tracking-[0.24em] text-white/56">{label}</div>
-      {children}
-    </label>
-  )
-}
 
 async function adminUsers(init?: RequestInit): Promise<AdminResponse> {
   const response = await fetch('/api/admin/admin-users', {
@@ -52,25 +57,40 @@ async function adminUsers(init?: RequestInit): Promise<AdminResponse> {
   return payload
 }
 
+function formatDate(value?: string) {
+  if (!value) return '—'
+  try {
+    return new Date(value).toLocaleString()
+  } catch {
+    return value
+  }
+}
+
 export default function AdminUsersPanel() {
   const [rows, setRows] = useState<AdminUserRow[]>([])
-  const [draft, setDraft] = useState<Partial<AdminUserRow>>(emptyDraft())
+  const [draft, setDraft] = useState<Draft>(emptyDraft())
   const [connected, setConnected] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [query, setQuery] = useState('')
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return rows
+    return rows.filter((row) => [row.email, row.name, row.role, row.status].join(' ').toLowerCase().includes(q))
+  }, [rows, query])
 
   async function loadRows() {
     setError('')
     const payload = await adminUsers()
     setRows(payload.rows)
     setConnected(payload.connected)
-    if (!draft.id && payload.rows[0]) setDraft(payload.rows[0])
   }
 
   useEffect(() => {
     loadRows().catch((err) => setError(err instanceof Error ? err.message : 'Unable to load admin users.'))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function saveUser() {
@@ -78,21 +98,33 @@ export default function AdminUsersPanel() {
       setError('Email is required.')
       return
     }
+    if (!draft.id && (!draft.password || draft.password.trim().length < 8)) {
+      setError('New users need a password of at least 8 characters.')
+      return
+    }
+    if (draft.id && draft.password && draft.password.trim().length > 0 && draft.password.trim().length < 8) {
+      setError('Password must be at least 8 characters, or leave blank to keep the current one.')
+      return
+    }
+
     setSaving(true)
     setError('')
     setMessage('')
     try {
-      const payload = {
-        email: draft.email,
+      const payload: Record<string, unknown> = {
+        email: draft.email.trim(),
         name: draft.name ?? '',
         role: draft.role ?? 'editor',
         status: draft.status ?? 'active',
       }
+      if (draft.password?.trim()) payload.password = draft.password.trim()
+
       await adminUsers({
         method: draft.id ? 'PATCH' : 'POST',
         body: JSON.stringify(draft.id ? { id: draft.id, updates: payload } : payload),
       })
-      setMessage('Admin user saved.')
+      setMessage(draft.id ? 'Admin user updated.' : 'Admin user created.')
+      setDraft(emptyDraft())
       await loadRows()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to save admin user.')
@@ -101,16 +133,17 @@ export default function AdminUsersPanel() {
     }
   }
 
-  async function deleteUser(id: string) {
-    if (!confirm('Delete this admin user record?')) return
+  async function confirmDelete() {
+    if (!deleteId) return
     setSaving(true)
     setError('')
     setMessage('')
     try {
       await adminUsers({
         method: 'DELETE',
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ id: deleteId }),
       })
+      setDeleteId(null)
       setDraft(emptyDraft())
       setMessage('Admin user deleted.')
       await loadRows()
@@ -122,87 +155,165 @@ export default function AdminUsersPanel() {
   }
 
   return (
-    <section className="mt-6 grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-      <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Admin roles</div>
-            <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-white">{draft.id ? 'Edit admin user' : 'Add admin user'}</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-white/50">
-              Manage who can access the dashboard. Department permissions can be layered on top of these roles later.
-            </p>
+    <div className="space-y-5">
+      <AdminPageHeader
+        eyebrow="Access"
+        title="Admin Users"
+        description="Invite teammates, assign roles, set passwords, and disable accounts when needed."
+        actions={
+          <AdminButton
+            onClick={() => {
+              setDraft(emptyDraft())
+              setError('')
+              setMessage('')
+            }}
+          >
+            <UserPlus size={14} /> New user
+          </AdminButton>
+        }
+      />
+
+      {error ? <AdminAlert tone="error">{error}</AdminAlert> : null}
+      {message ? <AdminAlert tone="success">{message}</AdminAlert> : null}
+      {!connected ? (
+        <AdminAlert tone="warning">Live database is unavailable, so user saves are paused in this environment.</AdminAlert>
+      ) : null}
+
+      <div className="grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
+        <AdminCard>
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="text-lg font-bold text-slate-900">{draft.id ? 'Edit user' : 'Add user'}</h3>
+            <AdminBadge tone={draft.id ? 'neutral' : 'accent'}>{draft.id ? 'Editing' : 'Creating'}</AdminBadge>
           </div>
-          <button type="button" onClick={() => setDraft(emptyDraft())} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/76">
-            <UserPlus size={14} /> New
-          </button>
-        </div>
 
-        {error ? <div className="mt-4 rounded-2xl border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">{error}</div> : null}
-        {message ? <div className="mt-4 rounded-2xl border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-[#D8FF6A]">{message}</div> : null}
-        {!connected ? <div className="mt-4 rounded-2xl border border-[#D8FF6A]/16 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-white/70">Live database is unavailable in this environment, so admin user saves are paused.</div> : null}
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            <AdminField label="Email">
+              <AdminInput
+                value={draft.email ?? ''}
+                onChange={(e) => setDraft((prev) => ({ ...prev, email: e.target.value }))}
+                placeholder="admin@buildcivil.com"
+                autoComplete="off"
+              />
+            </AdminField>
+            <AdminField label="Display name">
+              <AdminInput
+                value={draft.name ?? ''}
+                onChange={(e) => setDraft((prev) => ({ ...prev, name: e.target.value }))}
+                placeholder="Name shown in the dashboard"
+              />
+            </AdminField>
+            <AdminField label="Role">
+              <AdminSelect
+                value={draft.role ?? 'editor'}
+                onChange={(e) => setDraft((prev) => ({ ...prev, role: e.target.value as AdminUserRow['role'] }))}
+              >
+                <option value="super_admin">Super admin</option>
+                <option value="admin">Admin</option>
+                <option value="editor">Editor</option>
+                <option value="content_manager">Content manager</option>
+                <option value="project_manager">Project manager</option>
+                <option value="media_manager">Media manager</option>
+                <option value="leads_manager">Leads manager</option>
+              </AdminSelect>
+            </AdminField>
+            <AdminField label="Status">
+              <AdminSelect
+                value={draft.status ?? 'active'}
+                onChange={(e) => setDraft((prev) => ({ ...prev, status: e.target.value as AdminUserRow['status'] }))}
+              >
+                <option value="active">Active</option>
+                <option value="disabled">Disabled</option>
+              </AdminSelect>
+            </AdminField>
+            <AdminField
+              className="md:col-span-2"
+              label={draft.id ? 'New password (optional)' : 'Password'}
+              hint={draft.id ? 'Leave blank to keep the current password.' : 'Minimum 8 characters. Required for new users.'}
+            >
+              <AdminInput
+                type="password"
+                value={draft.password ?? ''}
+                onChange={(e) => setDraft((prev) => ({ ...prev, password: e.target.value }))}
+                placeholder={draft.id ? '••••••••' : 'Set a strong password'}
+                autoComplete="new-password"
+              />
+            </AdminField>
+          </div>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <Field label="Email">
-            <input className={inputClass} value={draft.email ?? ''} onChange={(event) => setDraft((prev) => ({ ...prev, email: event.target.value }))} placeholder="admin@buildcivil.com" />
-          </Field>
-          <Field label="Name">
-            <input className={inputClass} value={draft.name ?? ''} onChange={(event) => setDraft((prev) => ({ ...prev, name: event.target.value }))} placeholder="Display name" />
-          </Field>
-          <Field label="Role">
-            <select className={inputClass} value={draft.role ?? 'editor'} onChange={(event) => setDraft((prev) => ({ ...prev, role: event.target.value as AdminUserRow['role'] }))}>
-              <option value="super_admin">Super admin</option>
-              <option value="admin">Admin</option>
-              <option value="editor">Editor</option>
-              <option value="content_manager">Content manager</option>
-              <option value="project_manager">Project manager</option>
-              <option value="media_manager">Media manager</option>
-              <option value="leads_manager">Leads manager</option>
-            </select>
-          </Field>
-          <Field label="Status">
-            <select className={inputClass} value={draft.status ?? 'active'} onChange={(event) => setDraft((prev) => ({ ...prev, status: event.target.value as AdminUserRow['status'] }))}>
-              <option value="active">Active</option>
-              <option value="disabled">Disabled</option>
-            </select>
-          </Field>
-        </div>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <AdminButton variant="primary" disabled={!connected || saving} loading={saving} onClick={saveUser}>
+              {draft.id ? 'Save changes' : 'Create user'}
+            </AdminButton>
+            {draft.id ? (
+              <AdminButton variant="danger" disabled={!connected || saving} onClick={() => setDeleteId(draft.id!)}>
+                <Trash2 size={14} /> Delete
+              </AdminButton>
+            ) : null}
+          </div>
+        </AdminCard>
 
-        <div className="mt-5 flex flex-wrap gap-3">
-          <button type="button" disabled={!connected || saving} onClick={saveUser} className="inline-flex items-center gap-3 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-60">
-            Save user <ArrowRight size={15} />
-          </button>
-          {draft.id ? (
-            <button type="button" disabled={!connected || saving} onClick={() => deleteUser(draft.id!)} className="inline-flex items-center gap-2 rounded-full border border-[#E87F24]/30 px-4 py-3 text-sm font-semibold text-[#FFBC8C] disabled:opacity-60">
-              <Trash2 size={14} /> Delete
-            </button>
-          ) : null}
-        </div>
+        <AdminCard>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 className="text-lg font-bold text-slate-900">Team access</h3>
+              <p className="mt-1 text-sm text-slate-500">{rows.length} users</p>
+            </div>
+            <AdminInput className="sm:max-w-[220px]" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Filter users…" />
+          </div>
+
+          <div className="mt-4 space-y-2">
+            {filtered.map((row) => {
+              const selected = draft.id === row.id
+              return (
+                <button
+                  key={row.id}
+                  type="button"
+                  onClick={() => {
+                    setDraft({ ...row, password: '' })
+                    setError('')
+                    setMessage('')
+                  }}
+                  className={cn(
+                    'w-full rounded-2xl border p-4 text-left transition',
+                    selected ? 'border-[#E87F24]/35 bg-orange-50' : 'border-slate-200 bg-slate-50 hover:border-slate-300',
+                  )}
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h4 className="truncate text-sm font-bold text-slate-900">{row.name || row.email}</h4>
+                      <p className="mt-1 truncate text-sm text-slate-500">{row.email}</p>
+                      <p className="mt-2 text-xs text-slate-400">Last login: {formatDate(row.last_login_at)}</p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1.5">
+                      <AdminBadge tone="accent">{row.role.replaceAll('_', ' ')}</AdminBadge>
+                      <AdminBadge tone={row.status === 'active' ? 'success' : 'warning'}>{row.status}</AdminBadge>
+                    </div>
+                  </div>
+                </button>
+              )
+            })}
+
+            {!filtered.length ? (
+              <AdminEmptyState
+                icon={<ShieldCheck size={18} />}
+                title={rows.length ? 'No users match your filter' : 'No admin users found'}
+                description="Create a user with email, role, and password to grant dashboard access."
+              />
+            ) : null}
+          </div>
+        </AdminCard>
       </div>
 
-      <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">User list</div>
-            <h3 className="mt-2 text-xl font-black text-white">Dashboard access</h3>
-          </div>
-          <ShieldCheck size={18} className="text-[#D8FF6A]" />
-        </div>
-        <div className="mt-5 space-y-3">
-          {rows.map((row) => (
-            <button key={row.id} type="button" onClick={() => setDraft(row)} className="w-full rounded-[22px] border border-white/8 bg-white/5 p-4 text-left transition hover:border-[#D8FF6A]/25 hover:bg-white/8">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <h4 className="text-base font-black text-white">{row.name || row.email}</h4>
-                  <p className="mt-1 text-sm text-white/50">{row.email}</p>
-                </div>
-                <span className="rounded-full bg-[#D8FF6A] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#111]">{row.role}</span>
-              </div>
-              <div className="mt-3 text-xs uppercase tracking-[0.2em] text-white/35">{row.status}</div>
-            </button>
-          ))}
-          {!rows.length ? <div className="rounded-[22px] border border-dashed border-white/10 bg-white/5 px-5 py-10 text-center text-sm text-white/52">No admin users found.</div> : null}
-        </div>
-      </div>
-    </section>
+      <AdminConfirmDialog
+        open={Boolean(deleteId)}
+        title="Delete this admin user?"
+        description="They will lose dashboard access immediately. This cannot be undone from the UI."
+        confirmLabel="Delete user"
+        danger
+        loading={saving}
+        onCancel={() => setDeleteId(null)}
+        onConfirm={confirmDelete}
+      />
+    </div>
   )
 }

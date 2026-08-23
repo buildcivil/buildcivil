@@ -3,6 +3,7 @@ import { projectCatalog } from '@/lib/projects'
 import { getDefaultPageRecord, getPageDefaultsForAdmin, type SitePageSlug } from '@/lib/site-pages'
 import { serviceCatalog } from '@/lib/services'
 import { getAdminSession } from '@/lib/admin-access'
+import { createPasswordCredentials, sanitizeAdminUserRow } from '@/lib/admin-users'
 import {
   getSupabaseBaseUrl,
   isSupabaseConfigured,
@@ -465,8 +466,13 @@ export async function GET(_request: Request, context: AdminTableRouteContext) {
     return notConfiguredFallback(table)
   }
 
+  const select =
+    table === 'admin-users'
+      ? 'id,email,name,role,status,created_at,updated_at,last_login_at'
+      : '*'
+
   const response = await supabaseRequest<Array<ProjectRow | ServiceRow | MessageRow | PageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow>>(
-    `/rest/v1/${TABLE_MAP[table].table}?select=*`,
+    `/rest/v1/${TABLE_MAP[table].table}?select=${select}`,
     {
       method: 'GET',
     },
@@ -509,19 +515,30 @@ export async function POST(request: Request, context: AdminTableRouteContext) {
   const validationError = validateProjectServicePayload(table, payload)
   if (validationError) return badRequest(validationError)
 
+  let writePayload = payload as Record<string, unknown>
+  if (table === 'admin-users') {
+    const password = typeof writePayload.password === 'string' ? writePayload.password : ''
+    if (!password.trim() || password.trim().length < 8) {
+      return badRequest('A password of at least 8 characters is required when creating an admin user.')
+    }
+    const { password: _password, ...rest } = writePayload
+    writePayload = { ...rest, ...createPasswordCredentials(password.trim()) }
+  }
+
   try {
     const rows = await supabaseRequest<Array<ProjectRow | ServiceRow | MessageRow | PageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow>>(
       `/rest/v1/${TABLE_MAP[table].table}`,
       {
         method: 'POST',
-        body: JSON.stringify(payload),
+        body: JSON.stringify(writePayload),
         headers: {
           Prefer: 'return=representation',
         },
       },
     )
 
-    return NextResponse.json({ ok: true, rows })
+    const safeRows = table === 'admin-users' ? rows.map((row) => sanitizeAdminUserRow(row as Record<string, unknown>)) : rows
+    return NextResponse.json({ ok: true, rows: safeRows })
   } catch (err) {
     return serverError(err instanceof Error ? err.message : `Unable to create ${TABLE_MAP[table].table} record.`)
   }
@@ -547,23 +564,36 @@ export async function PATCH(request: Request, context: AdminTableRouteContext) {
   const validationError = validateProjectServicePayload(table, updates)
   if (validationError) return badRequest(validationError)
 
+  let writeUpdates = { ...updates }
+  if (table === 'admin-users') {
+    const password = typeof writeUpdates.password === 'string' ? writeUpdates.password.trim() : ''
+    delete writeUpdates.password
+    delete writeUpdates.password_hash
+    delete writeUpdates.password_salt
+    if (password) {
+      if (password.length < 8) return badRequest('Password must be at least 8 characters.')
+      writeUpdates = { ...writeUpdates, ...createPasswordCredentials(password) }
+    }
+  }
+
   try {
     const rows = await supabaseRequest<Array<ProjectRow | ServiceRow | MessageRow | PageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow>>(
       `/rest/v1/${TABLE_MAP[table].table}?id=eq.${encodeURIComponent(id)}`,
       {
         method: 'PATCH',
-        body: JSON.stringify(updates),
+        body: JSON.stringify(writeUpdates),
         headers: {
           Prefer: 'return=representation',
         },
       },
     )
 
-    if (table === 'pages' && rows[0] && updates.content) {
-      await syncPageSectionsFromContent(rows[0], updates.content)
+    if (table === 'pages' && rows[0] && writeUpdates.content) {
+      await syncPageSectionsFromContent(rows[0], writeUpdates.content)
     }
 
-    return NextResponse.json({ ok: true, rows })
+    const safeRows = table === 'admin-users' ? rows.map((row) => sanitizeAdminUserRow(row as Record<string, unknown>)) : rows
+    return NextResponse.json({ ok: true, rows: safeRows })
   } catch (err) {
     return serverError(err instanceof Error ? err.message : `Unable to update ${TABLE_MAP[table].table} record.`)
   }

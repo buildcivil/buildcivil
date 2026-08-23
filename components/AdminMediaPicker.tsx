@@ -93,9 +93,9 @@ export default function AdminMediaPicker({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white/70 transition hover:border-[#D8FF6A]/30 hover:text-white"
+        className="mt-2 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-600 transition hover:border-orange-200 hover:text-slate-900"
       >
-        {isMultiple ? <Images size={14} className="text-[#D8FF6A]" /> : <ImageIcon size={14} className="text-[#D8FF6A]" />}
+        {isMultiple ? <Images size={14} className="text-[#E87F24]" /> : <ImageIcon size={14} className="text-[#E87F24]" />}
         {buttonLabel}
       </button>
 
@@ -108,38 +108,38 @@ export default function AdminMediaPicker({
             onClick={() => setOpen(false)}
           />
 
-          <div className="relative max-h-[88vh] w-full max-w-5xl overflow-hidden rounded-[30px] border border-white/10 bg-[#151517] shadow-[0_30px_120px_rgba(0,0,0,0.55)]">
-            <div className="flex flex-col gap-4 border-b border-white/8 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+          <div className="relative max-h-[88vh] w-full max-w-5xl overflow-hidden rounded-[30px] border border-slate-200 bg-[#151517] shadow-[0_30px_120px_rgba(0,0,0,0.55)]">
+            <div className="flex flex-col gap-4 border-b border-slate-200 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
               <div>
-                <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Media Library</div>
-                <h3 className="mt-1 text-2xl font-black tracking-[-0.04em] text-white">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Media Library</div>
+                <h3 className="mt-1 text-2xl font-black tracking-[-0.04em] text-slate-900">
                   {title || (isMultiple ? 'Select gallery images' : 'Select image')}
                 </h3>
-                {helper ? <p className="mt-2 max-w-2xl text-sm leading-6 text-white/48">{helper}</p> : null}
+                {helper ? <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">{helper}</p> : null}
               </div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-600"
                 aria-label="Close"
               >
                 <X size={16} />
               </button>
             </div>
 
-            <div className="border-b border-white/8 p-4 sm:p-5">
+            <div className="border-b border-slate-200 p-4 sm:p-5">
               <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
-                <div className="flex items-center gap-3 rounded-[18px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-white/70">
-                  <Search size={15} className="text-[#D8FF6A]" />
+                <div className="flex items-center gap-3 rounded-[18px] border border-slate-200 bg-slate-50 px-4 py-3 text-slate-600">
+                  <Search size={15} className="text-[#E87F24]" />
                   <input
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder="Search file name, alt text, folder, or URL"
-                    className="w-full bg-transparent text-sm outline-none placeholder:text-white/30"
+                    className="w-full bg-transparent text-sm outline-none placeholder:text-slate-400"
                   />
                 </div>
                 {isMultiple ? (
-                  <div className="rounded-full border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-4 py-2 text-xs font-semibold text-[#D8FF6A]">
+                  <div className="rounded-full border border-emerald-200 bg-orange-50 px-4 py-2 text-xs font-semibold text-[#E87F24]">
                     {selectedUrls.length} selected
                   </div>
                 ) : null}
@@ -148,13 +148,13 @@ export default function AdminMediaPicker({
 
             <div className="max-h-[56vh] overflow-y-auto p-4 sm:p-5">
               {error ? (
-                <div className="rounded-[20px] border border-[#E87F24]/30 bg-[#2a1a14] px-4 py-3 text-sm text-[#FFBC8C]">
+                <div className="rounded-[20px] border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-700">
                   {error}
                 </div>
               ) : null}
 
               {loading ? (
-                <div className="rounded-[22px] border border-dashed border-white/10 bg-white/5 px-4 py-10 text-center text-sm text-white/50">
+                <div className="rounded-[22px] border border-dashed border-slate-200 bg-slate-50 px-4 py-10 text-center text-sm text-slate-500">
                   Loading media...
                 </div>
               ) : filteredAssets.length ? (
@@ -177,13 +177,13 @@ export default function AdminMediaPicker({
                           onSelect?.(asset.file_url)
                           setOpen(false)
                         }}
-                        className={`group overflow-hidden rounded-[24px] border bg-white/5 text-left transition hover:-translate-y-0.5 ${
-                          selected ? 'border-[#D8FF6A]/70' : 'border-white/8 hover:border-[#D8FF6A]/25'
+                        className={`group overflow-hidden rounded-[24px] border bg-slate-50 text-left transition hover:-translate-y-0.5 ${
+                          selected ? 'border-[#E87F24]' : 'border-slate-200 hover:border-sky-200'
                         }`}
                       >
-                        <div className="relative aspect-[16/10] bg-[#0f0f0f]">
+                        <div className="relative aspect-[16/10] bg-slate-50">
                           {selected ? (
-                            <span className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-[#D8FF6A] text-[#111] shadow-[0_12px_30px_rgba(0,0,0,0.28)]">
+                            <span className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-[#E87F24] text-white shadow-[0_12px_30px_rgba(0,0,0,0.28)]">
                               <Check size={15} />
                             </span>
                           ) : null}
@@ -196,29 +196,29 @@ export default function AdminMediaPicker({
                           />
                         </div>
                         <div className="p-4">
-                          <div className="truncate text-sm font-semibold text-white">{asset.alt_text || asset.file_name}</div>
-                          <div className="mt-1 truncate text-xs text-white/42">{asset.folder || 'general'}</div>
+                          <div className="truncate text-sm font-semibold text-slate-900">{asset.alt_text || asset.file_name}</div>
+                          <div className="mt-1 truncate text-xs text-slate-400">{asset.folder || 'general'}</div>
                         </div>
                       </button>
                     )
                   })}
                 </div>
               ) : (
-                <div className="rounded-[22px] border border-dashed border-white/10 bg-white/5 px-4 py-10 text-center text-sm text-white/50">
+                <div className="rounded-[22px] border border-dashed border-slate-200 bg-slate-50 px-4 py-10 text-center text-sm text-slate-500">
                   No media assets found. Upload images in the Media tab first.
                 </div>
               )}
             </div>
             {isMultiple ? (
-              <div className="flex flex-col gap-3 border-t border-white/8 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-                <div className="text-xs leading-5 text-white/42">
+              <div className="flex flex-col gap-3 border-t border-slate-200 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+                <div className="text-xs leading-5 text-slate-400">
                   Select multiple images, then add them to the gallery in one step.
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={() => setSelectedUrls([])}
-                    className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white/65 transition hover:border-white/20 hover:text-white"
+                    className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
                   >
                     Clear
                   </button>
@@ -229,7 +229,7 @@ export default function AdminMediaPicker({
                       onSelectMany?.(selectedUrls)
                       setOpen(false)
                     }}
-                    className="rounded-full bg-[#D8FF6A] px-5 py-2 text-xs font-black text-[#111] transition disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-full bg-[#E87F24] px-5 py-2 text-xs font-black text-white transition disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {selectedUrls.length ? `Add ${selectedUrls.length} image${selectedUrls.length === 1 ? '' : 's'}` : 'Add images'}
                   </button>

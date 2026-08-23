@@ -52,7 +52,7 @@ type AdminResponse<T> = {
 }
 
 const inputClass =
-  'w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+  'w-full rounded-[16px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 
 async function adminApi<T>(table: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`/api/admin/${table}`, {
@@ -245,15 +245,15 @@ export default function AdminSeoPanel() {
 
   return (
     <section className="mt-6 space-y-5">
-      <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#D8FF6A]">
+      <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-orange-50 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#E87F24]">
           <Search size={13} />
           SEO Center
         </div>
         <div className="mt-4 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div>
-            <h2 className="text-3xl font-black tracking-[-0.05em] text-white sm:text-5xl">Keyword-driven SEO drafts</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-white/56">
+            <h2 className="text-3xl font-black tracking-[-0.05em] text-slate-900 sm:text-5xl">Keyword-driven SEO drafts</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-500">
               Add launch keywords once, review suggested metadata, then apply only what you approve. Nothing overwrites live SEO until you click apply.
             </p>
           </div>
@@ -262,7 +262,7 @@ export default function AdminSeoPanel() {
               type="button"
               disabled={saving || loading}
               onClick={saveSelectedDrafts}
-              className="inline-flex items-center justify-center gap-3 rounded-full border border-[#D8FF6A]/25 bg-[#D8FF6A]/10 px-5 py-3 text-sm font-semibold text-[#D8FF6A] disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-3 rounded-full border border-sky-200 bg-orange-50 px-5 py-3 text-sm font-semibold text-[#E87F24] disabled:opacity-60"
             >
               {saving ? <Loader2 className="animate-spin" size={15} /> : <Search size={15} />}
               Save drafts
@@ -271,57 +271,57 @@ export default function AdminSeoPanel() {
               type="button"
               disabled={saving || loading}
               onClick={applySelected}
-              className="inline-flex items-center justify-center gap-3 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-3 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
             >
               {saving ? <Loader2 className="animate-spin" size={15} /> : <CheckCircle2 size={15} />}
               Apply selected
             </button>
           </div>
         </div>
-        {error ? <div className="mt-5 rounded-[20px] border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">{error}</div> : null}
-        {message ? <div className="mt-5 rounded-[20px] border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-[#D8FF6A]">{message}</div> : null}
+        {error ? <div className="mt-5 rounded-[20px] border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800">{error}</div> : null}
+        {message ? <div className="mt-5 rounded-[20px] border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-[#E87F24]">{message}</div> : null}
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[0.75fr_1.25fr]">
-        <section className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-          <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Inputs</div>
+        <section className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+          <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Inputs</div>
           <div className="mt-5 grid gap-4">
-            <label className="grid gap-2 text-sm text-white/70">Primary keyword<input className={inputClass} value={primaryKeyword} onChange={(e) => setPrimaryKeyword(e.target.value)} /></label>
-            <label className="grid gap-2 text-sm text-white/70">Secondary keywords<input className={inputClass} value={secondaryKeywords} onChange={(e) => setSecondaryKeywords(e.target.value)} /></label>
-            <label className="grid gap-2 text-sm text-white/70">Target location<input className={inputClass} value={targetLocation} onChange={(e) => setTargetLocation(e.target.value)} /></label>
-            <label className="grid gap-2 text-sm text-white/70">Brand tone<input className={inputClass} value={brandTone} onChange={(e) => setBrandTone(e.target.value)} /></label>
+            <label className="grid gap-2 text-sm text-slate-600">Primary keyword<input className={inputClass} value={primaryKeyword} onChange={(e) => setPrimaryKeyword(e.target.value)} /></label>
+            <label className="grid gap-2 text-sm text-slate-600">Secondary keywords<input className={inputClass} value={secondaryKeywords} onChange={(e) => setSecondaryKeywords(e.target.value)} /></label>
+            <label className="grid gap-2 text-sm text-slate-600">Target location<input className={inputClass} value={targetLocation} onChange={(e) => setTargetLocation(e.target.value)} /></label>
+            <label className="grid gap-2 text-sm text-slate-600">Brand tone<input className={inputClass} value={brandTone} onChange={(e) => setBrandTone(e.target.value)} /></label>
           </div>
         </section>
 
-        <section className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+        <section className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Draft previews</div>
-              <h3 className="mt-2 text-xl font-black text-white">{suggestions.length} editable SEO targets</h3>
+              <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Draft previews</div>
+              <h3 className="mt-2 text-xl font-black text-slate-900">{suggestions.length} editable SEO targets</h3>
             </div>
-            <ArrowRight size={18} className="text-[#D8FF6A]" />
+            <ArrowRight size={18} className="text-[#E87F24]" />
           </div>
           <div className="mt-5 grid gap-4">
-            {loading ? <div className="rounded-[22px] border border-white/8 bg-white/5 px-5 py-10 text-center text-sm text-white/52">Loading SEO targets...</div> : null}
+            {loading ? <div className="rounded-[22px] border border-slate-200 bg-slate-50 px-5 py-10 text-center text-sm text-slate-500">Loading SEO targets...</div> : null}
             {!loading && suggestions.map((item) => (
-              <article key={`${item.target.type}-${item.target.id}`} className="rounded-[22px] border border-white/8 bg-white/5 p-4">
+              <article key={`${item.target.type}-${item.target.id}`} className="rounded-[22px] border border-slate-200 bg-slate-50 p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <div className="text-[10px] uppercase tracking-[0.22em] text-[#D8FF6A]/70">{item.target.type} · {item.target.slug}</div>
-                    <h4 className="mt-2 text-lg font-black text-white">{item.target.label}</h4>
+                    <div className="text-[10px] uppercase tracking-[0.22em] text-[#E87F24]/70">{item.target.type} · {item.target.slug}</div>
+                    <h4 className="mt-2 text-lg font-black text-slate-900">{item.target.label}</h4>
                   </div>
-                  <label className="flex items-center gap-2 text-sm text-white/65">
+                  <label className="flex items-center gap-2 text-sm text-slate-600">
                     <input type="checkbox" checked={Boolean(selected[item.target.id])} onChange={(event) => setSelected((prev) => ({ ...prev, [item.target.id]: event.target.checked }))} />
                     Apply
                   </label>
                 </div>
-                <div className="mt-4 rounded-[18px] border border-white/8 bg-[#0f0f0f] p-4">
+                <div className="mt-4 rounded-[18px] border border-slate-200 bg-slate-50 p-4">
                   <div className="text-sm font-semibold text-[#8ab4f8]">{item.title}</div>
                   <div className="mt-1 text-xs text-[#bdc1c6]">https://buildcivil.in/{item.target.type === 'page' && item.target.slug === 'home' ? '' : item.target.slug}</div>
-                  <p className="mt-2 text-sm leading-6 text-white/56">{item.description}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">{item.description}</p>
                 </div>
-                <div className="mt-4 rounded-[18px] border border-white/8 bg-[#0f0f0f] p-4">
-                  <label className="grid gap-2 text-sm text-white/70">
+                <div className="mt-4 rounded-[18px] border border-slate-200 bg-slate-50 p-4">
+                  <label className="grid gap-2 text-sm text-slate-600">
                     Social preview image
                     <input
                       className={inputClass}
@@ -334,7 +334,7 @@ export default function AdminSeoPanel() {
                     value={seoImages[item.target.id] ?? ''}
                     onSelect={(url) => setSeoImages((prev) => ({ ...prev, [item.target.id]: url }))}
                   />
-                  <p className="mt-2 text-xs leading-5 text-white/38">
+                  <p className="mt-2 text-xs leading-5 text-slate-400">
                     This image is applied to live SEO only when you click Apply selected.
                   </p>
                 </div>

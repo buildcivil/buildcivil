@@ -28,7 +28,7 @@ import {
 import { publishRefresh } from '@/lib/admin-publish'
 import { readJsonResponse } from '@/lib/safe-json'
 
-const inputClass = 'w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+const inputClass = 'w-full rounded-[16px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 
 type SettingsResponse = {
   connected: boolean
@@ -47,9 +47,9 @@ function colorInputValue(value: unknown, fallback = '#000000') {
 function Field({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) {
   return (
     <label className="block">
-      <div className="mb-2 text-xs uppercase tracking-[0.24em] text-white/56">{label}</div>
+      <div className="mb-2 text-xs uppercase tracking-[0.24em] text-slate-500">{label}</div>
       {children}
-      {hint ? <p className="mt-2 text-xs leading-5 text-white/36">{hint}</p> : null}
+      {hint ? <p className="mt-2 text-xs leading-5 text-slate-400">{hint}</p> : null}
     </label>
   )
 }
@@ -70,13 +70,13 @@ function SortableNavItem({
   }
 
   return (
-    <div ref={setNodeRef} style={style} className="rounded-[22px] border border-white/8 bg-white/5 p-4">
+    <div ref={setNodeRef} style={style} className="rounded-[22px] border border-slate-200 bg-slate-50 p-4">
       <div className="grid gap-3 md:grid-cols-[auto_1fr_1fr_auto] md:items-center">
         <button
           type="button"
           {...attributes}
           {...listeners}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/55"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-500"
           aria-label={`Drag ${link.label}`}
         >
           <GripVertical size={16} />
@@ -84,11 +84,11 @@ function SortableNavItem({
         <input className={inputClass} value={link.label} onChange={(event) => onChange({ label: event.target.value })} placeholder="Label" />
         <input className={inputClass} value={link.href} onChange={(event) => onChange({ href: event.target.value })} placeholder="/href" />
         <div className="flex items-center gap-3">
-          <label className="flex items-center gap-2 text-sm text-white/65">
+          <label className="flex items-center gap-2 text-sm text-slate-600">
             <input type="checkbox" checked={link.visible} onChange={(event) => onChange({ visible: event.target.checked })} />
             Visible
           </label>
-          <button type="button" onClick={onDelete} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E87F24]/25 text-[#FFBC8C]">
+          <button type="button" onClick={onDelete} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E87F24]/25 text-orange-700">
             <Trash2 size={14} />
           </button>
         </div>
@@ -109,24 +109,24 @@ function TextLinkEditor({
   onAdd: () => GlobalLink
 }) {
   return (
-    <section className="rounded-[26px] border border-white/8 bg-white/5 p-4">
+    <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-lg font-black text-white">{title}</h3>
-        <button type="button" onClick={() => onChange([...links, onAdd()])} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/70">
+        <h3 className="text-lg font-black text-slate-900">{title}</h3>
+        <button type="button" onClick={() => onChange([...links, onAdd()])} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600">
           <Plus size={13} /> Add
         </button>
       </div>
       <div className="mt-4 grid gap-3">
         {links.map((link, index) => (
-          <div key={link.id} className="grid gap-3 rounded-[18px] border border-white/8 bg-[#0f0f0f] p-3 md:grid-cols-[1fr_1fr_auto] md:items-center">
+          <div key={link.id} className="grid gap-3 rounded-[18px] border border-slate-200 bg-slate-50 p-3 md:grid-cols-[1fr_1fr_auto] md:items-center">
             <input className={inputClass} value={link.label} onChange={(event) => onChange(links.map((item, i) => i === index ? { ...item, label: event.target.value } : item))} placeholder="Label" />
             <input className={inputClass} value={link.href} onChange={(event) => onChange(links.map((item, i) => i === index ? { ...item, href: event.target.value } : item))} placeholder="/href" />
             <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 text-sm text-white/65">
+              <label className="flex items-center gap-2 text-sm text-slate-600">
                 <input type="checkbox" checked={link.visible} onChange={(event) => onChange(links.map((item, i) => i === index ? { ...item, visible: event.target.checked } : item))} />
                 Visible
               </label>
-              <button type="button" onClick={() => onChange(links.filter((_, i) => i !== index))} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E87F24]/25 text-[#FFBC8C]">
+              <button type="button" onClick={() => onChange(links.filter((_, i) => i !== index))} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E87F24]/25 text-orange-700">
                 <Trash2 size={14} />
               </button>
             </div>
@@ -143,8 +143,8 @@ function SettingsPreview({ settings }: { settings: GlobalLayoutSettings }) {
 
   return (
     <div className="space-y-4">
-      <section className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-        <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Header preview</div>
+      <section className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Header preview</div>
         {settings.header.mobileTopBar.visible ? (
           <div
             className="mt-4 rounded-t-[1.2rem] border border-[#73A5CA]/18 px-4 py-2 text-center text-xs font-medium"
@@ -184,9 +184,9 @@ function SettingsPreview({ settings }: { settings: GlobalLayoutSettings }) {
         </div>
       </section>
 
-      <section className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-        <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Footer preview</div>
-        <div className="mt-4 rounded-[24px] border border-white/10 bg-[#11100f] p-5 text-[#FEFDDF]">
+      <section className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Footer preview</div>
+        <div className="mt-4 rounded-[24px] border border-slate-200 bg-[#11100f] p-5 text-[#FEFDDF]">
           <div className="grid gap-5 md:grid-cols-3">
             <div>
               <div className="text-2xl font-black">{settings.footer.bigText}</div>
@@ -310,7 +310,7 @@ export default function AdminSettingsPanel() {
 
   if (loading) {
     return (
-      <div className="mt-6 rounded-[28px] border border-white/8 bg-white/5 px-6 py-12 text-center text-sm text-white/55">
+      <div className="mt-6 rounded-[28px] border border-slate-200 bg-slate-50 px-6 py-12 text-center text-sm text-slate-500">
         Loading global settings...
       </div>
     )
@@ -318,15 +318,15 @@ export default function AdminSettingsPanel() {
 
   return (
     <div className="mt-6 grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-      <section className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+      <section className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.26em] text-white/40">
-              <Settings size={13} className="text-[#D8FF6A]" />
+            <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.26em] text-slate-400">
+              <Settings size={13} className="text-[#E87F24]" />
               Global layout CMS
             </div>
-            <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-white">Header & footer settings</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-white/58">
+            <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-slate-900">Header & footer settings</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">
               Edit the shared header and footer once. Changes apply across every public page.
             </p>
           </div>
@@ -334,20 +334,20 @@ export default function AdminSettingsPanel() {
             type="button"
             disabled={!connected || saving}
             onClick={saveSettings}
-            className="inline-flex items-center gap-3 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-60"
+            className="inline-flex items-center gap-3 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
           >
             <Save size={15} />
             Save settings
           </button>
         </div>
 
-        {!connected ? <div className="mt-4 rounded-2xl border border-[#D8FF6A]/16 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-white/70">Live database is unavailable in this environment, so global setting saves are paused.</div> : null}
-        {message ? <div className="mt-4 rounded-2xl border border-[#D8FF6A]/16 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-white/80">{message}</div> : null}
-        {error ? <div className="mt-4 rounded-2xl border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">{error}</div> : null}
+        {!connected ? <div className="mt-4 rounded-2xl border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-slate-600">Live database is unavailable in this environment, so global setting saves are paused.</div> : null}
+        {message ? <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{message}</div> : null}
+        {error ? <div className="mt-4 rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800">{error}</div> : null}
 
         <div className="mt-6 grid gap-5">
-          <section className="rounded-[26px] border border-white/8 bg-white/5 p-4">
-            <h3 className="text-lg font-black text-white">Brand</h3>
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
+            <h3 className="text-lg font-black text-slate-900">Brand</h3>
             <div className="mt-4 grid gap-4">
               <Field label="Logo click URL" hint="Logo image, favicon, and logo sizing are managed in Advanced / Logos & Brand.">
                 <input
@@ -360,21 +360,21 @@ export default function AdminSettingsPanel() {
                   }))}
                 />
               </Field>
-              <div className="rounded-[20px] border border-[#D8FF6A]/15 bg-[#D8FF6A]/8 px-4 py-3 text-sm leading-6 text-white/58">
+              <div className="rounded-[20px] border border-[#E87F24]/20 bg-[#E87F24]/8 px-4 py-3 text-sm leading-6 text-slate-500">
                 Text logo fields were removed from this page to avoid confusion. Use the image logo controls in Logos & Brand.
               </div>
             </div>
           </section>
 
-          <section className="rounded-[26px] border border-white/8 bg-white/5 p-4">
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h3 className="text-lg font-black text-white">Mobile top contact bar</h3>
-                <p className="mt-1 text-xs leading-5 text-white/42">
+                <h3 className="text-lg font-black text-slate-900">Mobile top contact bar</h3>
+                <p className="mt-1 text-xs leading-5 text-slate-400">
                   This appears above the mobile/tablet header, like a compact location and WhatsApp strip.
                 </p>
               </div>
-              <label className="flex items-center gap-2 text-sm text-white/65">
+              <label className="flex items-center gap-2 text-sm text-slate-600">
                 <input
                   type="checkbox"
                   checked={settings.header.mobileTopBar.visible}
@@ -450,7 +450,7 @@ export default function AdminSettingsPanel() {
                             mobileTopBar: { ...current.header.mobileTopBar, [key]: event.target.value },
                           },
                         }))}
-                        className="h-11 w-12 shrink-0 rounded-xl border border-white/10 bg-[#0f0f0f] p-1"
+                        className="h-11 w-12 shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-1"
                       />
                       <input
                         className={`${inputClass} px-3`}
@@ -470,11 +470,11 @@ export default function AdminSettingsPanel() {
             </div>
           </section>
 
-          <section className="rounded-[26px] border border-white/8 bg-white/5 p-4">
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <h3 className="text-lg font-black text-white">Header menu</h3>
-                <p className="mt-1 text-xs text-white/42">Drag items to change the sequence.</p>
+                <h3 className="text-lg font-black text-slate-900">Header menu</h3>
+                <p className="mt-1 text-xs text-slate-400">Drag items to change the sequence.</p>
               </div>
               <button
                 type="button"
@@ -485,7 +485,7 @@ export default function AdminSettingsPanel() {
                     navLinks: [...current.header.navLinks, { id: uid('nav'), label: 'NEW LINK', href: '/', visible: true }],
                   },
                 }))}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/70"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600"
               >
                 <Plus size={13} /> Add
               </button>
@@ -518,20 +518,20 @@ export default function AdminSettingsPanel() {
             </DndContext>
           </section>
 
-          <section className="rounded-[26px] border border-white/8 bg-white/5 p-4">
-            <h3 className="text-lg font-black text-white">Header CTA</h3>
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
+            <h3 className="text-lg font-black text-slate-900">Header CTA</h3>
             <div className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_auto] md:items-center">
               <input className={inputClass} value={settings.header.cta.label} onChange={(event) => updateSettings((current) => ({ ...current, header: { ...current.header, cta: { ...current.header.cta, label: event.target.value } } }))} />
               <input className={inputClass} value={settings.header.cta.href} onChange={(event) => updateSettings((current) => ({ ...current, header: { ...current.header, cta: { ...current.header.cta, href: event.target.value } } }))} />
-              <label className="flex items-center gap-2 text-sm text-white/65">
+              <label className="flex items-center gap-2 text-sm text-slate-600">
                 <input type="checkbox" checked={settings.header.cta.visible} onChange={(event) => updateSettings((current) => ({ ...current, header: { ...current.header, cta: { ...current.header.cta, visible: event.target.checked } } }))} />
                 Visible
               </label>
             </div>
           </section>
 
-          <section className="rounded-[26px] border border-white/8 bg-white/5 p-4">
-            <h3 className="text-lg font-black text-white">Footer copy</h3>
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
+            <h3 className="text-lg font-black text-slate-900">Footer copy</h3>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               <Field label="Description">
                 <textarea className={`${inputClass} min-h-[110px]`} value={settings.footer.description} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, description: event.target.value } }))} />
@@ -551,11 +551,11 @@ export default function AdminSettingsPanel() {
             </div>
           </section>
 
-          <section className="rounded-[26px] border border-white/8 bg-white/5 p-4">
-            <h3 className="text-lg font-black text-white">Footer contact rows</h3>
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
+            <h3 className="text-lg font-black text-slate-900">Footer contact rows</h3>
             <div className="mt-4 grid gap-3">
               {settings.footer.contactRows.map((row, index) => (
-                <div key={row.id} className="grid gap-3 rounded-[18px] border border-white/8 bg-[#0f0f0f] p-3 md:grid-cols-[0.8fr_1fr_1fr_1fr_auto] md:items-center">
+                <div key={row.id} className="grid gap-3 rounded-[18px] border border-slate-200 bg-slate-50 p-3 md:grid-cols-[0.8fr_1fr_1fr_1fr_auto] md:items-center">
                   <select
                     className={inputClass}
                     value={row.type}
@@ -574,7 +574,7 @@ export default function AdminSettingsPanel() {
                   <input className={inputClass} value={row.label} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, contactRows: current.footer.contactRows.map((item, i) => i === index ? { ...item, label: event.target.value } : item) } }))} />
                   <input className={inputClass} value={row.value} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, contactRows: current.footer.contactRows.map((item, i) => i === index ? { ...item, value: event.target.value } : item) } }))} />
                   <input className={inputClass} value={row.href} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, contactRows: current.footer.contactRows.map((item, i) => i === index ? { ...item, href: event.target.value } : item) } }))} />
-                  <label className="flex items-center gap-2 text-sm text-white/65">
+                  <label className="flex items-center gap-2 text-sm text-slate-600">
                     <input type="checkbox" checked={row.visible} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, contactRows: current.footer.contactRows.map((item, i) => i === index ? { ...item, visible: event.target.checked } : item) } }))} />
                     Visible
                   </label>
@@ -590,8 +590,8 @@ export default function AdminSettingsPanel() {
             onAdd={() => ({ id: uid('footer-link'), label: 'New Link', href: '/', visible: true })}
           />
 
-          <section className="rounded-[26px] border border-white/8 bg-white/5 p-4">
-            <h3 className="text-lg font-black text-white">Newsletter</h3>
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
+            <h3 className="text-lg font-black text-slate-900">Newsletter</h3>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               <Field label="Title">
                 <input className={inputClass} value={settings.footer.newsletter.title} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, newsletter: { ...current.footer.newsletter, title: event.target.value } } }))} />
@@ -603,7 +603,7 @@ export default function AdminSettingsPanel() {
                 <input className={inputClass} value={settings.footer.newsletter.buttonLabel} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, newsletter: { ...current.footer.newsletter, buttonLabel: event.target.value } } }))} />
               </Field>
               <Field label="Visible">
-                <label className="flex items-center gap-2 pt-3 text-sm text-white/65">
+                <label className="flex items-center gap-2 pt-3 text-sm text-slate-600">
                   <input type="checkbox" checked={settings.footer.newsletter.visible} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, newsletter: { ...current.footer.newsletter, visible: event.target.checked } } }))} />
                   Show newsletter block
                 </label>
@@ -614,9 +614,9 @@ export default function AdminSettingsPanel() {
             </div>
           </section>
 
-          <section className="rounded-[26px] border border-white/8 bg-white/5 p-4">
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
             <div className="flex items-center justify-between gap-3">
-              <h3 className="text-lg font-black text-white">Social links</h3>
+              <h3 className="text-lg font-black text-slate-900">Social links</h3>
               <button
                 type="button"
                 onClick={() => updateSettings((current) => ({
@@ -626,14 +626,14 @@ export default function AdminSettingsPanel() {
                     socialLinks: [...current.footer.socialLinks, { id: uid('social'), label: 'Social', href: '/contact', icon: 'instagram', visible: true }],
                   },
                 }))}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/70"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600"
               >
                 <Plus size={13} /> Add
               </button>
             </div>
             <div className="mt-4 grid gap-3">
               {settings.footer.socialLinks.map((link, index) => (
-                <div key={link.id} className="grid gap-3 rounded-[18px] border border-white/8 bg-[#0f0f0f] p-3 md:grid-cols-[1fr_1fr_0.8fr_auto] md:items-center">
+                <div key={link.id} className="grid gap-3 rounded-[18px] border border-slate-200 bg-slate-50 p-3 md:grid-cols-[1fr_1fr_0.8fr_auto] md:items-center">
                   <input className={inputClass} value={link.label} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, socialLinks: current.footer.socialLinks.map((item, i) => i === index ? { ...item, label: event.target.value } : item) } }))} />
                   <input className={inputClass} value={link.href} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, socialLinks: current.footer.socialLinks.map((item, i) => i === index ? { ...item, href: event.target.value } : item) } }))} />
                   <select className={inputClass} value={link.icon} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, socialLinks: current.footer.socialLinks.map((item, i) => i === index ? { ...item, icon: event.target.value as FooterSocialLink['icon'] } : item) } }))}>
@@ -643,11 +643,11 @@ export default function AdminSettingsPanel() {
                     <option value="facebook">facebook</option>
                   </select>
                   <div className="flex items-center gap-3">
-                    <label className="flex items-center gap-2 text-sm text-white/65">
+                    <label className="flex items-center gap-2 text-sm text-slate-600">
                       <input type="checkbox" checked={link.visible} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, socialLinks: current.footer.socialLinks.map((item, i) => i === index ? { ...item, visible: event.target.checked } : item) } }))} />
                       Visible
                     </label>
-                    <button type="button" onClick={() => updateSettings((current) => ({ ...current, footer: { ...current.footer, socialLinks: current.footer.socialLinks.filter((_, i) => i !== index) } }))} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E87F24]/25 text-[#FFBC8C]">
+                    <button type="button" onClick={() => updateSettings((current) => ({ ...current, footer: { ...current.footer, socialLinks: current.footer.socialLinks.filter((_, i) => i !== index) } }))} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E87F24]/25 text-orange-700">
                       <Trash2 size={14} />
                     </button>
                   </div>

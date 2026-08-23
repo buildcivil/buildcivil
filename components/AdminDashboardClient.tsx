@@ -1,58 +1,36 @@
 'use client'
 
-import type { ComponentType, ErrorInfo, ReactNode } from 'react'
+import type { ErrorInfo, ReactNode } from 'react'
 import { Component, useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import {
   ArrowRight,
-  BookOpen,
-  Brush,
-  FileText,
-  FolderKanban,
-  Handshake,
-  Home,
-  ImageIcon,
-  LayoutGrid,
-  Layers3,
-  LogOut,
-  MessageSquareText,
-  Mail,
   MapPin,
-  Package,
-  Palette,
-  RefreshCw,
-  Search,
-  Settings,
-  ShieldCheck,
-  Sparkles,
-  Type,
-  Users,
   Wrench,
 } from 'lucide-react'
-import { motion } from 'framer-motion'
-import { sectionReveal } from './motion'
 import { publishRefresh } from '@/lib/admin-publish'
 import { readJsonResponse } from '@/lib/safe-json'
 import type { ProjectItem } from '@/lib/projects'
 import type { ServiceItem } from '@/lib/services'
-
-const MotionSection = motion.section
+import AdminShell from '@/components/admin/AdminShell'
+import { canViewAdmin, getAdminViewLabel, type AdminViewKey } from '@/lib/admin/nav'
+import { AdminAlert } from '@/components/admin/ui'
 
 function AdminPanelLoading() {
   return (
-    <div className="mt-5 rounded-[24px] border border-white/8 bg-[#141518] p-5">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <div className="h-3 w-32 rounded-full bg-white/12" />
-          <div className="mt-3 h-2 w-52 max-w-full rounded-full bg-white/8" />
+          <div className="h-3 w-32 rounded-full bg-slate-200" />
+          <div className="mt-3 h-2 w-52 max-w-full rounded-full bg-slate-100" />
         </div>
-        <div className="hidden h-9 w-24 rounded-full bg-[#D8FF6A]/12 sm:block" />
+        <div className="hidden h-9 w-24 rounded-full bg-orange-50 sm:block" />
       </div>
       <div className="mt-5 grid gap-3 md:grid-cols-3">
-        <div className="h-28 rounded-[18px] bg-white/[0.045]" />
-        <div className="h-28 rounded-[18px] bg-white/[0.045]" />
-        <div className="h-28 rounded-[18px] bg-white/[0.045]" />
+        <div className="h-28 rounded-2xl bg-slate-50" />
+        <div className="h-28 rounded-2xl bg-slate-50" />
+        <div className="h-28 rounded-2xl bg-slate-50" />
       </div>
     </div>
   )
@@ -77,16 +55,13 @@ class AdminPanelBoundary extends Component<
   render() {
     if (this.state.error) {
       return (
-        <div className="mt-6 rounded-[28px] border border-[#E87F24]/30 bg-[#2a1b11] p-6 text-sm text-[#ffd7b2]">
-          <div className="text-[11px] font-black uppercase tracking-[0.24em] text-[#FFC81E]">Section render issue</div>
-          <h2 className="mt-3 text-2xl font-black tracking-[-0.04em] text-white">{this.props.title}</h2>
-          <p className="mt-3 leading-6">
-            This admin section hit a render error instead of loading normally. The rest of the dashboard is still safe to use.
-          </p>
-          <p className="mt-2 break-words rounded-[16px] border border-[#E87F24]/20 bg-[#0f0f0f]/45 p-3 text-xs leading-5 text-[#ffd7b2]/80">
+        <AdminAlert tone="error" title="Section render issue">
+          <p className="font-semibold text-slate-900">{this.props.title}</p>
+          <p className="mt-2">This admin section hit a render error. The rest of the dashboard is still safe to use.</p>
+          <p className="mt-2 break-words rounded-xl border border-[#E87F24]/20 bg-slate-50/45 p-3 text-xs leading-5 opacity-80">
             {this.state.error}
           </p>
-        </div>
+        </AdminAlert>
       )
     }
 
@@ -104,7 +79,7 @@ function AdminPreviewImage({
   className?: string
 }) {
   if (!src?.trim()) {
-    return <div className="flex h-full w-full items-center justify-center text-sm text-white/45">Image preview</div>
+    return <div className="flex h-full w-full items-center justify-center text-sm text-slate-500">Image preview</div>
   }
 
   return (
@@ -150,30 +125,7 @@ type TableKey =
   | 'newsletter'
   | 'media'
   | 'policy-pages'
-type ViewKey =
-  | 'overview'
-  | 'page-home'
-  | 'page-about'
-  | 'page-services'
-  | 'page-projects'
-  | 'page-contact'
-  | 'page-renovaite'
-  | TableKey
-  | 'packages'
-  | 'media'
-  | 'package-quotes'
-  | 'settings'
-  | 'newsletter'
-  | 'sections-builder'
-  | 'theme-studio'
-  | 'logos-brand'
-  | 'fonts'
-  | 'forms-fields'
-  | 'seo-center'
-  | 'google-setup'
-  | 'site-navigation'
-  | 'admin-users'
-  | 'help-guide'
+type ViewKey = AdminViewKey
 
 type PolicyRow = {
   id: string
@@ -379,153 +331,6 @@ type ServiceDraft = {
   sort_order: number
 }
 
-const tabs: { key: ViewKey; label: string; icon: ComponentType<{ size?: number; className?: string }> }[] = [
-  { key: 'overview', label: 'Overview', icon: LayoutGrid },
-  { key: 'page-home', label: 'Home Page', icon: Home },
-  { key: 'page-about', label: 'About Page', icon: FileText },
-  { key: 'page-services', label: 'Services Page', icon: Layers3 },
-  { key: 'page-projects', label: 'Projects Page', icon: FolderKanban },
-  { key: 'page-contact', label: 'Contact Page', icon: MessageSquareText },
-  { key: 'page-renovaite', label: 'Renovaite Page', icon: Sparkles },
-  { key: 'pages', label: 'Site Pages', icon: FileText },
-  { key: 'sections-builder', label: 'Sections Builder', icon: Brush },
-  { key: 'settings', label: 'Header & Footer', icon: Settings },
-  { key: 'theme-studio', label: 'Theme Studio', icon: Palette },
-  { key: 'logos-brand', label: 'Logos & Brand', icon: ShieldCheck },
-  { key: 'fonts', label: 'Fonts', icon: Type },
-  { key: 'media', label: 'Media Library', icon: ImageIcon },
-  { key: 'projects', label: 'Project Library', icon: FolderKanban },
-  { key: 'services', label: 'Service Library', icon: Layers3 },
-  { key: 'packages', label: 'Package Library', icon: Package },
-  { key: 'forms-fields', label: 'Forms & Fields', icon: FileText },
-  { key: 'seo-center', label: 'SEO Center', icon: Search },
-  { key: 'google-setup', label: 'Google Setup', icon: Search },
-  { key: 'site-navigation', label: 'Navigation', icon: Settings },
-  { key: 'admin-users', label: 'Admin Users', icon: ShieldCheck },
-  { key: 'enquiries', label: 'Service Enquiries', icon: Handshake },
-  { key: 'package-quotes', label: 'Plan Quotes', icon: Package },
-  { key: 'newsletter', label: 'Newsletter', icon: Mail },
-  { key: 'messages', label: 'Contact Messages', icon: MessageSquareText },
-  { key: 'help-guide', label: 'Help & Guide', icon: BookOpen },
-]
-
-const sidebarGroups: Array<{
-  label: string
-  items: Array<{ key: ViewKey; label: string; icon: ComponentType<{ size?: number; className?: string }> }>
-}> = [
-  {
-    label: 'Workspace',
-    items: [
-      { key: 'overview', label: 'Overview', icon: LayoutGrid },
-      { key: 'media', label: 'Media Library', icon: ImageIcon },
-      { key: 'help-guide', label: 'Help & Guide', icon: BookOpen },
-    ],
-  },
-  {
-    label: 'Pages',
-    items: [
-      { key: 'page-home', label: 'Home', icon: Home },
-      { key: 'page-about', label: 'About', icon: FileText },
-      { key: 'page-services', label: 'Services', icon: Layers3 },
-      { key: 'page-projects', label: 'Projects', icon: FolderKanban },
-      { key: 'page-contact', label: 'Contact', icon: MessageSquareText },
-      { key: 'page-renovaite', label: 'Renovaite', icon: Sparkles },
-    ],
-  },
-  {
-    label: 'Content',
-    items: [
-      { key: 'projects', label: 'Project Library', icon: FolderKanban },
-      { key: 'services', label: 'Service Library', icon: Layers3 },
-      { key: 'packages', label: 'Package Library', icon: Package },
-      { key: 'policy-pages', label: 'Policy Pages', icon: FileText },
-    ],
-  },
-  {
-    label: 'Leads',
-    items: [
-      { key: 'enquiries', label: 'Service Enquiries', icon: Handshake },
-      { key: 'package-quotes', label: 'Plan Quotes', icon: Package },
-      { key: 'messages', label: 'Contact Messages', icon: MessageSquareText },
-      { key: 'newsletter', label: 'Newsletter', icon: Mail },
-    ],
-  },
-  {
-    label: 'Theme & Settings',
-    items: [
-      { key: 'settings', label: 'Header & Footer', icon: Settings },
-      { key: 'theme-studio', label: 'Theme Studio', icon: Palette },
-      { key: 'logos-brand', label: 'Logos & Brand', icon: ShieldCheck },
-      { key: 'fonts', label: 'Fonts', icon: Type },
-      { key: 'forms-fields', label: 'Forms & Fields', icon: FileText },
-      { key: 'seo-center', label: 'SEO Center', icon: Search },
-      { key: 'google-setup', label: 'Google Setup', icon: Search },
-      { key: 'site-navigation', label: 'Navigation', icon: Settings },
-      { key: 'admin-users', label: 'Admin Users', icon: ShieldCheck },
-    ],
-  },
-  {
-    label: 'Advanced',
-    items: [
-      { key: 'pages', label: 'Legacy Pages', icon: FileText },
-      { key: 'sections-builder', label: 'Sections Builder', icon: Brush },
-    ],
-  },
-]
-
-const roleViewAccess: Record<string, ViewKey[]> = {
-  super_admin: tabs.map((tab) => tab.key),
-  admin: tabs.filter((tab) => tab.key !== 'admin-users').map((tab) => tab.key),
-  content_manager: [
-    'overview',
-    'page-home',
-    'page-about',
-    'page-services',
-    'page-projects',
-    'page-contact',
-    'page-renovaite',
-    'projects',
-    'services',
-    'packages',
-    'policy-pages',
-    'media',
-    'settings',
-    'theme-studio',
-    'logos-brand',
-    'fonts',
-    'forms-fields',
-    'seo-center',
-    'google-setup',
-    'site-navigation',
-    'help-guide',
-  ],
-  project_manager: ['overview', 'projects', 'services', 'media', 'seo-center', 'help-guide'],
-  media_manager: ['overview', 'media', 'help-guide'],
-  leads_manager: ['overview', 'enquiries', 'package-quotes', 'newsletter', 'messages', 'help-guide'],
-  editor: ['overview', 'page-home', 'page-about', 'page-services', 'page-projects', 'page-contact', 'page-renovaite', 'projects', 'services', 'media', 'seo-center', 'policy-pages', 'help-guide'],
-}
-
-function canView(role: string | undefined, key: ViewKey) {
-  return (roleViewAccess[role ?? 'editor'] ?? roleViewAccess.editor).includes(key)
-}
-
-function missingRequiredFields(fields: Record<string, string>) {
-  return Object.entries(fields)
-    .filter(([, value]) => !value.trim())
-    .map(([label]) => label)
-}
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
-
-const fallbackProjectImage = 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop'
-const fallbackServiceImage = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1600&auto=format&fit=crop'
-
 const emptyProjectDraft = (): ProjectDraft => ({
   slug: '',
   title: '',
@@ -572,6 +377,23 @@ const emptyServiceDraft = (): ServiceDraft => ({
   published: false,
   sort_order: 0,
 })
+
+function missingRequiredFields(fields: Record<string, string>) {
+  return Object.entries(fields)
+    .filter(([, value]) => !value.trim())
+    .map(([label]) => label)
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+const fallbackProjectImage = 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop'
+const fallbackServiceImage = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1600&auto=format&fit=crop'
 
 function formatLines(value: unknown) {
   if (Array.isArray(value)) return value.join('\n')
@@ -693,104 +515,25 @@ async function api<T>(table: TableKey, init?: RequestInit): Promise<T> {
   return payload
 }
 
-function formatStatusLabel(status: string) {
-  switch (status) {
-    case 'new':
-      return 'New lead'
-    case 'read':
-      return 'Read'
-    case 'replied':
-      return 'Replied'
-    case 'closed':
-      return 'Closed'
-    default:
-      return status
-  }
-}
-
-function ShellStatCard({
-  value,
-  label,
-  icon: Icon,
-  accent,
-}: {
-  value: string
-  label: string
-  icon: ComponentType<{ size?: number; className?: string }>
-  accent?: boolean
-}) {
-  return (
-    <div
-      className={`rounded-[26px] border p-5 shadow-[0_18px_45px_rgba(0,0,0,0.26)] backdrop-blur-xl ${
-        accent
-          ? 'border-[#D8FF6A]/70 bg-[#D8FF6A] text-[#121212]'
-          : 'border-white/8 bg-white/5 text-white'
-      }`}
-    >
-      <div className="flex items-center justify-between gap-3">
-        <div className={`text-2xl font-black tracking-[-0.05em] ${accent ? 'text-[#121212]' : 'text-white'}`}>
-          {value}
-        </div>
-        <Icon size={18} className={accent ? 'text-[#121212]' : 'text-[#D8FF6A]'} />
-      </div>
-      <p className={`mt-3 text-sm leading-6 ${accent ? 'text-[#1d1d1d]/75' : 'text-white/64'}`}>{label}</p>
-    </div>
-  )
-}
-
-function TopPill({
-  active,
-  icon: Icon,
-  label,
-  onClick,
-  count,
-}: {
-  active: boolean
-  icon: ComponentType<{ size?: number; className?: string }>
-  label: string
-  onClick: () => void
-  count?: number
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-300 ${
-        active
-          ? 'bg-[#D8FF6A] text-[#111111] shadow-[0_12px_30px_rgba(216,255,106,0.18)]'
-          : 'bg-white/5 text-white/78 hover:bg-white/8 hover:text-white'
-      }`}
-    >
-      <Icon size={14} className={active ? 'text-[#111111]' : 'text-[#D8FF6A]'} />
-      {label}
-      {typeof count === 'number' ? (
-        <span className={`ml-1 rounded-full px-2 py-0.5 text-[10px] ${active ? 'bg-[#111] text-[#D8FF6A]' : 'bg-white/8 text-white/60'}`}>
-          {count}
-        </span>
-      ) : null}
-    </button>
-  )
-}
-
 function ProjectDraftPreview({ draft }: { draft: ProjectDraft }) {
   const highlights = parseList(draft.highlights_text).slice(0, 3)
   const gallery = parseList(draft.gallery_text).slice(0, 3)
 
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Project preview</div>
-          <h3 className="mt-2 text-xl font-black text-white">Website-style draft view</h3>
+          <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Project preview</div>
+          <h3 className="mt-2 text-xl font-black text-slate-900">Website-style draft view</h3>
         </div>
-        <span className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${draft.published ? 'bg-[#D8FF6A] text-[#111]' : 'bg-white/8 text-white/60'}`}>
+        <span className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${draft.published ? 'bg-[#E87F24] text-white' : 'bg-slate-100 text-slate-500'}`}>
           {draft.published ? 'Live' : 'Draft'}
         </span>
       </div>
 
       <div className="mt-5 overflow-hidden rounded-[28px] border border-[#73A5CA]/12 bg-[#FEFDDF] p-4 text-[#1c1712] shadow-[0_18px_48px_rgba(0,0,0,0.18)]">
         <div className="mb-4 flex items-center justify-between gap-3">
-          <div className="rounded-full border border-[#73A5CA]/18 bg-white/82 px-4 py-2 text-[10px] uppercase tracking-[0.26em] text-[#5d8fb2]">
+          <div className="rounded-full border border-[#73A5CA]/18 bg-slate-1002 px-4 py-2 text-[10px] uppercase tracking-[0.26em] text-[#5d8fb2]">
             Project card
           </div>
           <div className="text-xs font-semibold text-[#6e6256]">{draft.location || 'Location not set'}</div>
@@ -816,7 +559,7 @@ function ProjectDraftPreview({ draft }: { draft: ProjectDraft }) {
           <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3">
             <div className="max-w-[76%] rounded-[22px] border border-[#FEFDDF]/30 bg-[#FEFDDF]/14 px-4 py-3 text-[#FEFDDF] backdrop-blur-md">
               <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-[#FEFDDF]/82">
-                <MapPin size={12} className="text-[#FFC81E]" />
+                <MapPin size={12} className="text-amber-600" />
                 {draft.category}
               </div>
               <p className="mt-2 line-clamp-3 text-sm leading-6 text-[#FEFDDF]/86">{draft.description || 'Project description will appear here.'}</p>
@@ -832,7 +575,7 @@ function ProjectDraftPreview({ draft }: { draft: ProjectDraft }) {
           <div className="text-[10px] uppercase tracking-[0.28em] text-[#5d8fb2]">{draft.card_label || 'Card label'}</div>
         </div>
 
-        <div className="mt-5 rounded-[24px] border border-[#73A5CA]/12 bg-white/82 p-5">
+        <div className="mt-5 rounded-[24px] border border-[#73A5CA]/12 bg-slate-1002 p-5">
           <div className="text-[11px] uppercase tracking-[0.26em] text-[#5d8fb2]">Detail page intro preview</div>
           <h4 className="mt-3 text-3xl font-black leading-none tracking-[-0.05em] text-[#1c1712]">{draft.hero_title || draft.title || 'Project detail heading'}</h4>
           <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#6e6256]">{draft.hero_copy || draft.overview || 'Project detail copy will appear here.'}</p>
@@ -875,13 +618,13 @@ function ServiceDraftPreview({ draft }: { draft: ServiceDraft }) {
   const gallery = parseList(draft.gallery_text).slice(0, 3)
 
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Service preview</div>
-          <h3 className="mt-2 text-xl font-black text-white">Website-style draft view</h3>
+          <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Service preview</div>
+          <h3 className="mt-2 text-xl font-black text-slate-900">Website-style draft view</h3>
         </div>
-        <span className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${draft.published ? 'bg-[#D8FF6A] text-[#111]' : 'bg-white/8 text-white/60'}`}>
+        <span className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${draft.published ? 'bg-[#E87F24] text-white' : 'bg-slate-100 text-slate-500'}`}>
           {draft.published ? 'Live' : 'Draft'}
         </span>
       </div>
@@ -909,7 +652,7 @@ function ServiceDraftPreview({ draft }: { draft: ServiceDraft }) {
           </div>
         </div>
 
-        <div className="mt-5 rounded-[24px] border border-[#73A5CA]/12 bg-white/82 p-5">
+        <div className="mt-5 rounded-[24px] border border-[#73A5CA]/12 bg-slate-1002 p-5">
           <div className="text-[10px] uppercase tracking-[0.2em] text-[#5d8fb2]">Service bullets</div>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {bullets.length ? (
@@ -952,18 +695,18 @@ function DetailLivePreview({
   route: string
 }) {
   return (
-    <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Full live page</div>
-          <h3 className="mt-2 text-xl font-black text-white">{title}</h3>
-          <p className="mt-2 text-sm leading-6 text-white/46">Shows the published page for this item. Draft preview above updates before saving.</p>
+          <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Full live page</div>
+          <h3 className="mt-2 text-xl font-black text-slate-900">{title}</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-500">Shows the published page for this item. Draft preview above updates before saving.</p>
         </div>
-        <Link href={route} target="_blank" className="shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/65 transition hover:border-[#D8FF6A]/25 hover:text-[#D8FF6A]">
+        <Link href={route} target="_blank" className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-sky-200 hover:text-[#E87F24]">
           Open
         </Link>
       </div>
-      <div className="mt-4 overflow-hidden rounded-[22px] border border-white/10 bg-white">
+      <div className="mt-4 overflow-hidden rounded-[22px] border border-slate-200 bg-white">
         <iframe src={route} title={`${title} live preview`} className="h-[560px] w-full bg-white" />
       </div>
     </div>
@@ -1039,9 +782,9 @@ export default function AdminDashboardClient() {
       const emptyResponse = <T,>(table: TableKey): AdminResponse<T> => ({ connected: true, table, rows: [] })
       const emptyPackagesResponse = (): AdminResponse<PackageSummaryRow> => ({ connected: true, table: 'packages', rows: [] })
       const fetchIfAllowed = <T,>(table: TableKey, key: ViewKey) =>
-        canView(role, key) ? api<AdminResponse<T>>(table) : Promise.resolve(emptyResponse<T>(table))
+        canViewAdmin(role, key) ? api<AdminResponse<T>>(table) : Promise.resolve(emptyResponse<T>(table))
       const fetchPackagesIfAllowed = () =>
-        canView(role, 'packages')
+        canViewAdmin(role, 'packages')
           ? fetch('/api/admin/packages', { cache: 'no-store' }).then(async (response) => {
               const payload = await readJsonResponse<AdminResponse<PackageSummaryRow>>(response, emptyPackagesResponse())
               if (!response.ok) throw new Error(payload.error || 'Unable to load packages.')
@@ -1087,7 +830,7 @@ export default function AdminDashboardClient() {
         safeLoad(
           'pages',
           'Pages',
-          canView(role, 'pages') || canView(role, 'page-home') || canView(role, 'page-about') || canView(role, 'page-services') || canView(role, 'page-projects') || canView(role, 'page-contact') || canView(role, 'page-renovaite')
+          canViewAdmin(role, 'pages') || canViewAdmin(role, 'page-home') || canViewAdmin(role, 'page-about') || canViewAdmin(role, 'page-services') || canViewAdmin(role, 'page-projects') || canViewAdmin(role, 'page-contact') || canViewAdmin(role, 'page-renovaite')
             ? api<AdminResponse<PageRow>>('pages')
             : Promise.resolve(emptyResponse<PageRow>('pages')),
           emptyResponse<PageRow>('pages'),
@@ -1196,7 +939,7 @@ export default function AdminDashboardClient() {
   }, [activeTab, projects, services])
 
   useEffect(() => {
-    if (session && !canView(session.role, activeTab)) {
+    if (session && !canViewAdmin(session.role, activeTab)) {
       setActiveTab('overview')
     }
   }, [activeTab, session])
@@ -1457,13 +1200,8 @@ export default function AdminDashboardClient() {
   const selectedProject = projectDraft.id ? projects.find((item) => item.id === projectDraft.id) : null
   const selectedService = serviceDraft.id ? services.find((item) => item.id === serviceDraft.id) : null
   const activeRole = session?.role ?? 'editor'
-  const visibleTabs = tabs.filter((tab) => canView(activeRole, tab.key))
-  const activeTabLabel = tabs.find((tab) => tab.key === activeTab)?.label ?? 'Overview'
-  const activeTabExists = tabs.some((tab) => tab.key === activeTab)
-  const activeTabAllowed = canView(activeRole, activeTab)
-  const visibleSidebarGroups = sidebarGroups
-    .map((group) => ({ ...group, items: group.items.filter((item) => canView(activeRole, item.key)) }))
-    .filter((group) => group.items.length > 0)
+  const activeTabAllowed = canViewAdmin(activeRole, activeTab)
+
   const getTabCount = (key: ViewKey) => {
     if (key === 'projects') return counts.projects
     if (key === 'services') return counts.services
@@ -1474,421 +1212,131 @@ export default function AdminDashboardClient() {
     if (key === 'package-quotes') return counts.packageQuotes
     if (key === 'messages') return counts.messages
     if (key === 'newsletter') return counts.newsletter
+    if (key === 'media') return counts.media
     return undefined
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#09090a] text-white">
-      <MotionSection
-        className="relative overflow-hidden px-3 py-3 sm:px-5 sm:py-5 lg:px-6"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.18 }}
-        variants={sectionReveal}
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(216,255,106,0.08),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(232,127,36,0.08),transparent_28%),linear-gradient(180deg,#111214_0%,#09090a_100%)]" />
-        <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:140px_140px] [mask-image:linear-gradient(180deg,transparent,black_14%,black_86%,transparent)]" />
+    <AdminShell
+      activeTab={activeTab}
+      onNavigate={setActiveTab}
+      session={session}
+      getCount={getTabCount}
+      loading={loading}
+      saving={saving}
+      error={error}
+      notice={notice}
+      connected={connected}
+      onRefresh={loadData}
+      onPublishRefresh={refreshPublicSite}
+      onClearError={() => setError(null)}
+    >
+      {activeTabAllowed ? (
+        <AdminPanelBoundary key={activeTab} title={getAdminViewLabel(activeTab)}>
+          {activeTab === 'overview' ? (
+            <AdminOverviewPanelView
+              connected={connected}
+              counts={counts}
+              role={activeRole}
+              loadIssues={loadIssues}
+              projects={projects}
+              services={services}
+              packages={packages}
+              pages={pages}
+              messages={messages}
+              enquiries={enquiries}
+              packageQuotes={packageQuotes}
+              newsletter={newsletter}
+              media={media}
+              onNavigate={setActiveTab}
+              onEditProject={(project) => {
+                setActiveTab('projects')
+                setProjectDraft(toProjectDraft(project))
+              }}
+              onImportDefaults={importDefaultContent}
+            />
+          ) : null}
 
-        <div className="relative mx-auto w-full max-w-[1800px]">
-          <div className="rounded-[24px] border border-white/7 bg-[#101113]/96 p-3 shadow-[0_24px_90px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:rounded-[32px] sm:p-5 lg:p-5">
-            <div className="grid min-w-0 gap-4 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-5">
-              <aside className="hidden rounded-[26px] border border-white/8 bg-[#0d0e10] p-3 shadow-[0_16px_42px_rgba(0,0,0,0.28)] lg:sticky lg:top-5 lg:block lg:max-h-[calc(100vh-2.5rem)] lg:overflow-y-auto">
-                <div className="flex items-center gap-3 rounded-[22px] border border-white/8 bg-white/[0.035] p-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-[#D8FF6A] text-[#111111]">
-                    <ShieldCheck size={20} />
-                  </div>
-                  <div>
-                    <div className="text-[10px] uppercase tracking-[0.28em] text-white/38">BuildCivil</div>
-                    <div className="text-base font-black tracking-[-0.04em] text-white">Admin Studio</div>
-                  </div>
-                </div>
+          {activeTab === 'help-guide' ? <AdminHelpGuidePanel /> : null}
+          {activeTab === 'page-home' ? <AdminHomePageEditor /> : null}
+          {activeTab === 'page-about' ? <AdminSimplePageEditor slug="about" /> : null}
+          {activeTab === 'page-services' ? <AdminSimplePageEditor slug="services" /> : null}
+          {activeTab === 'page-projects' ? <AdminSimplePageEditor slug="projects" /> : null}
+          {activeTab === 'page-contact' ? <AdminSimplePageEditor slug="contact" /> : null}
+          {activeTab === 'page-renovaite' ? <AdminSimplePageEditor slug="renovaite" /> : null}
 
-                <nav className="mt-4 space-y-4">
-                  {visibleSidebarGroups.map((group) => (
-                    <div key={group.label}>
-                      <div className="mb-1.5 px-3 text-[9px] uppercase tracking-[0.22em] text-white/30">{group.label}</div>
-                      <div className="space-y-1.5">
-                        {group.items.map((item) => {
-                          const active = activeTab === item.key
-                          const Icon = item.icon
-                          const count = getTabCount(item.key)
-                          return (
-                            <button
-                              key={item.key}
-                              type="button"
-                              onClick={() => setActiveTab(item.key)}
-                              className={`flex w-full items-center justify-between gap-3 rounded-[16px] border px-3 py-2 text-left text-sm transition ${
-                                active
-                                  ? 'border-[#D8FF6A]/40 bg-[#D8FF6A]/12 text-[#D8FF6A]'
-                                  : 'border-transparent text-white/58 hover:border-white/8 hover:bg-white/5 hover:text-white'
-                              }`}
-                            >
-                              <span className="flex min-w-0 items-center gap-3">
-                                <Icon size={16} className={active ? 'text-[#D8FF6A]' : 'text-white/36'} />
-                                <span className="truncate font-semibold">{item.label}</span>
-                              </span>
-                              {typeof count === 'number' ? (
-                                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${active ? 'bg-[#D8FF6A] text-[#111]' : 'bg-white/8 text-white/42'}`}>
-                                  {count}
-                                </span>
-                              ) : null}
-                            </button>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </nav>
-              </aside>
+          {activeTab === 'projects' ? (
+            <AdminProjectLibraryPanel
+              connected={tableConnections.projects ?? connected}
+              loadError={tableLoadErrors.projects}
+              saving={saving}
+              projects={projects}
+              draft={projectDraft}
+              selectedTitle={selectedProject?.title}
+              setDraft={setProjectDraft}
+              emptyDraft={emptyProjectDraft}
+              toDraft={toProjectDraft}
+              onSave={saveProject}
+              onDelete={deleteProject}
+              onImportDefaults={() => importDefaultContent('projects')}
+            />
+          ) : null}
 
-              <div className="min-w-0">
-            <div className="flex min-w-0 flex-col gap-4 rounded-[22px] border border-white/7 bg-[#111214] p-4 shadow-[0_16px_42px_rgba(0,0,0,0.26)] sm:rounded-[26px] lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[16px] bg-[#D8FF6A] text-[#111111] shadow-[0_12px_30px_rgba(216,255,106,0.16)]">
-                  <ShieldCheck size={20} />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-[11px] uppercase tracking-[0.3em] text-white/42">BuildCivil control</div>
-                  <h1 className="mt-1 truncate text-2xl font-black tracking-[-0.06em] text-white sm:text-[1.95rem]">
-                    {activeTab === 'overview' ? 'Dashboard overview' : activeTabLabel}
-                  </h1>
-                  <p className="mt-1 max-w-2xl text-sm text-white/55">
-                    Manage projects, services, and lead messages from one centered workspace.
-                  </p>
-                  {session ? (
-                    <p className="mt-2 truncate text-xs font-semibold uppercase tracking-[0.2em] text-[#D8FF6A]/62">
-                      {session.role.replace(/_/g, ' ')} · {session.email}
-                    </p>
-                  ) : null}
-                </div>
-              </div>
+          {activeTab === 'services' ? (
+            <AdminServiceLibraryPanel
+              connected={tableConnections.services ?? connected}
+              loadError={tableLoadErrors.services}
+              saving={saving}
+              services={services}
+              draft={serviceDraft}
+              selectedTitle={selectedService?.title}
+              setDraft={setServiceDraft}
+              emptyDraft={emptyServiceDraft}
+              toDraft={toServiceDraft}
+              onSave={saveService}
+              onDelete={deleteService}
+              onImportDefaults={() => importDefaultContent('services')}
+            />
+          ) : null}
 
-              <div className="w-full md:hidden">
-                <label className="block">
-                  <span className="mb-2 block text-[10px] uppercase tracking-[0.22em] text-white/36">Jump to section</span>
-                  <select
-                    value={activeTab}
-                    onChange={(event) => setActiveTab(event.target.value as ViewKey)}
-                    className="w-full rounded-[18px] border border-white/10 bg-[#151516] px-4 py-3 text-sm font-semibold text-white outline-none focus:border-[#D8FF6A]/50"
-                  >
-                    {visibleSidebarGroups.map((group) => (
-                      <optgroup key={group.label} label={group.label}>
-                        {group.items.map((item) => (
-                          <option key={item.key} value={item.key}>
-                            {item.label}
-                            {typeof getTabCount(item.key) === 'number' ? ` (${getTabCount(item.key)})` : ''}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-                  </select>
-                </label>
-              </div>
+          {activeTab === 'pages' ? <AdminPagesPanel /> : null}
+          {activeTab === 'sections-builder' ? <AdminCmsManagerPanel mode="sections" /> : null}
+          {activeTab === 'packages' ? <AdminPackagesPanel /> : null}
+          {activeTab === 'policy-pages' ? <AdminPolicyPagesPanel /> : null}
+          {activeTab === 'media' ? <AdminMediaPanel /> : null}
+          {activeTab === 'settings' ? <AdminSettingsPanel /> : null}
+          {activeTab === 'google-setup' ? <AdminGoogleSetupPanel /> : null}
+          {activeTab === 'theme-studio' ? <AdminCmsManagerPanel mode="theme" /> : null}
+          {activeTab === 'logos-brand' ? <AdminCmsManagerPanel mode="brand" /> : null}
+          {activeTab === 'fonts' ? <AdminCmsManagerPanel mode="fonts" /> : null}
+          {activeTab === 'forms-fields' ? <AdminCmsManagerPanel mode="forms" /> : null}
+          {activeTab === 'seo-center' ? <AdminSeoPanel /> : null}
+          {activeTab === 'site-navigation' ? <AdminCmsManagerPanel mode="navigation" /> : null}
+          {activeTab === 'package-quotes' ? <AdminPackageQuotesPanel /> : null}
+          {activeTab === 'newsletter' ? <AdminNewsletterPanel /> : null}
+          {activeTab === 'admin-users' ? <AdminUsersPanel /> : null}
 
-              <div className="hidden w-full overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:block lg:hidden lg:w-auto lg:pb-0">
-                <div className="flex min-w-max items-center gap-2">
-                  {visibleTabs.map((tab) => {
-                    const active = activeTab === tab.key
-                    const Icon = tab.icon
-                    return (
-                      <TopPill
-                        key={tab.key}
-                        active={active}
-                        icon={Icon}
-                        label={tab.label}
-                        onClick={() => setActiveTab(tab.key)}
-                        count={tab.key === 'overview' ? undefined : getTabCount(tab.key)}
-                      />
-                    )
-                  })}
-                </div>
-              </div>
+          {activeTab === 'enquiries' ? (
+            <AdminServiceEnquiriesPanel
+              connected={connected}
+              saving={saving}
+              enquiries={enquiries}
+              onUpdateStatus={updateEnquiryStatus}
+              onDelete={deleteEnquiry}
+            />
+          ) : null}
 
-              <div className="flex flex-wrap items-center gap-2 lg:justify-end">
-                <button
-                  type="button"
-                  onClick={loadData}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-white/74 transition hover:border-[#D8FF6A]/40 hover:text-white"
-                >
-                  <RefreshCw size={15} className="text-[#D8FF6A]" />
-                  Refresh
-                </button>
-                <button
-                  type="button"
-                  disabled={saving}
-                  onClick={refreshPublicSite}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-4 py-2.5 text-sm font-medium text-[#D8FF6A] transition hover:border-[#D8FF6A]/45 disabled:opacity-50"
-                >
-                  <RefreshCw size={15} />
-                  Publish refresh
-                </button>
-                <Link
-                  href="/"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-white/74 transition hover:border-[#D8FF6A]/40 hover:text-white"
-                >
-                  Open site
-                  <ArrowRight size={15} className="text-[#D8FF6A]" />
-                </Link>
-                <form action="/api/admin/logout" method="post">
-                  <button
-                    type="submit"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.045] px-4 py-2.5 text-sm font-medium text-white/74 transition hover:border-[#E87F24]/40 hover:text-white"
-                  >
-                    <LogOut size={15} />
-                    Sign out
-                  </button>
-                </form>
-              </div>
-            </div>
-
-            {error ? (
-              <div className="mt-5 rounded-[24px] border border-[#E87F24]/30 bg-[#2a1b11] p-5 text-sm text-[#ffd7b2]">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div>
-                    <div className="text-[11px] font-black uppercase tracking-[0.24em] text-[#FFC81E]">Dashboard needs attention</div>
-                    <p className="mt-2 leading-6">{error}</p>
-                    <p className="mt-1 text-xs leading-5 text-[#ffd7b2]/70">
-                      If your session expired, sign out and login again. If this keeps happening, refresh the dashboard data.
-                    </p>
-                  </div>
-                  <div className="flex shrink-0 flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={loadData}
-                      className="inline-flex items-center gap-2 rounded-full border border-[#FFC81E]/25 bg-[#FFC81E]/10 px-4 py-2.5 text-xs font-semibold text-[#fff1c4]"
-                    >
-                      <RefreshCw size={14} />
-                      Retry
-                    </button>
-                    <form action="/api/admin/logout" method="post">
-                      <button
-                        type="submit"
-                        className="inline-flex items-center gap-2 rounded-full bg-[#FFC81E] px-4 py-2.5 text-xs font-semibold text-[#1c1712]"
-                      >
-                        <LogOut size={14} />
-                        Sign out
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-            {notice ? (
-              <div className="mt-5 rounded-[22px] border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-5 py-4 text-sm text-[#D8FF6A]">
-                {notice}
-              </div>
-            ) : null}
-
-            {!loading && !connected && !error ? (
-              <div className="mt-5 rounded-[24px] border border-[#FFC81E]/20 bg-[#FFC81E]/8 p-5 text-sm text-[#fff1c4]">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div>
-                    <div className="text-[11px] font-black uppercase tracking-[0.24em] text-[#FFC81E]">Database connection issue</div>
-                    <p className="mt-2 leading-6">
-                      The dashboard is showing fallback or empty data because one or more Supabase admin tables are unavailable in this environment.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={loadData}
-                    className="inline-flex w-fit items-center gap-2 rounded-full border border-[#FFC81E]/25 bg-[#FFC81E]/10 px-4 py-2.5 text-xs font-semibold text-[#fff1c4]"
-                  >
-                    <RefreshCw size={14} />
-                    Check again
-                  </button>
-                </div>
-              </div>
-            ) : null}
-
-            {loading ? (
-              <div className="mt-6 rounded-[28px] border border-white/8 bg-white/5 px-6 py-12 text-center text-sm text-white/55">
-                Loading dashboard...
-              </div>
-            ) : null}
-
-            <AdminPanelBoundary key={activeTab} title={activeTabLabel}>
-            {!loading && activeTab === 'overview' ? (
-              <AdminOverviewPanelView
-                connected={connected}
-                counts={counts}
-                role={activeRole}
-                loadIssues={loadIssues}
-                projects={projects}
-                services={services}
-                packages={packages}
-                pages={pages}
-                messages={messages}
-                enquiries={enquiries}
-                packageQuotes={packageQuotes}
-                newsletter={newsletter}
-                media={media}
-                onNavigate={setActiveTab}
-                onEditProject={(project) => {
-                  setActiveTab('projects')
-                  setProjectDraft(toProjectDraft(project))
-                }}
-                onImportDefaults={importDefaultContent}
-              />
-            ) : null}
-
-            {!loading && activeTab === 'help-guide' ? (
-              <AdminHelpGuidePanel />
-            ) : null}
-
-            {!loading && activeTab === 'page-home' ? (
-              <AdminHomePageEditor />
-            ) : null}
-
-            {!loading && activeTab === 'page-about' ? <AdminSimplePageEditor slug="about" /> : null}
-
-            {!loading && activeTab === 'page-services' ? <AdminSimplePageEditor slug="services" /> : null}
-
-            {!loading && activeTab === 'page-projects' ? <AdminSimplePageEditor slug="projects" /> : null}
-
-            {!loading && activeTab === 'page-contact' ? <AdminSimplePageEditor slug="contact" /> : null}
-
-            {!loading && activeTab === 'page-renovaite' ? <AdminSimplePageEditor slug="renovaite" /> : null}
-
-            {!loading && activeTab === 'projects' ? (
-              <AdminProjectLibraryPanel
-                connected={tableConnections.projects ?? connected}
-                loadError={tableLoadErrors.projects}
-                saving={saving}
-                projects={projects}
-                draft={projectDraft}
-                selectedTitle={selectedProject?.title}
-                setDraft={setProjectDraft}
-                emptyDraft={emptyProjectDraft}
-                toDraft={toProjectDraft}
-                onSave={saveProject}
-                onDelete={deleteProject}
-                onImportDefaults={() => importDefaultContent('projects')}
-              />
-            ) : null}
-
-            {!loading && activeTab === 'services' ? (
-              <AdminServiceLibraryPanel
-                connected={tableConnections.services ?? connected}
-                loadError={tableLoadErrors.services}
-                saving={saving}
-                services={services}
-                draft={serviceDraft}
-                selectedTitle={selectedService?.title}
-                setDraft={setServiceDraft}
-                emptyDraft={emptyServiceDraft}
-                toDraft={toServiceDraft}
-                onSave={saveService}
-                onDelete={deleteService}
-                onImportDefaults={() => importDefaultContent('services')}
-              />
-            ) : null}
-
-            {!loading && activeTab === 'pages' ? (
-              <AdminPagesPanel />
-            ) : null}
-
-            {!loading && activeTab === 'sections-builder' ? (
-              <AdminCmsManagerPanel mode="sections" />
-            ) : null}
-
-            {!loading && activeTab === 'packages' ? (
-              <AdminPackagesPanel />
-            ) : null}
-
-            {!loading && activeTab === 'policy-pages' ? (
-              <AdminPolicyPagesPanel />
-            ) : null}
-
-            {!loading && activeTab === 'media' ? (
-              <AdminMediaPanel />
-            ) : null}
-
-            {!loading && activeTab === 'settings' ? (
-              <AdminSettingsPanel />
-            ) : null}
-
-            {!loading && activeTab === 'google-setup' ? (
-              <AdminGoogleSetupPanel />
-            ) : null}
-
-            {!loading && activeTab === 'theme-studio' ? (
-              <AdminCmsManagerPanel mode="theme" />
-            ) : null}
-
-            {!loading && activeTab === 'logos-brand' ? (
-              <AdminCmsManagerPanel mode="brand" />
-            ) : null}
-
-            {!loading && activeTab === 'fonts' ? (
-              <AdminCmsManagerPanel mode="fonts" />
-            ) : null}
-
-            {!loading && activeTab === 'forms-fields' ? (
-              <AdminCmsManagerPanel mode="forms" />
-            ) : null}
-
-            {!loading && activeTab === 'seo-center' ? (
-              <AdminSeoPanel />
-            ) : null}
-
-            {!loading && activeTab === 'site-navigation' ? (
-              <AdminCmsManagerPanel mode="navigation" />
-            ) : null}
-
-            {!loading && activeTab === 'package-quotes' ? (
-              <AdminPackageQuotesPanel />
-            ) : null}
-
-            {!loading && activeTab === 'newsletter' ? (
-              <AdminNewsletterPanel />
-            ) : null}
-
-            {!loading && activeTab === 'admin-users' ? (
-              <AdminUsersPanel />
-            ) : null}
-
-            {!loading && activeTab === 'enquiries' ? (
-              <AdminServiceEnquiriesPanel
-                connected={connected}
-                saving={saving}
-                enquiries={enquiries}
-                onUpdateStatus={updateEnquiryStatus}
-                onDelete={deleteEnquiry}
-              />
-            ) : null}
-
-            {!loading && activeTab === 'messages' ? (
-              <AdminLeadMessagesPanel
-                connected={connected}
-                saving={saving}
-                messages={messages}
-                onUpdateStatus={updateMessageStatus}
-                onDelete={deleteMessage}
-              />
-            ) : null}
-            {!loading && (!activeTabExists || !activeTabAllowed) ? (
-              <div className="mt-6 rounded-[28px] border border-white/8 bg-[#171719] p-6 text-sm text-white/58">
-                <div className="text-[11px] font-black uppercase tracking-[0.24em] text-[#D8FF6A]">Section unavailable</div>
-                <h2 className="mt-3 text-2xl font-black tracking-[-0.04em] text-white">Open an available dashboard section</h2>
-                <p className="mt-3 max-w-2xl leading-6">
-                  This dashboard tab is not available for the current role or no longer exists. Choose a section from the sidebar, or return to Overview.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('overview')}
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111111]"
-                >
-                  Go to Overview
-                  <ArrowRight size={15} />
-                </button>
-              </div>
-            ) : null}
-            </AdminPanelBoundary>
-              </div>
-            </div>
-          </div>
-        </div>
-      </MotionSection>
-    </main>
+          {activeTab === 'messages' ? (
+            <AdminLeadMessagesPanel
+              connected={connected}
+              saving={saving}
+              messages={messages}
+              onUpdateStatus={updateMessageStatus}
+              onDelete={deleteMessage}
+            />
+          ) : null}
+        </AdminPanelBoundary>
+      ) : null}
+    </AdminShell>
   )
 }

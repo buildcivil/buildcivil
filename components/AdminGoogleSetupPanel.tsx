@@ -12,7 +12,7 @@ type GoogleResponse = {
   error?: string
 }
 
-const inputClass = 'w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+const inputClass = 'w-full rounded-[16px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 const googleSetupDefaults: GoogleSetup = {
   siteUrl: '',
   siteName: 'BuildCivil Constructions',
@@ -24,8 +24,8 @@ const googleSetupDefaults: GoogleSetup = {
 function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-[11px] uppercase tracking-[0.24em] text-white/40">{label}</span>
-      {hint ? <span className="mt-1 block text-xs leading-5 text-white/38">{hint}</span> : null}
+      <span className="text-[11px] uppercase tracking-[0.24em] text-slate-400">{label}</span>
+      {hint ? <span className="mt-1 block text-xs leading-5 text-slate-400">{hint}</span> : null}
       <span className="mt-2 block">{children}</span>
     </label>
   )
@@ -81,26 +81,26 @@ export default function AdminGoogleSetupPanel() {
   }
 
   if (loading) {
-    return <div className="mt-6 rounded-[28px] border border-white/8 bg-white/5 px-6 py-12 text-center text-sm text-white/55">Loading Google setup...</div>
+    return <div className="mt-6 rounded-[28px] border border-slate-200 bg-slate-50 px-6 py-12 text-center text-sm text-slate-500">Loading Google setup...</div>
   }
 
   return (
     <div className="mt-6 grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-      <section className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+      <section className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Google setup</div>
-            <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-white">Analytics and Search Console</h2>
-            <p className="mt-2 max-w-xl text-sm leading-6 text-white/50">
+            <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Google setup</div>
+            <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-slate-900">Analytics and Search Console</h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
               Add Google IDs and verification values here. We generate tags, sitemap, and robots automatically.
             </p>
           </div>
-          <Search size={20} className="text-[#D8FF6A]" />
+          <Search size={20} className="text-[#E87F24]" />
         </div>
 
-        {error ? <div className="mt-4 rounded-2xl border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">{error}</div> : null}
-        {message ? <div className="mt-4 rounded-2xl border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-[#D8FF6A]">{message}</div> : null}
-        {!connected ? <div className="mt-4 rounded-2xl border border-[#D8FF6A]/16 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-white/70">Live settings table is unavailable here. Saving is paused until Supabase is connected.</div> : null}
+        {error ? <div className="mt-4 rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800">{error}</div> : null}
+        {message ? <div className="mt-4 rounded-2xl border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-[#E87F24]">{message}</div> : null}
+        {!connected ? <div className="mt-4 rounded-2xl border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-slate-600">Live settings table is unavailable here. Saving is paused until Supabase is connected.</div> : null}
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <Field label="Website URL" hint="Use the final production URL, for example https://buildcivil.in">
@@ -122,14 +122,14 @@ export default function AdminGoogleSetupPanel() {
           </Field>
         </div>
 
-        <button type="button" disabled={!connected || saving} onClick={saveSettings} className="mt-5 inline-flex items-center gap-3 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-60">
+        <button type="button" disabled={!connected || saving} onClick={saveSettings} className="mt-5 inline-flex items-center gap-3 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60">
           Save Google setup <ArrowRight size={15} />
         </button>
       </section>
 
-      <section className="rounded-[30px] border border-white/8 bg-[#171719] p-4 text-sm leading-6 text-white/58 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-        <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Launch checklist</div>
-        <h3 className="mt-2 text-xl font-black text-white">What this controls</h3>
+      <section className="rounded-[30px] border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-500 shadow-sm sm:p-6">
+        <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Launch checklist</div>
+        <h3 className="mt-2 text-xl font-black text-slate-900">What this controls</h3>
         <div className="mt-5 space-y-4">
           <p>Google Analytics and Tag Manager tags render only when IDs are added.</p>
           <p>Search Console verification appears as a meta tag in the page head.</p>

@@ -93,49 +93,49 @@ export default function AdminImageUploadControl({
   }
 
   return (
-    <div className="mt-3 rounded-[18px] border border-white/8 bg-white/[0.03] p-3">
+    <div className="mt-3 rounded-[18px] border border-slate-200 bg-slate-50 p-3">
       <div className="grid gap-3 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
-        <label className="grid gap-2 text-xs text-white/55">
+        <label className="grid gap-2 text-xs text-slate-500">
           Image file
           <input
             type="file"
             accept="image/*"
             onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-            className="rounded-[14px] border border-white/10 bg-[#0f0f0f] px-3 py-2 text-xs text-[#F5F3EB]"
+            className="rounded-[14px] border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-900"
           />
         </label>
-        <label className="grid gap-2 text-xs text-white/55">
+        <label className="grid gap-2 text-xs text-slate-500">
           Alt text
           <input
             value={altText}
             onChange={(event) => setAltText(event.target.value)}
             placeholder={altSeed}
-            className="rounded-[14px] border border-white/10 bg-[#0f0f0f] px-3 py-2 text-xs text-[#F5F3EB] outline-none"
+            className="rounded-[14px] border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-900 outline-none"
           />
         </label>
         <button
           type="button"
           disabled={uploading || !file}
           onClick={uploadImage}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#D8FF6A] px-4 py-2.5 text-xs font-black text-[#111] disabled:cursor-not-allowed disabled:opacity-55"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#E87F24] px-4 py-2.5 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-55"
         >
           {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
           {uploadLabel}
         </button>
       </div>
       {file && fileSizeMb > 2 ? (
-        <div className="mt-3 rounded-2xl border border-[#FFC81E]/25 bg-[#FFC81E]/10 px-3 py-2 text-xs leading-5 text-[#F6DA8A]">
+        <div className="mt-3 rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-5 text-amber-700">
           This image is {fileSizeMb.toFixed(1)}MB. It will upload at its original size and quality.
         </div>
       ) : null}
       {error ? (
-        <div className="mt-3 rounded-2xl border border-[#E87F24]/30 bg-[#2a1b11] px-3 py-2 text-xs leading-5 text-[#ffd7b2]">
+        <div className="mt-3 rounded-2xl border border-orange-200 bg-orange-50 px-3 py-2 text-xs leading-5 text-orange-800">
           {error}
         </div>
       ) : null}
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <AdminMediaPicker value={value} onSelect={onChange} buttonLabel={pickerLabel} />
-        <span className="text-xs leading-5 text-white/36">{helper}</span>
+        <span className="text-xs leading-5 text-slate-400">{helper}</span>
       </div>
     </div>
   )

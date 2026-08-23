@@ -1,8 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Trash2 } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { Mail, Search, Trash2 } from 'lucide-react'
 import { readJsonResponse } from '@/lib/safe-json'
+import {
+  AdminAlert,
+  AdminBadge,
+  AdminButton,
+  AdminCard,
+  AdminConfirmDialog,
+  AdminEmptyState,
+  AdminInput,
+  AdminPageHeader,
+  AdminSelect,
+} from '@/components/admin/ui'
 
 type MessageRow = {
   id: string
@@ -35,6 +46,18 @@ export default function AdminLeadMessagesPanel({
   const [loading, setLoading] = useState(!messages.length)
   const [error, setError] = useState('')
   const [panelConnected, setPanelConnected] = useState(connected)
+  const [query, setQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    return rows.filter((row) => {
+      if (statusFilter !== 'all' && (row.status || 'new') !== statusFilter) return false
+      if (!q) return true
+      return [row.name, row.email, row.phone, row.project_type, row.details].join(' ').toLowerCase().includes(q)
+    })
+  }, [rows, query, statusFilter])
 
   async function loadMessages() {
     setLoading(true)
@@ -60,99 +83,109 @@ export default function AdminLeadMessagesPanel({
 
   useEffect(() => {
     void loadMessages()
-    // Run once on tab mount so this panel is not dependent on the overview load.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <div className="mt-6 rounded-[30px] border border-white/8 bg-[#171719] p-6 shadow-[0_18px_60px_rgba(0,0,0,0.28)]">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Inbox</div>
-          <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-white">
-            Recent contact inquiries
-          </h2>
+    <div className="space-y-5">
+      <AdminPageHeader
+        eyebrow="Inbox"
+        title="Contact messages"
+        description="Track contact form submissions, update lead status, and remove test messages."
+        actions={
+          <AdminButton onClick={loadMessages} loading={loading}>
+            Refresh
+          </AdminButton>
+        }
+      />
+
+      {error ? <AdminAlert tone="error">{error}</AdminAlert> : null}
+
+      <AdminCard>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="relative flex-1">
+            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <AdminInput className="pl-9" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search name, email, details…" />
+          </div>
+          <AdminSelect className="sm:w-40" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <option value="all">All statuses</option>
+            {statusOptions.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </AdminSelect>
         </div>
-        <p className="max-w-2xl text-sm leading-6 text-white/55">
-          Use this section to track contact form submissions, update lead status, and remove test messages.
-        </p>
-        <button
-          type="button"
-          onClick={loadMessages}
-          className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white/74 transition hover:border-[#D8FF6A]/30"
-        >
-          Refresh messages
-        </button>
-      </div>
 
-      <div className="mt-6 space-y-4">
-        {loading ? (
-          <div className="rounded-[24px] border border-white/8 bg-white/5 px-5 py-10 text-center text-sm text-white/52">
-            Loading contact messages...
-          </div>
-        ) : error ? (
-          <div className="rounded-[24px] border border-[#E87F24]/30 bg-[#E87F24]/10 px-5 py-6 text-sm leading-6 text-[#FFBC8C]">
-            {error}
-          </div>
-        ) : rows.length ? (
-          rows.map((message) => (
-            <div
-              key={message.id}
-              className="rounded-[24px] border border-white/8 bg-white/5 p-5"
-            >
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div>
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-lg font-semibold text-white">{message.name}</h3>
-                    <span className="rounded-full border border-white/8 bg-[#D8FF6A]/90 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-[#111]">
-                      {message.status || 'new'}
-                    </span>
+        <div className="mt-5 space-y-3">
+          {loading ? (
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 px-5 py-10 text-center text-sm text-slate-500">Loading messages…</div>
+          ) : filtered.length ? (
+            filtered.map((message) => (
+              <div key={message.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="text-base font-bold text-slate-900">{message.name}</h3>
+                      <AdminBadge tone={(message.status || 'new') === 'new' ? 'warning' : 'neutral'}>{message.status || 'new'}</AdminBadge>
+                    </div>
+                    <p className="mt-2 break-all text-sm text-slate-500">{message.email}</p>
+                    {message.phone ? <p className="mt-1 text-sm text-slate-500">{message.phone}</p> : null}
+                    {message.project_type ? <p className="mt-1 text-sm text-slate-500">Project: {message.project_type}</p> : null}
+                    {message.details ? <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-500">{message.details}</p> : null}
                   </div>
-                  <p className="mt-2 break-all text-sm text-white/55">{message.email}</p>
-                  {message.phone ? <p className="mt-1 text-sm text-white/55">{message.phone}</p> : null}
-                  {message.project_type ? (
-                    <p className="mt-1 text-sm text-white/55">Project: {message.project_type}</p>
-                  ) : null}
-                  {message.details ? <p className="mt-3 max-w-3xl text-sm leading-7 text-white/60">{message.details}</p> : null}
-                </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {statusOptions.map((status) => (
-                    <button
-                      key={status}
-                      type="button"
+                  <div className="flex flex-wrap gap-2">
+                    {statusOptions.map((status) => (
+                      <AdminButton
+                        key={status}
+                        className="!py-2 text-xs capitalize"
+                        disabled={!panelConnected || saving}
+                        onClick={async () => {
+                          await onUpdateStatus(message.id, status)
+                          await loadMessages()
+                        }}
+                      >
+                        {status}
+                      </AdminButton>
+                    ))}
+                    <AdminButton
+                      variant="danger"
+                      className="!py-2 text-xs"
                       disabled={!panelConnected || saving}
-                      onClick={async () => {
-                        await onUpdateStatus(message.id, status)
-                        await loadMessages()
-                      }}
-                      className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold capitalize text-white/74 disabled:opacity-50"
+                      onClick={() => setDeleteId(message.id)}
                     >
-                      {status}
-                    </button>
-                  ))}
-                  <button
-                    type="button"
-                    disabled={!panelConnected || saving}
-                    onClick={async () => {
-                      await onDelete(message.id)
-                      await loadMessages()
-                    }}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#E87F24]/30 px-3 py-2 text-xs font-semibold text-[#FFBC8C] disabled:opacity-50"
-                  >
-                    <Trash2 size={12} />
-                    Delete
-                  </button>
+                      <Trash2 size={12} /> Delete
+                    </AdminButton>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <div className="rounded-[24px] border border-dashed border-white/10 bg-white/5 px-5 py-10 text-center text-sm text-white/52">
-            No contact messages yet. New submissions from the Contact page will appear here automatically.
-          </div>
-        )}
-      </div>
+            ))
+          ) : (
+            <AdminEmptyState
+              icon={<Mail size={18} />}
+              title={rows.length ? 'No messages match your filters' : 'No contact messages yet'}
+              description="New submissions from the Contact page will appear here automatically."
+            />
+          )}
+        </div>
+      </AdminCard>
+
+      <AdminConfirmDialog
+        open={Boolean(deleteId)}
+        title="Delete this message?"
+        description="This permanently removes the contact form submission from the inbox."
+        confirmLabel="Delete"
+        danger
+        loading={saving}
+        onCancel={() => setDeleteId(null)}
+        onConfirm={async () => {
+          if (!deleteId) return
+          await onDelete(deleteId)
+          setDeleteId(null)
+          await loadMessages()
+        }}
+      />
     </div>
   )
 }

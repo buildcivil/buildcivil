@@ -1,4 +1,4 @@
-import { scryptSync, timingSafeEqual } from 'crypto'
+import { randomBytes, scryptSync, timingSafeEqual } from 'crypto'
 import { supabaseRequest } from '@/lib/supabase-admin'
 
 type AdminUserRow = {
@@ -15,6 +15,23 @@ export type VerifiedAdminUser = Pick<AdminUserRow, 'id' | 'email' | 'name' | 'ro
 
 function hashPassword(password: string, salt: string) {
   return scryptSync(password, salt, 64).toString('hex')
+}
+
+/** Create a salted scrypt hash suitable for storing on admin_users. */
+export function createPasswordCredentials(password: string) {
+  const password_salt = randomBytes(16).toString('hex')
+  const password_hash = hashPassword(password, password_salt)
+  return { password_hash, password_salt }
+}
+
+/** Strip password fields from an admin user row before returning to the client. */
+export function sanitizeAdminUserRow<T extends Record<string, unknown>>(row: T) {
+  const { password_hash: _h, password_salt: _s, password: _p, ...safe } = row as T & {
+    password_hash?: unknown
+    password_salt?: unknown
+    password?: unknown
+  }
+  return safe
 }
 
 function safeCompareHex(left: string, right: string) {

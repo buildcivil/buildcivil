@@ -1,8 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Trash2 } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { Handshake, Search, Trash2 } from 'lucide-react'
 import { readJsonResponse } from '@/lib/safe-json'
+import {
+  AdminAlert,
+  AdminBadge,
+  AdminButton,
+  AdminCard,
+  AdminConfirmDialog,
+  AdminEmptyState,
+  AdminInput,
+  AdminPageHeader,
+  AdminSelect,
+} from '@/components/admin/ui'
 
 type EnquiryRow = {
   id: string
@@ -26,10 +37,6 @@ type AdminServiceEnquiriesPanelProps = {
 
 const statusOptions = ['new', 'read', 'replied', 'closed']
 
-function formatStatusLabel(status?: string | null) {
-  return (status || 'new').replaceAll('_', ' ')
-}
-
 export default function AdminServiceEnquiriesPanel({
   connected,
   saving,
@@ -41,6 +48,18 @@ export default function AdminServiceEnquiriesPanel({
   const [loading, setLoading] = useState(!enquiries.length)
   const [error, setError] = useState('')
   const [panelConnected, setPanelConnected] = useState(connected)
+  const [query, setQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    return rows.filter((row) => {
+      if (statusFilter !== 'all' && (row.status || 'new') !== statusFilter) return false
+      if (!q) return true
+      return [row.name, row.email, row.phone, row.service, row.other_service, row.source].join(' ').toLowerCase().includes(q)
+    })
+  }, [rows, query, statusFilter])
 
   async function loadEnquiries() {
     setLoading(true)
@@ -66,110 +85,100 @@ export default function AdminServiceEnquiriesPanel({
 
   useEffect(() => {
     void loadEnquiries()
-    // Run once on tab mount so this panel is not dependent on the overview load.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <div className="mt-6 rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Hero service enquiries</div>
-          <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-white">
-            Consultation requests
-          </h2>
+    <div className="space-y-5">
+      <AdminPageHeader
+        eyebrow="Inbox"
+        title="Service enquiries"
+        description="Leads from the service enquiry forms across the site."
+        actions={<AdminButton onClick={loadEnquiries} loading={loading}>Refresh</AdminButton>}
+      />
+
+      {error ? <AdminAlert tone="error">{error}</AdminAlert> : null}
+
+      <AdminCard>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="relative flex-1">
+            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <AdminInput className="pl-9" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search name, email, service…" />
+          </div>
+          <AdminSelect className="sm:w-40" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <option value="all">All statuses</option>
+            {statusOptions.map((status) => (
+              <option key={status} value={status}>{status}</option>
+            ))}
+          </AdminSelect>
         </div>
-        <p className="max-w-2xl text-sm leading-6 text-white/55">
-          These leads are generated from the home page consultation popup and stored in Supabase.
-        </p>
-        <button
-          type="button"
-          onClick={loadEnquiries}
-          className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white/74 transition hover:border-[#D8FF6A]/30"
-        >
-          Refresh enquiries
-        </button>
-      </div>
 
-      <div className="mt-6 grid gap-4 xl:grid-cols-2">
-        {loading ? (
-          <div className="rounded-[24px] border border-white/8 bg-white/5 px-5 py-10 text-center text-sm text-white/52 xl:col-span-2">
-            Loading service enquiries...
-          </div>
-        ) : error ? (
-          <div className="rounded-[24px] border border-[#E87F24]/30 bg-[#E87F24]/10 px-5 py-6 text-sm leading-6 text-[#FFBC8C] xl:col-span-2">
-            {error}
-          </div>
-        ) : rows.length ? (
-          rows.map((enquiry) => (
-            <div
-              key={enquiry.id}
-              className="rounded-[24px] border border-white/8 bg-white/5 p-5"
-            >
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="text-lg font-semibold text-white">{enquiry.name}</h3>
-                    <span className="rounded-full border border-white/8 bg-[#D8FF6A]/90 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-[#111]">
-                      {formatStatusLabel(enquiry.status)}
-                    </span>
-                  </div>
-                  <div className="mt-3 grid gap-2 text-sm text-white/58 sm:grid-cols-2">
-                    <p className="break-all">{enquiry.email}</p>
-                    <p>{enquiry.phone}</p>
-                  </div>
-                  <div className="mt-4 rounded-[18px] border border-white/8 bg-[#0f0f0f] p-4">
-                    <div className="text-[10px] uppercase tracking-[0.24em] text-white/36">Selected service</div>
-                    <p className="mt-2 text-base font-semibold text-[#D8FF6A]">
-                      {enquiry.service === 'Other' ? enquiry.other_service : enquiry.service}
+        <div className="mt-5 space-y-3">
+          {loading ? (
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 px-5 py-10 text-center text-sm text-slate-500">Loading enquiries…</div>
+          ) : filtered.length ? (
+            filtered.map((enquiry) => (
+              <div key={enquiry.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="text-base font-bold text-slate-900">{enquiry.name}</h3>
+                      <AdminBadge tone={(enquiry.status || 'new') === 'new' ? 'warning' : 'neutral'}>{enquiry.status || 'new'}</AdminBadge>
+                    </div>
+                    <p className="mt-2 break-all text-sm text-slate-500">{enquiry.email}</p>
+                    <p className="mt-1 text-sm text-slate-500">{enquiry.phone}</p>
+                    <p className="mt-2 text-sm text-slate-600">
+                      Service: <span className="font-semibold text-slate-900">{enquiry.service}</span>
+                      {enquiry.other_service ? ` · ${enquiry.other_service}` : ''}
                     </p>
-                    {enquiry.service === 'Other' ? (
-                      <p className="mt-1 text-xs uppercase tracking-[0.18em] text-white/36">Custom request</p>
-                    ) : null}
+                    {enquiry.source ? <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-400">{enquiry.source}</p> : null}
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/38">
-                    <span>Source: {enquiry.source || 'home_hero'}</span>
-                    {enquiry.created_at ? <span>{new Date(enquiry.created_at).toLocaleString()}</span> : null}
+                  <div className="flex flex-wrap gap-2">
+                    {statusOptions.map((status) => (
+                      <AdminButton
+                        key={status}
+                        className="!py-2 text-xs capitalize"
+                        disabled={!panelConnected || saving}
+                        onClick={async () => {
+                          await onUpdateStatus(enquiry.id, status)
+                          await loadEnquiries()
+                        }}
+                      >
+                        {status}
+                      </AdminButton>
+                    ))}
+                    <AdminButton variant="danger" className="!py-2 text-xs" disabled={!panelConnected || saving} onClick={() => setDeleteId(enquiry.id)}>
+                      <Trash2 size={12} /> Delete
+                    </AdminButton>
                   </div>
-                </div>
-
-                <div className="flex shrink-0 flex-wrap gap-2 lg:max-w-[180px]">
-                  {statusOptions.map((status) => (
-                    <button
-                      key={status}
-                      type="button"
-                      disabled={!panelConnected || saving}
-                      onClick={async () => {
-                        await onUpdateStatus(enquiry.id, status)
-                        await loadEnquiries()
-                      }}
-                      className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold capitalize text-white/74 disabled:opacity-50"
-                    >
-                      {status}
-                    </button>
-                  ))}
-                  <button
-                    type="button"
-                    disabled={!panelConnected || saving}
-                    onClick={async () => {
-                      await onDelete(enquiry.id)
-                      await loadEnquiries()
-                    }}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#E87F24]/30 px-3 py-2 text-xs font-semibold text-[#FFBC8C] disabled:opacity-50"
-                  >
-                    <Trash2 size={12} />
-                    Delete
-                  </button>
                 </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <div className="rounded-[24px] border border-dashed border-white/10 bg-white/5 px-5 py-10 text-center text-sm text-white/52 xl:col-span-2">
-            No service enquiries yet. New consultation popup submissions will appear here.
-          </div>
-        )}
-      </div>
+            ))
+          ) : (
+            <AdminEmptyState
+              icon={<Handshake size={18} />}
+              title={rows.length ? 'No enquiries match your filters' : 'No service enquiries yet'}
+              description="New service form submissions will show up here."
+            />
+          )}
+        </div>
+      </AdminCard>
+
+      <AdminConfirmDialog
+        open={Boolean(deleteId)}
+        title="Delete this enquiry?"
+        description="This permanently removes the service enquiry from the inbox."
+        confirmLabel="Delete"
+        danger
+        loading={saving}
+        onCancel={() => setDeleteId(null)}
+        onConfirm={async () => {
+          if (!deleteId) return
+          await onDelete(deleteId)
+          setDeleteId(null)
+          await loadEnquiries()
+        }}
+      />
     </div>
   )
 }

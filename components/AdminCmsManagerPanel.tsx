@@ -146,10 +146,10 @@ const pageOptions = ['home', 'about', 'services', 'projects', 'contact', 'renova
 const locationOptions = ['header', 'footer_company', 'footer_legal', 'footer_social']
 
 const inputClass =
-  'w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+  'w-full rounded-[16px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 
 const textareaClass =
-  'min-h-[120px] w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+  'min-h-[120px] w-full rounded-[16px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 
 function emptySection(): SiteSectionRow {
   return {
@@ -373,7 +373,7 @@ function ColorTokenInput({
         type="color"
         value={isHexColor(value) ? value : '#ffffff'}
         onChange={(event) => onChange(event.target.value)}
-        className="h-12 w-14 rounded-[14px] border border-white/10 bg-transparent"
+        className="h-12 w-14 rounded-[14px] border border-slate-200 bg-transparent"
         aria-label="Pick color"
       />
       <input className={inputClass} value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} />
@@ -425,9 +425,9 @@ function Field({
 }) {
   return (
     <label className="block">
-      <div className="mb-2 text-xs uppercase tracking-[0.24em] text-white/56">{label}</div>
+      <div className="mb-2 text-xs uppercase tracking-[0.24em] text-slate-500">{label}</div>
       {children}
-      {hint ? <div className="mt-2 text-xs leading-5 text-white/36">{hint}</div> : null}
+      {hint ? <div className="mt-2 text-xs leading-5 text-slate-400">{hint}</div> : null}
     </label>
   )
 }
@@ -446,7 +446,7 @@ function Toggle({
       type="button"
       onClick={() => onChange(!checked)}
       className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
-        checked ? 'bg-[#D8FF6A] text-[#111]' : 'border border-white/10 bg-white/5 text-white/62'
+        checked ? 'bg-[#E87F24] text-white' : 'border border-slate-200 bg-slate-50 text-slate-500'
       }`}
     >
       {checked ? <Eye size={14} /> : <EyeOff size={14} />}
@@ -473,15 +473,15 @@ function CmsPreview({
   ctaStyle?: CSSProperties
 }) {
   return (
-    <aside className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+    <aside className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Live preview</div>
-          <h3 className="mt-2 text-xl font-black tracking-[-0.04em] text-white">Before publishing</h3>
+          <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Live preview</div>
+          <h3 className="mt-2 text-xl font-black tracking-[-0.04em] text-slate-900">Before publishing</h3>
         </div>
-        <CheckCircle2 size={18} className="text-[#D8FF6A]" />
+        <CheckCircle2 size={18} className="text-[#E87F24]" />
       </div>
-      <div className="mt-5 overflow-hidden rounded-[26px] border border-white/8 bg-[#FEFDDF] text-[#1f1b16]">
+      <div className="mt-5 overflow-hidden rounded-[26px] border border-slate-200 bg-[#FEFDDF] text-[#1f1b16]">
         {image ? (
           <div className="relative aspect-[16/9] bg-[#111]">
             <Image src={image} alt={imageAlt || title || 'CMS preview image'} fill className="object-cover" sizes="420px" />
@@ -525,17 +525,17 @@ function BrandLogoPreview({ draft }: { draft: BrandAssetsRow }) {
   const previewLogo = draft.header_logo_url || draft.footer_logo_url || draft.social_image_url
 
   return (
-    <aside className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+    <aside className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Logo preview</div>
-          <h3 className="mt-2 text-xl font-black tracking-[-0.04em] text-white">Header and footer sizing</h3>
+          <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Logo preview</div>
+          <h3 className="mt-2 text-xl font-black tracking-[-0.04em] text-slate-900">Header and footer sizing</h3>
         </div>
-        <CheckCircle2 size={18} className="text-[#D8FF6A]" />
+        <CheckCircle2 size={18} className="text-[#E87F24]" />
       </div>
 
       <div className="mt-5 space-y-4">
-        <div className="rounded-[26px] border border-white/8 bg-[#FEFDDF] p-4 text-[#1c1712]">
+        <div className="rounded-[26px] border border-slate-200 bg-[#FEFDDF] p-4 text-[#1c1712]">
           <div className="text-[10px] uppercase tracking-[0.24em] text-[#5d8fb2]">Header desktop</div>
           <div className="mt-3 flex items-center justify-between gap-4 rounded-b-[20px] border border-[#73A5CA]/14 bg-white px-4 py-2.5 shadow-[0_12px_28px_rgba(28,23,18,0.08)]">
             <div className="relative h-14 overflow-hidden" style={{ width: Number.parseFloat(headerLogoWidth) || 180 }}>
@@ -550,7 +550,7 @@ function BrandLogoPreview({ draft }: { draft: BrandAssetsRow }) {
           <p className="mt-2 text-xs text-[#6e6256]">Fixed height: width changes without stretching the header.</p>
         </div>
 
-        <div className="rounded-[26px] border border-white/8 bg-[#FEFDDF] p-4 text-[#1c1712]">
+        <div className="rounded-[26px] border border-slate-200 bg-[#FEFDDF] p-4 text-[#1c1712]">
           <div className="text-[10px] uppercase tracking-[0.24em] text-[#5d8fb2]">Mobile header</div>
           <div className="mt-3 flex max-w-[280px] items-center justify-between rounded-b-[20px] border border-[#73A5CA]/14 bg-white px-4 py-2.5 shadow-[0_12px_28px_rgba(28,23,18,0.08)]">
             <div className="relative h-12 overflow-hidden" style={{ width: Number.parseFloat(mobileLogoWidth) || 126 }}>
@@ -560,8 +560,8 @@ function BrandLogoPreview({ draft }: { draft: BrandAssetsRow }) {
           </div>
         </div>
 
-        <div className="rounded-[26px] border border-white/8 bg-[#0f0d0b] p-4 text-[#FEFDDF]">
-          <div className="text-[10px] uppercase tracking-[0.24em] text-[#D8FF6A]/70">Footer</div>
+        <div className="rounded-[26px] border border-slate-200 bg-[#0f0d0b] p-4 text-[#FEFDDF]">
+          <div className="text-[10px] uppercase tracking-[0.24em] text-[#E87F24]/70">Footer</div>
           <div className="mt-4 flex items-center gap-4">
             <div className="relative h-16 overflow-hidden" style={{ width: Number.parseFloat(footerLogoWidth) || 190 }}>
               {footerLogo ? <Image src={footerLogo} alt={draft.footer_logo_alt || 'Footer logo preview'} fill className="object-contain object-left" sizes="260px" unoptimized /> : <div className="flex h-full items-center text-xs text-[#FEFDDF]/50">No footer logo selected</div>}
@@ -609,13 +609,13 @@ function ContentValueEditor({
     return (
       <div className="space-y-3">
         {value.map((item, index) => (
-          <div key={`${fieldPath}-${index}`} className="rounded-[20px] border border-white/8 bg-white/5 p-4">
+          <div key={`${fieldPath}-${index}`} className="rounded-[20px] border border-slate-200 bg-slate-50 p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-white/44">Item {index + 1}</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Item {index + 1}</div>
               <button
                 type="button"
                 onClick={() => onChange(value.filter((_, itemIndex) => itemIndex !== index))}
-                className="rounded-full border border-[#E87F24]/24 px-3 py-1 text-xs font-semibold text-[#FFBC8C]"
+                className="rounded-full border border-[#E87F24]/24 px-3 py-1 text-xs font-semibold text-orange-700"
               >
                 Remove
               </button>
@@ -630,7 +630,7 @@ function ContentValueEditor({
         <button
           type="button"
           onClick={() => onChange([...value, blankLike(value[0] ?? {})])}
-          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70"
+          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-600"
         >
           <Plus size={14} />
           Add item
@@ -683,7 +683,7 @@ function SectionContentEditor({
 
   if (!entries.length) {
     return (
-      <div className="rounded-[22px] border border-dashed border-white/12 bg-white/5 p-5 text-sm leading-6 text-white/48">
+      <div className="rounded-[22px] border border-dashed border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-500">
         No repeatable content fields are stored for this section yet. Main section title, copy, image,
         CTA, layout, and visibility can still be edited above.
       </div>
@@ -693,11 +693,11 @@ function SectionContentEditor({
   return (
     <div className="space-y-5">
       {entries.map(([key, value]) => (
-        <div key={key} className="rounded-[24px] border border-white/8 bg-[#101011] p-4">
+        <div key={key} className="rounded-[24px] border border-slate-200 bg-[#101011] p-4">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.24em] text-white/40">Structured field</div>
-              <h4 className="mt-1 text-lg font-black text-white">{key}</h4>
+              <div className="text-[11px] uppercase tracking-[0.24em] text-slate-400">Structured field</div>
+              <h4 className="mt-1 text-lg font-black text-slate-900">{key}</h4>
             </div>
             <button
               type="button"
@@ -706,7 +706,7 @@ function SectionContentEditor({
                 delete next[key]
                 onChange(next)
               }}
-              className="rounded-full border border-[#E87F24]/24 px-3 py-1.5 text-xs font-semibold text-[#FFBC8C]"
+              className="rounded-full border border-[#E87F24]/24 px-3 py-1.5 text-xs font-semibold text-orange-700"
             >
               Remove field
             </button>
@@ -732,13 +732,13 @@ function FormFieldsBuilder({
   return (
     <div className="space-y-3">
       {fields.map((field, index) => (
-        <div key={`${field.name}-${index}`} className="rounded-[22px] border border-white/8 bg-white/5 p-4">
+        <div key={`${field.name}-${index}`} className="rounded-[22px] border border-slate-200 bg-slate-50 p-4">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-white/44">Field {index + 1}</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Field {index + 1}</div>
             <button
               type="button"
               onClick={() => onChange(fields.filter((_, fieldIndex) => fieldIndex !== index))}
-              className="rounded-full border border-[#E87F24]/24 px-3 py-1 text-xs font-semibold text-[#FFBC8C]"
+              className="rounded-full border border-[#E87F24]/24 px-3 py-1 text-xs font-semibold text-orange-700"
             >
               Remove
             </button>
@@ -778,7 +778,7 @@ function FormFieldsBuilder({
       <button
         type="button"
         onClick={() => onChange([...fields, emptyFormField()])}
-        className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70"
+        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-600"
       >
         <Plus size={14} />
         Add field
@@ -1040,53 +1040,53 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
 
   return (
     <section className="mt-6 space-y-5">
-      <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+      <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="inline-flex rounded-full border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#D8FF6A]">
+            <div className="inline-flex rounded-full border border-emerald-200 bg-orange-50 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-[#E87F24]">
               {copy.eyebrow}
             </div>
-            <h2 className="mt-4 max-w-4xl text-3xl font-black tracking-[-0.05em] text-white sm:text-5xl">
+            <h2 className="mt-4 max-w-4xl text-3xl font-black tracking-[-0.05em] text-slate-900 sm:text-5xl">
               {copy.title}
             </h2>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-white/56 sm:text-base">{copy.copy}</p>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base">{copy.copy}</p>
           </div>
           <button
             type="button"
             onClick={load}
             disabled={loading || saving}
-            className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white/70 transition hover:border-[#D8FF6A]/30 hover:text-white disabled:opacity-50"
+            className="inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-orange-200 hover:text-slate-900 disabled:opacity-50"
           >
-            <RotateCcw size={14} className="text-[#D8FF6A]" />
+            <RotateCcw size={14} className="text-[#E87F24]" />
             Reload
           </button>
         </div>
 
         {error ? (
-          <div className="mt-5 rounded-[20px] border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">
+          <div className="mt-5 rounded-[20px] border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800">
             {error}
           </div>
         ) : null}
         {notice ? (
-          <div className="mt-5 rounded-[20px] border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-[#D8FF6A]">
+          <div className="mt-5 rounded-[20px] border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-[#E87F24]">
             {notice}
           </div>
         ) : null}
       </div>
 
       {loading ? (
-        <div className="rounded-[28px] border border-white/8 bg-white/5 px-6 py-12 text-center text-sm text-white/55">
+        <div className="rounded-[28px] border border-slate-200 bg-slate-50 px-6 py-12 text-center text-sm text-slate-500">
           Loading CMS controls...
         </div>
       ) : null}
 
       {!loading && mode === 'sections' ? (
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
-          <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+          <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Guided section editor</div>
-                <h3 className="mt-2 text-2xl font-black text-white">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Guided section editor</div>
+                <h3 className="mt-2 text-2xl font-black text-slate-900">
                   {sectionDraft.id ? `${sectionDraft.page_slug} / ${sectionDraft.section_key}` : 'New section'}
                 </h3>
               </div>
@@ -1094,7 +1094,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                 <button
                   type="button"
                   onClick={() => selectSection(emptySection())}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-600"
                 >
                   <Plus size={14} />
                   New
@@ -1110,7 +1110,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                     }
                     selectSection(copyRow)
                   }}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-600"
                 >
                   <Copy size={14} />
                   Duplicate
@@ -1218,9 +1218,9 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
 
             <div className="mt-6">
               <div className="mb-4">
-                <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Repeatable content</div>
-                <h4 className="mt-2 text-xl font-black text-white">Cards, sliders, FAQs, teams, and lists</h4>
-                <p className="mt-2 text-sm leading-6 text-white/48">
+                <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Repeatable content</div>
+                <h4 className="mt-2 text-xl font-black text-slate-900">Cards, sliders, FAQs, teams, and lists</h4>
+                <p className="mt-2 text-sm leading-6 text-slate-500">
                   Edit structured content with guided fields built for non-technical updates.
                 </p>
               </div>
@@ -1232,7 +1232,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                 type="button"
                 disabled={saving}
                 onClick={() => saveSection(false)}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/72 disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-500 disabled:opacity-50"
               >
                 <Save size={15} />
                 Save Draft
@@ -1241,7 +1241,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                 type="button"
                 disabled={saving}
                 onClick={() => saveSection(true)}
-                className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50"
               >
                 Publish
                 <ArrowRight size={15} />
@@ -1251,7 +1251,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                   type="button"
                   disabled={saving}
                   onClick={deleteSection}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#E87F24]/30 px-5 py-3 text-sm font-semibold text-[#FFBC8C] disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-full border border-orange-200 px-5 py-3 text-sm font-semibold text-orange-700 disabled:opacity-50"
                 >
                   <Trash2 size={15} />
                   Delete
@@ -1269,26 +1269,26 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
               imageAlt={sectionDraft.image_alt}
               cta={sectionDraft.cta_label}
             />
-            <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
-              <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Section library</div>
+            <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+              <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Section library</div>
               <div className="mt-4 max-h-[620px] space-y-3 overflow-y-auto pr-1">
                 {sections.map((section) => (
                   <button
                     key={section.id ?? `${section.page_slug}-${section.section_key}`}
                     type="button"
                     onClick={() => selectSection(section)}
-                    className={`w-full rounded-[20px] border p-4 text-left transition hover:border-[#D8FF6A]/25 ${
-                      sectionDraft.id === section.id ? 'border-[#D8FF6A]/45 bg-[#D8FF6A]/10' : 'border-white/8 bg-white/5'
+                    className={`w-full rounded-[20px] border p-4 text-left transition hover:border-sky-200 ${
+                      sectionDraft.id === section.id ? 'border-[#E87F24]/40 bg-orange-50' : 'border-slate-200 bg-slate-50'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <div className="text-sm font-semibold text-white">{section.title || section.section_key}</div>
-                        <div className="mt-1 text-xs uppercase tracking-[0.2em] text-white/36">
+                        <div className="text-sm font-semibold text-slate-900">{section.title || section.section_key}</div>
+                        <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">
                           {section.page_slug} / {section.section_key}
                         </div>
                       </div>
-                      <span className={`rounded-full px-2 py-1 text-[10px] font-semibold ${section.visible ? 'bg-[#D8FF6A] text-[#111]' : 'bg-white/8 text-white/50'}`}>
+                      <span className={`rounded-full px-2 py-1 text-[10px] font-semibold ${section.visible ? 'bg-[#E87F24] text-white' : 'bg-slate-100 text-slate-500'}`}>
                         {section.visible ? 'Live' : 'Hidden'}
                       </span>
                     </div>
@@ -1302,10 +1302,10 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
 
       {!loading && (mode === 'theme' || mode === 'fonts') ? (
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(360px,0.85fr)]">
-          <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+          <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
             {mode === 'theme' ? (
               <>
-                <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Color and shape controls</div>
+                <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Color and shape controls</div>
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
                   {Object.entries(themeDraft.colors).map(([key, value]) => (
                     <Field key={key} label={key}>
@@ -1319,13 +1319,13 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                   ))}
                 </div>
                 {contrast !== null && contrast < 4.5 ? (
-                  <div className="mt-5 rounded-[18px] border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">
+                  <div className="mt-5 rounded-[18px] border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800">
                     Contrast warning: base and ink are below recommended readability contrast.
                   </div>
                 ) : null}
-                <div className="mt-8 rounded-[26px] border border-white/8 bg-white/[0.03] p-4 sm:p-5">
-                  <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Public button controls</div>
-                  <p className="mt-2 text-sm leading-6 text-white/45">
+                <div className="mt-8 rounded-[26px] border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                  <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Public button controls</div>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
                     These settings affect public CTAs and form buttons only. Admin dashboard buttons stay unchanged.
                   </p>
                   <div className="mt-5 grid gap-4 md:grid-cols-2">
@@ -1378,11 +1378,11 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                   </div>
                   {contrastRatio(themeDraft.buttons.backgroundColor, themeDraft.buttons.textColor) !== null &&
                   (contrastRatio(themeDraft.buttons.backgroundColor, themeDraft.buttons.textColor) ?? 10) < 4.5 ? (
-                    <div className="mt-5 rounded-[18px] border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">
+                    <div className="mt-5 rounded-[18px] border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800">
                       Button contrast warning: button background and text may be hard to read.
                     </div>
                   ) : null}
-                  <div className="mt-5 flex flex-wrap gap-3 rounded-[22px] border border-white/8 bg-[#0f0f0f] p-4">
+                  <div className="mt-5 flex flex-wrap gap-3 rounded-[22px] border border-slate-200 bg-slate-50 p-4">
                     <span className="btn-primary inline-flex px-5 py-3 text-sm font-semibold" style={buttonPreviewStyle(themeDraft.buttons)}>
                       Normal button
                     </span>
@@ -1428,7 +1428,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
               </>
             ) : (
               <>
-                <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Typography controls</div>
+                <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Typography controls</div>
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
                   {[
                     ['headingFamily', 'Heading font'],
@@ -1456,7 +1456,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                 type="button"
                 disabled={saving}
                 onClick={saveTheme}
-                className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50"
               >
                 Save and Publish
                 <ArrowRight size={15} />
@@ -1476,7 +1476,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
 
       {!loading && mode === 'brand' ? (
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(360px,0.85fr)]">
-          <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+          <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
             <div className="grid gap-4 md:grid-cols-2">
               <Field label="Header logo image">
                 <input
@@ -1536,8 +1536,8 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
             </div>
 
             <div className="mt-6">
-              <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Header logo size</div>
-              <p className="mt-2 text-sm leading-6 text-white/45">Adjust only the logo width. Header height stays fixed so the navigation remains clean.</p>
+              <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Header logo size</div>
+              <p className="mt-2 text-sm leading-6 text-slate-500">Adjust only the logo width. Header height stays fixed so the navigation remains clean.</p>
               <div className="mt-4 grid gap-4 md:grid-cols-3">
                 {[
                   ['headerDesktopWidth', 'Header desktop width (px)', brandDraft.logo_settings.desktopWidth ?? 180],
@@ -1558,8 +1558,8 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
             </div>
 
             <div className="mt-6">
-              <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Footer logo size</div>
-              <p className="mt-2 text-sm leading-6 text-white/45">Footer logo sizing is separate, so you can make the footer logo larger without changing the header.</p>
+              <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Footer logo size</div>
+              <p className="mt-2 text-sm leading-6 text-slate-500">Footer logo sizing is separate, so you can make the footer logo larger without changing the header.</p>
               <div className="mt-4 grid gap-4 md:grid-cols-2">
                 {[
                   ['footerDesktopWidth', 'Footer desktop width (px)', 190],
@@ -1587,7 +1587,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                 />
               </Field>
             </div>
-            <div className="mt-4 rounded-[20px] border border-[#D8FF6A]/15 bg-[#D8FF6A]/8 px-4 py-3 text-sm leading-6 text-white/58">
+            <div className="mt-4 rounded-[20px] border border-[#E87F24]/20 bg-[#E87F24]/8 px-4 py-3 text-sm leading-6 text-slate-500">
               Text-logo controls are hidden to keep this panel simple. Upload/select the header logo, optional footer logo, favicon, and adjust image widths only.
             </div>
             <div className="mt-6">
@@ -1595,7 +1595,7 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                 type="button"
                 disabled={saving}
                 onClick={saveBrand}
-                className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50"
               >
                 Save Brand
                 <ArrowRight size={15} />
@@ -1609,10 +1609,10 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
 
       {!loading && mode === 'forms' ? (
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(360px,0.85fr)]">
-          <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+          <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h3 className="text-2xl font-black text-white">{formDraft.id ? formDraft.form_key : 'New form definition'}</h3>
-              <button type="button" onClick={() => selectForm(emptyForm())} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70">
+              <h3 className="text-2xl font-black text-slate-900">{formDraft.id ? formDraft.form_key : 'New form definition'}</h3>
+              <button type="button" onClick={() => selectForm(emptyForm())} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-600">
                 <Plus size={14} />
                 New
               </button>
@@ -1642,30 +1642,30 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
                 <input className={inputClass} value={formDraft.error_message} onChange={(event) => setFormDraft((prev) => ({ ...prev, error_message: event.target.value }))} />
               </Field>
               <div>
-                <div className="mb-3 text-xs uppercase tracking-[0.24em] text-white/56">Form fields</div>
+                <div className="mb-3 text-xs uppercase tracking-[0.24em] text-slate-500">Form fields</div>
                 <FormFieldsBuilder fields={formFields} onChange={setFormFields} />
               </div>
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
-              <button type="button" disabled={saving} onClick={saveForm} className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-50">
+              <button type="button" disabled={saving} onClick={saveForm} className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">
                 Save Form
                 <ArrowRight size={15} />
               </button>
               {formDraft.id ? (
-                <button type="button" disabled={saving} onClick={deleteForm} className="inline-flex items-center gap-2 rounded-full border border-[#E87F24]/30 px-5 py-3 text-sm font-semibold text-[#FFBC8C] disabled:opacity-50">
+                <button type="button" disabled={saving} onClick={deleteForm} className="inline-flex items-center gap-2 rounded-full border border-orange-200 px-5 py-3 text-sm font-semibold text-orange-700 disabled:opacity-50">
                   <Trash2 size={15} />
                   Delete
                 </button>
               ) : null}
             </div>
           </div>
-          <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 sm:p-6">
-            <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Form library</div>
+          <div className="rounded-[30px] border border-slate-200 bg-white p-4 sm:p-6">
+            <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Form library</div>
             <div className="mt-4 space-y-3">
               {forms.map((form) => (
-                <button key={form.id ?? form.form_key} type="button" onClick={() => selectForm(form)} className="w-full rounded-[20px] border border-white/8 bg-white/5 p-4 text-left transition hover:border-[#D8FF6A]/25">
-                  <div className="text-sm font-semibold text-white">{form.title}</div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.2em] text-white/36">{form.form_key}</div>
+                <button key={form.id ?? form.form_key} type="button" onClick={() => selectForm(form)} className="w-full rounded-[20px] border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-sky-200">
+                  <div className="text-sm font-semibold text-slate-900">{form.title}</div>
+                  <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">{form.form_key}</div>
                 </button>
               ))}
             </div>
@@ -1675,10 +1675,10 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
 
       {!loading && mode === 'navigation' ? (
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(360px,0.85fr)]">
-          <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+          <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h3 className="text-2xl font-black text-white">{navigationDraft.id ? navigationDraft.label : 'New navigation item'}</h3>
-              <button type="button" onClick={() => setNavigationDraft(emptyNavigation())} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/70">
+              <h3 className="text-2xl font-black text-slate-900">{navigationDraft.id ? navigationDraft.label : 'New navigation item'}</h3>
+              <button type="button" onClick={() => setNavigationDraft(emptyNavigation())} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-600">
                 <Plus size={14} />
                 New
               </button>
@@ -1716,30 +1716,30 @@ export default function AdminCmsManagerPanel({ mode }: PanelProps) {
               </Field>
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
-              <button type="button" disabled={saving} onClick={saveNavigation} className="inline-flex items-center gap-2 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-50">
+              <button type="button" disabled={saving} onClick={saveNavigation} className="inline-flex items-center gap-2 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">
                 Save Link
                 <ArrowRight size={15} />
               </button>
               {navigationDraft.id ? (
-                <button type="button" disabled={saving} onClick={deleteNavigation} className="inline-flex items-center gap-2 rounded-full border border-[#E87F24]/30 px-5 py-3 text-sm font-semibold text-[#FFBC8C] disabled:opacity-50">
+                <button type="button" disabled={saving} onClick={deleteNavigation} className="inline-flex items-center gap-2 rounded-full border border-orange-200 px-5 py-3 text-sm font-semibold text-orange-700 disabled:opacity-50">
                   <Trash2 size={15} />
                   Delete
                 </button>
               ) : null}
             </div>
           </div>
-          <div className="rounded-[30px] border border-white/8 bg-[#171719] p-4 sm:p-6">
-            <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Drag order helper</div>
-            <p className="mt-2 text-sm leading-6 text-white/48">Edit sort numbers to reorder. Lower numbers appear first. Drag-and-drop sequencing is supported in the existing Header & Footer editor.</p>
+          <div className="rounded-[30px] border border-slate-200 bg-white p-4 sm:p-6">
+            <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Drag order helper</div>
+            <p className="mt-2 text-sm leading-6 text-slate-500">Edit sort numbers to reorder. Lower numbers appear first. Drag-and-drop sequencing is supported in the existing Header & Footer editor.</p>
             <div className="mt-4 space-y-3">
               {navigation.map((item) => (
-                <button key={item.id ?? `${item.location}-${item.href}`} type="button" onClick={() => setNavigationDraft(item)} className="flex w-full items-center gap-3 rounded-[20px] border border-white/8 bg-white/5 p-4 text-left transition hover:border-[#D8FF6A]/25">
-                  <GripVertical size={16} className="text-white/28" />
+                <button key={item.id ?? `${item.location}-${item.href}`} type="button" onClick={() => setNavigationDraft(item)} className="flex w-full items-center gap-3 rounded-[20px] border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-sky-200">
+                  <GripVertical size={16} className="text-slate-400" />
                   <div className="min-w-0 flex-1">
-                    <div className="text-sm font-semibold text-white">{item.label}</div>
-                    <div className="mt-1 truncate text-xs uppercase tracking-[0.2em] text-white/36">{item.location} • {item.href}</div>
+                    <div className="text-sm font-semibold text-slate-900">{item.label}</div>
+                    <div className="mt-1 truncate text-xs uppercase tracking-[0.2em] text-slate-400">{item.location} • {item.href}</div>
                   </div>
-                  <span className="rounded-full bg-white/8 px-2 py-1 text-xs text-white/50">{item.sort_order}</span>
+                  <span className="rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-500">{item.sort_order}</span>
                 </button>
               ))}
             </div>

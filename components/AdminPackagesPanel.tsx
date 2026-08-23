@@ -89,13 +89,13 @@ function parseMaterials(value: string) {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <div className="mb-2 text-xs uppercase tracking-[0.24em] text-white/56">{label}</div>
+      <div className="mb-2 text-xs uppercase tracking-[0.24em] text-slate-500">{label}</div>
       {children}
     </label>
   )
 }
 
-const inputClass = 'w-full rounded-[16px] border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-[#F5F3EB] outline-none transition placeholder:text-white/28 focus:border-[#D8FF6A]/70 focus:ring-2 focus:ring-[#D8FF6A]/10'
+const inputClass = 'w-full rounded-[16px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 
 export default function AdminPackagesPanel() {
   const [rows, setRows] = useState<PackageRow[]>([])
@@ -172,22 +172,22 @@ export default function AdminPackagesPanel() {
 
   return (
     <div className="mt-6 grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-      <section className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+      <section className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Package library</div>
-            <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-white">{draft.id ? 'Edit package' : 'Add package'}</h2>
-            <p className="mt-2 max-w-xl text-sm leading-6 text-white/50">
+            <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Package library</div>
+            <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-slate-900">{draft.id ? 'Edit package' : 'Add package'}</h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
               Add, edit, delete, and preview homepage construction packages, plan details, and material brands.
             </p>
           </div>
-          <button type="button" onClick={() => setDraft(emptyDraft())} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/76">
+          <button type="button" onClick={() => setDraft(emptyDraft())} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600">
             <Plus size={14} /> New
           </button>
         </div>
-        {error ? <div className="mt-4 rounded-2xl border border-[#E87F24]/30 bg-[#2a1b11] px-4 py-3 text-sm text-[#ffd7b2]">{error}</div> : null}
-        {message ? <div className="mt-4 rounded-2xl border border-[#D8FF6A]/20 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-[#D8FF6A]">{message}</div> : null}
-        {!connected ? <div className="mt-4 rounded-2xl border border-[#D8FF6A]/16 bg-[#D8FF6A]/10 px-4 py-3 text-sm text-white/70">Live database is unavailable in this environment, so package saving is paused.</div> : null}
+        {error ? <div className="mt-4 rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800">{error}</div> : null}
+        {message ? <div className="mt-4 rounded-2xl border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-[#E87F24]">{message}</div> : null}
+        {!connected ? <div className="mt-4 rounded-2xl border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-slate-600">Live database is unavailable in this environment, so package saving is paused.</div> : null}
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           {(['slug', 'badge', 'name', 'price', 'price_unit', 'tagline', 'package_name', 'icon_name', 'projects', 'satisfaction'] as const).map((key) => (
@@ -208,44 +208,44 @@ export default function AdminPackagesPanel() {
           </Field>
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-4">
-          <label className="flex items-center gap-2 text-sm text-white/65">
+          <label className="flex items-center gap-2 text-sm text-slate-600">
             <input type="checkbox" checked={draft.featured} onChange={(event) => setDraft((prev) => ({ ...prev, featured: event.target.checked }))} /> Featured
           </label>
-          <label className="flex items-center gap-2 text-sm text-white/65">
+          <label className="flex items-center gap-2 text-sm text-slate-600">
             <input type="checkbox" checked={draft.published} onChange={(event) => setDraft((prev) => ({ ...prev, published: event.target.checked }))} /> Published
           </label>
-          <button type="button" disabled={!connected || saving} onClick={savePackage} className="inline-flex items-center gap-3 rounded-full bg-[#D8FF6A] px-5 py-3 text-sm font-semibold text-[#111] disabled:opacity-60">
+          <button type="button" disabled={!connected || saving} onClick={savePackage} className="inline-flex items-center gap-3 rounded-full bg-[#E87F24] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60">
             Save package <ArrowRight size={15} />
           </button>
           {draft.id ? (
-            <button type="button" disabled={!connected || saving} onClick={() => deletePackage(draft.id!)} className="inline-flex items-center gap-2 rounded-full border border-[#E87F24]/30 px-4 py-3 text-sm font-semibold text-[#FFBC8C] disabled:opacity-60">
+            <button type="button" disabled={!connected || saving} onClick={() => deletePackage(draft.id!)} className="inline-flex items-center gap-2 rounded-full border border-orange-200 px-4 py-3 text-sm font-semibold text-orange-700 disabled:opacity-60">
               <Trash2 size={14} /> Delete
             </button>
           ) : null}
         </div>
       </section>
 
-      <section className="rounded-[30px] border border-white/8 bg-[#171719] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.28)] sm:p-6">
+      <section className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <div className="text-[11px] uppercase tracking-[0.26em] text-white/40">Package library</div>
-            <h3 className="mt-2 text-xl font-black text-white">Select package</h3>
+            <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Package library</div>
+            <h3 className="mt-2 text-xl font-black text-slate-900">Select package</h3>
           </div>
-          <Package size={18} className="text-[#D8FF6A]" />
+          <Package size={18} className="text-[#E87F24]" />
         </div>
         <div className="mt-5 space-y-3">
           {rows.map((row) => (
-            <button key={row.id} type="button" onClick={() => setDraft(toDraft(row))} className="w-full rounded-[22px] border border-white/8 bg-white/5 p-4 text-left transition hover:border-[#D8FF6A]/25 hover:bg-white/8">
+            <button key={row.id} type="button" onClick={() => setDraft(toDraft(row))} className="w-full rounded-[22px] border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-sky-200 hover:bg-slate-100">
               <div className="flex items-center justify-between gap-3">
-                <h4 className="text-lg font-black text-white">{row.name} Package</h4>
-                <span className="rounded-full bg-[#D8FF6A] px-3 py-1 text-xs font-black text-[#111]">{row.price}</span>
+                <h4 className="text-lg font-black text-slate-900">{row.name} Package</h4>
+                <span className="rounded-full bg-[#E87F24] px-3 py-1 text-xs font-black text-white">{row.price}</span>
               </div>
-              <p className="mt-2 text-sm leading-6 text-white/55">{row.tagline}</p>
-              <div className="mt-2 text-xs uppercase tracking-[0.2em] text-white/36">{row.materials?.length ?? 0} materials</div>
+              <p className="mt-2 text-sm leading-6 text-slate-500">{row.tagline}</p>
+              <div className="mt-2 text-xs uppercase tracking-[0.2em] text-slate-400">{row.materials?.length ?? 0} materials</div>
             </button>
           ))}
           {!rows.length ? (
-            <div className="rounded-[22px] border border-dashed border-white/10 bg-white/5 p-5 text-sm leading-6 text-white/55">
+            <div className="rounded-[22px] border border-dashed border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-500">
               No packages found. Use the form on the left to create the first package.
             </div>
           ) : null}
