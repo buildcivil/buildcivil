@@ -17,15 +17,15 @@ const rolePermissions: Record<string, AdminTable[]> = {
   super_admin: [
     'projects', 'services', 'messages', 'pages', 'enquiries', 'media', 'package-quotes', 'newsletter',
     'site-sections', 'site-theme', 'brand-assets', 'form-definitions', 'site-navigation', 'admin-users',
-    'seo-drafts', 'policy-pages',
+    'seo-drafts', 'policy-pages', 'blogs',
   ],
   admin: [
     'projects', 'services', 'messages', 'pages', 'enquiries', 'media', 'package-quotes', 'newsletter',
     'site-sections', 'site-theme', 'brand-assets', 'form-definitions', 'site-navigation',
-    'seo-drafts', 'policy-pages',
+    'seo-drafts', 'policy-pages', 'blogs',
   ],
-  editor: ['projects', 'services', 'pages', 'media', 'site-sections', 'seo-drafts', 'policy-pages'],
-  content_manager: ['projects', 'services', 'pages', 'media', 'site-sections', 'site-navigation', 'seo-drafts', 'policy-pages'],
+  editor: ['projects', 'services', 'pages', 'media', 'site-sections', 'seo-drafts', 'policy-pages', 'blogs'],
+  content_manager: ['projects', 'services', 'pages', 'media', 'site-sections', 'site-navigation', 'seo-drafts', 'policy-pages', 'blogs'],
   project_manager: ['projects', 'services', 'media', 'seo-drafts'],
   media_manager: ['media'],
   leads_manager: ['messages', 'enquiries', 'package-quotes', 'newsletter'],
@@ -139,6 +139,27 @@ type AdminUserRow = Record<string, unknown> & {
   created_at?: string
 }
 
+type BlogRow = Record<string, unknown> & {
+  id: string
+  slug: string
+  title: string
+  excerpt: string
+  content: string
+  cover_image: string
+  cover_image_alt: string
+  author_name: string
+  category: string
+  tags: string[] | unknown
+  read_minutes: number
+  seo_title: string
+  seo_description: string
+  published: boolean
+  featured: boolean
+  sort_order: number
+  published_at?: string
+  created_at?: string
+}
+
 type PageRow = Record<string, unknown> & {
   id: string
   slug: string
@@ -169,6 +190,7 @@ const TABLE_MAP: Record<AdminTable, { table: string }> = {
   'admin-users': { table: 'admin_users' },
   'seo-drafts': { table: 'seo_drafts' },
   'policy-pages': { table: 'policy_pages' },
+  blogs: { table: 'blog_posts' },
 }
 
 function badRequest(message: string) {
@@ -195,6 +217,27 @@ function validateProjectServicePayload(table: AdminTable, payload: unknown) {
   const invalidJsonFields = jsonFields.filter((key) => key in payload && !Array.isArray(payload[key]))
   if (invalidJsonFields.length) {
     return `${table === 'projects' ? 'Project' : 'Service'} fields must be arrays: ${invalidJsonFields.join(', ')}.`
+  }
+
+  return null
+}
+
+function validateBlogPayload(table: AdminTable, payload: unknown) {
+  if (table !== 'blogs') return null
+  if (!isObject(payload)) return 'Blog payload must be an object.'
+
+  const required = ['slug', 'title']
+  const missing = required.filter((key) => !stringValue(payload[key]).trim())
+  if (missing.length) {
+    return `Blog post requires: ${missing.join(', ')}.`
+  }
+
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(stringValue(payload.slug))) {
+    return 'Blog slug must be lowercase letters, numbers, and hyphens only.'
+  }
+
+  if ('tags' in payload && !Array.isArray(payload.tags)) {
+    return 'Blog tags must be an array.'
   }
 
   return null
@@ -276,7 +319,7 @@ function notConfiguredFallback(table: AdminTable) {
     return NextResponse.json({ connected: false, table, rows })
   }
 
-  return NextResponse.json({ connected: false, table, rows: [] as Array<MessageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow> })
+  return NextResponse.json({ connected: false, table, rows: [] as Array<MessageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow | BlogRow> })
 }
 
 function pageFallbackRows() {
@@ -311,7 +354,8 @@ function normalizeTable(table: string): AdminTable | null {
     table === 'site-navigation' ||
     table === 'admin-users' ||
     table === 'seo-drafts' ||
-    table === 'policy-pages'
+    table === 'policy-pages' ||
+    table === 'blogs'
   ) return table
   return null
 }
@@ -471,7 +515,7 @@ export async function GET(_request: Request, context: AdminTableRouteContext) {
       ? 'id,email,name,role,status,created_at,updated_at,last_login_at'
       : '*'
 
-  const response = await supabaseRequest<Array<ProjectRow | ServiceRow | MessageRow | PageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow>>(
+  const response = await supabaseRequest<Array<ProjectRow | ServiceRow | MessageRow | PageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow | BlogRow>>(
     `/rest/v1/${TABLE_MAP[table].table}?select=${select}`,
     {
       method: 'GET',
@@ -512,7 +556,7 @@ export async function POST(request: Request, context: AdminTableRouteContext) {
   }
 
   const payload = await request.json()
-  const validationError = validateProjectServicePayload(table, payload)
+  const validationError = validateProjectServicePayload(table, payload) ?? validateBlogPayload(table, payload)
   if (validationError) return badRequest(validationError)
 
   let writePayload = payload as Record<string, unknown>
@@ -526,7 +570,7 @@ export async function POST(request: Request, context: AdminTableRouteContext) {
   }
 
   try {
-    const rows = await supabaseRequest<Array<ProjectRow | ServiceRow | MessageRow | PageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow>>(
+    const rows = await supabaseRequest<Array<ProjectRow | ServiceRow | MessageRow | PageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow | BlogRow>>(
       `/rest/v1/${TABLE_MAP[table].table}`,
       {
         method: 'POST',
@@ -561,7 +605,7 @@ export async function PATCH(request: Request, context: AdminTableRouteContext) {
   const payload = await request.json()
   const { id, updates } = payload as { id?: string; updates?: Record<string, unknown> }
   if (!id || !updates) return badRequest('PATCH requires id and updates.')
-  const validationError = validateProjectServicePayload(table, updates)
+  const validationError = validateProjectServicePayload(table, updates) ?? validateBlogPayload(table, updates)
   if (validationError) return badRequest(validationError)
 
   let writeUpdates = { ...updates }
@@ -577,7 +621,7 @@ export async function PATCH(request: Request, context: AdminTableRouteContext) {
   }
 
   try {
-    const rows = await supabaseRequest<Array<ProjectRow | ServiceRow | MessageRow | PageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow>>(
+    const rows = await supabaseRequest<Array<ProjectRow | ServiceRow | MessageRow | PageRow | EnquiryRow | MediaRow | PackageQuoteRow | NewsletterRow | AdminUserRow | BlogRow>>(
       `/rest/v1/${TABLE_MAP[table].table}?id=eq.${encodeURIComponent(id)}`,
       {
         method: 'PATCH',

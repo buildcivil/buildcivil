@@ -11,6 +11,7 @@ import {
   Layers3,
   Mail,
   MessageSquareText,
+  Newspaper,
   Package,
   Palette,
   Search,
@@ -39,6 +40,7 @@ export type AdminViewKey =
   | 'media'
   | 'packages'
   | 'policy-pages'
+  | 'blogs'
   | 'settings'
   | 'sections-builder'
   | 'theme-studio'
@@ -91,6 +93,7 @@ export const ADMIN_NAV_GROUPS: AdminNavGroup[] = [
       { key: 'services', label: 'Service Library', icon: Layers3, description: 'Create and publish services' },
       { key: 'packages', label: 'Package Library', icon: Package, description: 'Construction packages & pricing', keywords: ['plans', 'pricing'] },
       { key: 'policy-pages', label: 'Policy Pages', icon: FileText, description: 'Privacy, terms, and policies', keywords: ['legal', 'privacy', 'terms'] },
+      { key: 'blogs', label: 'Blogs & News', icon: Newspaper, description: 'Write and publish blog articles', keywords: ['blog', 'news', 'article', 'post'] },
     ],
   },
   {
@@ -147,6 +150,7 @@ export const ADMIN_VIEW_ACCESS: Record<string, AdminViewKey[]> = {
     'services',
     'packages',
     'policy-pages',
+    'blogs',
     'media',
     'settings',
     'theme-studio',
@@ -174,6 +178,7 @@ export const ADMIN_VIEW_ACCESS: Record<string, AdminViewKey[]> = {
     'media',
     'seo-center',
     'policy-pages',
+    'blogs',
     'help-guide',
   ],
 }

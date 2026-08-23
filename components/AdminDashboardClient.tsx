@@ -112,6 +112,7 @@ const AdminOverviewPanelView = dynamic(() => import('./AdminOverviewPanel'), { l
 const AdminProjectLibraryPanel = dynamic(() => import('./AdminProjectLibraryPanel'), { loading: AdminPanelLoading })
 const AdminServiceLibraryPanel = dynamic(() => import('./AdminServiceLibraryPanel'), { loading: AdminPanelLoading })
 const AdminPolicyPagesPanel = dynamic(() => import('./AdminPolicyPagesPanel'), { loading: AdminPanelLoading })
+const AdminBlogPanel = dynamic(() => import('./AdminBlogPanel'), { loading: AdminPanelLoading })
 const AdminGoogleSetupPanel = dynamic(() => import('./AdminGoogleSetupPanel'), { loading: AdminPanelLoading })
 const AdminHelpGuidePanel = dynamic(() => import('./AdminHelpGuidePanel'), { loading: AdminPanelLoading })
 
@@ -1303,6 +1304,7 @@ export default function AdminDashboardClient() {
           {activeTab === 'sections-builder' ? <AdminCmsManagerPanel mode="sections" /> : null}
           {activeTab === 'packages' ? <AdminPackagesPanel /> : null}
           {activeTab === 'policy-pages' ? <AdminPolicyPagesPanel /> : null}
+          {activeTab === 'blogs' ? <AdminBlogPanel /> : null}
           {activeTab === 'media' ? <AdminMediaPanel /> : null}
           {activeTab === 'settings' ? <AdminSettingsPanel /> : null}
           {activeTab === 'google-setup' ? <AdminGoogleSetupPanel /> : null}

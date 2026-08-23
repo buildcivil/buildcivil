@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { getGoogleSetup, getConfiguredSiteUrl } from '@/lib/google-setup'
+import { getBlogPosts } from '@/lib/blog'
 import { getPolicyPages } from '@/lib/policies'
 import { getProjectCatalogFromCMS } from '@/lib/projects'
 import { getServiceCatalogFromCMS } from '@/lib/services'
@@ -7,26 +8,28 @@ import { getServiceCatalogFromCMS } from '@/lib/services'
 export const revalidate = 300
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [googleSetup, services, projects, policies] = await Promise.all([
+  const [googleSetup, services, projects, policies, blogPosts] = await Promise.all([
     getGoogleSetup(),
     getServiceCatalogFromCMS(),
     getProjectCatalogFromCMS(),
     getPolicyPages({ publishedOnly: true }),
+    getBlogPosts({ publishedOnly: true }),
   ])
   const siteUrl = getConfiguredSiteUrl(googleSetup)
   const now = new Date()
-  const staticRoutes = ['/', '/about', '/services', '/projects', '/contact', '/renovaite', '/ai-cost-estimator']
+  const staticRoutes = ['/', '/about', '/services', '/projects', '/contact', '/renovaite', '/ai-cost-estimator', '/blog', '/careers']
   const routes = [
     ...staticRoutes,
     ...services.map((service) => `/services/${service.slug}`),
     ...projects.map((project) => `/projects/${project.slug}`),
     ...policies.map((policy) => `/${policy.slug}`),
+    ...blogPosts.map((post) => `/blog/${post.slug}`),
   ]
 
   return routes.map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: now,
     changeFrequency: route === '/' ? 'weekly' : 'monthly',
-    priority: route === '/' ? 1 : route.includes('/projects/') || route.includes('/services/') ? 0.75 : 0.8,
+    priority: route === '/' ? 1 : route.includes('/projects/') || route.includes('/services/') || route.includes('/blog/') ? 0.75 : 0.8,
   }))
 }

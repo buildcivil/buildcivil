@@ -140,6 +140,8 @@ function TextLinkEditor({
 function SettingsPreview({ settings }: { settings: GlobalLayoutSettings }) {
   const headerLinks = settings.header.navLinks.filter((link) => link.visible)
   const footerLinks = settings.footer.companyLinks.filter((link) => link.visible)
+  const informationLinks = settings.footer.informationLinks.filter((link) => link.visible)
+  const resourcesLinks = settings.footer.resourcesLinks.filter((link) => link.visible)
 
   return (
     <div className="space-y-4">
@@ -187,7 +189,7 @@ function SettingsPreview({ settings }: { settings: GlobalLayoutSettings }) {
       <section className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Footer preview</div>
         <div className="mt-4 rounded-[24px] border border-slate-200 bg-[#11100f] p-5 text-[#FEFDDF]">
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-5 md:grid-cols-5">
             <div>
               <div className="text-2xl font-black">{settings.footer.bigText}</div>
               <p className="mt-3 text-sm leading-6 text-[#FEFDDF]/60">{settings.footer.description}</p>
@@ -196,6 +198,18 @@ function SettingsPreview({ settings }: { settings: GlobalLayoutSettings }) {
               <div className="font-semibold">{settings.footer.companyTitle}</div>
               <div className="mt-3 grid gap-2 text-sm text-[#FEFDDF]/60">
                 {footerLinks.slice(0, 5).map((link) => <span key={link.id}>{link.label}</span>)}
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold">{settings.footer.informationTitle}</div>
+              <div className="mt-3 grid gap-2 text-sm text-[#FEFDDF]/60">
+                {informationLinks.slice(0, 5).map((link) => <span key={link.id}>{link.label}</span>)}
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold">{settings.footer.resourcesTitle}</div>
+              <div className="mt-3 grid gap-2 text-sm text-[#FEFDDF]/60">
+                {resourcesLinks.slice(0, 5).map((link) => <span key={link.id}>{link.label}</span>)}
               </div>
             </div>
             <div>
@@ -267,6 +281,8 @@ export default function AdminSettingsPanel() {
       ...settings.header.navLinks,
       settings.header.cta,
       ...settings.footer.companyLinks,
+      ...settings.footer.informationLinks,
+      ...settings.footer.resourcesLinks,
       ...settings.footer.socialLinks,
       ...settings.footer.legalLinks,
       ...settings.footer.contactRows,
@@ -588,6 +604,32 @@ export default function AdminSettingsPanel() {
             links={settings.footer.companyLinks}
             onChange={(links) => updateSettings((current) => ({ ...current, footer: { ...current.footer, companyLinks: links } }))}
             onAdd={() => ({ id: uid('footer-link'), label: 'New Link', href: '/', visible: true })}
+          />
+
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
+            <Field label="Information column title">
+              <input className={inputClass} value={settings.footer.informationTitle} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, informationTitle: event.target.value } }))} />
+            </Field>
+          </section>
+
+          <TextLinkEditor
+            title="Footer information links"
+            links={settings.footer.informationLinks}
+            onChange={(links) => updateSettings((current) => ({ ...current, footer: { ...current.footer, informationLinks: links } }))}
+            onAdd={() => ({ id: uid('info-link'), label: 'New Link', href: '/', visible: true })}
+          />
+
+          <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">
+            <Field label="Resources column title">
+              <input className={inputClass} value={settings.footer.resourcesTitle} onChange={(event) => updateSettings((current) => ({ ...current, footer: { ...current.footer, resourcesTitle: event.target.value } }))} />
+            </Field>
+          </section>
+
+          <TextLinkEditor
+            title="Footer resources links"
+            links={settings.footer.resourcesLinks}
+            onChange={(links) => updateSettings((current) => ({ ...current, footer: { ...current.footer, resourcesLinks: links } }))}
+            onAdd={() => ({ id: uid('resource-link'), label: 'New Link', href: '/', visible: true })}
           />
 
           <section className="rounded-[26px] border border-slate-200 bg-slate-50 p-4">

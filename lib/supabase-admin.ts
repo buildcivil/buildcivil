@@ -15,6 +15,7 @@ export type SupabaseCollection =
   | 'admin-users'
   | 'seo-drafts'
   | 'policy-pages'
+  | 'blogs'
 
 const supabaseUrl =
   process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || process.env.SUPABASE_URL?.trim() || ''

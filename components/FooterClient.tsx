@@ -29,6 +29,8 @@ export default function FooterClient({ settings }: { settings: FooterSettings })
   const [message, setMessage] = useState('')
   const contactRows = settings.contactRows.filter((row) => row.visible)
   const companyLinks = settings.companyLinks.filter((link) => link.visible)
+  const informationLinks = settings.informationLinks.filter((link) => link.visible)
+  const resourcesLinks = settings.resourcesLinks.filter((link) => link.visible)
   const socialLinks = settings.socialLinks.filter((link) => link.visible)
   const legalLinks = settings.legalLinks.filter((link) => link.visible)
   const desktopLogoWidth = scaleDimension(resolveDimension(settings.brand.desktopWidth, 190, 110, 380), 1.5, 570)
@@ -80,15 +82,9 @@ export default function FooterClient({ settings }: { settings: FooterSettings })
 
       <div className="relative flex min-h-screen flex-col px-3 py-3 sm:px-5 md:px-6 md:py-6 lg:px-8">
         <div className="relative flex min-h-screen flex-1 overflow-hidden rounded-[24px] border border-white/10 bg-[#11100f] shadow-[0_30px_90px_rgba(0,0,0,0.45)] sm:rounded-[30px]">
-          <div className="absolute inset-0 hidden lg:flex">
-            <div className="w-[34%] border-r border-white/10" />
-            <div className="w-[33%] border-r border-white/10" />
-            <div className="flex-1" />
-          </div>
-
           <div className="relative z-10 flex w-full flex-col">
-            <div className="grid flex-1 gap-0 border-b border-white/10 lg:grid-cols-[1fr_1.1fr_0.9fr]">
-              <MotionDiv className="flex flex-col justify-between gap-10 px-5 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 lg:border-r lg:border-white/10" variants={itemReveal}>
+            <div className="grid flex-1 gap-0 border-b border-white/10 sm:grid-cols-2 lg:grid-cols-[1.25fr_0.65fr_0.75fr_0.65fr_1.1fr]">
+              <MotionDiv className="flex flex-col justify-between gap-10 px-5 py-8 sm:col-span-2 sm:px-8 sm:py-10 md:px-10 md:py-12 lg:col-span-1 lg:border-r lg:border-white/10" variants={itemReveal}>
                 <div>
                   <a href={settings.brand.href} className="flex items-center gap-3 sm:gap-4">
                     {settings.brand.showImageLogo && settings.brand.logoUrl ? (
@@ -142,8 +138,8 @@ export default function FooterClient({ settings }: { settings: FooterSettings })
 
               </MotionDiv>
 
-              <MotionDiv className="px-5 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 lg:border-r lg:border-white/10" variants={itemReveal}>
-                <h4 className="text-2xl font-semibold text-[#FEFDDF]">{settings.companyTitle}</h4>
+              <MotionDiv className="px-5 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 lg:border-r lg:border-white/10" variants={itemReveal}>
+                <h4 className="text-xl font-semibold text-[#FEFDDF] lg:text-2xl">{settings.companyTitle}</h4>
                 <ul className="mt-6 grid gap-3">
                   {companyLinks.map((link) => (
                     <li key={link.id}>
@@ -157,10 +153,43 @@ export default function FooterClient({ settings }: { settings: FooterSettings })
                     </li>
                   ))}
                 </ul>
-
               </MotionDiv>
 
-              <MotionDiv className="px-5 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12" variants={itemReveal}>
+              <MotionDiv className="px-5 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 lg:border-r lg:border-white/10" variants={itemReveal}>
+                <h4 className="text-xl font-semibold text-[#FEFDDF] lg:text-2xl">{settings.informationTitle}</h4>
+                <ul className="mt-6 grid gap-3">
+                  {informationLinks.map((link) => (
+                    <li key={link.id}>
+                      <a
+                        href={link.href}
+                        className="group inline-flex items-center gap-2 text-sm text-[#FEFDDF]/72 transition-colors duration-200 hover:text-[#FEFDDF]"
+                      >
+                        <span>{link.label}</span>
+                        <ArrowRight size={12} className="opacity-0 transition-opacity group-hover:opacity-100" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </MotionDiv>
+
+              <MotionDiv className="px-5 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 lg:border-r lg:border-white/10" variants={itemReveal}>
+                <h4 className="text-xl font-semibold text-[#FEFDDF] lg:text-2xl">{settings.resourcesTitle}</h4>
+                <ul className="mt-6 grid gap-3">
+                  {resourcesLinks.map((link) => (
+                    <li key={link.id}>
+                      <a
+                        href={link.href}
+                        className="group inline-flex items-center gap-2 text-sm text-[#FEFDDF]/72 transition-colors duration-200 hover:text-[#FEFDDF]"
+                      >
+                        <span>{link.label}</span>
+                        <ArrowRight size={12} className="opacity-0 transition-opacity group-hover:opacity-100" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </MotionDiv>
+
+              <MotionDiv className="px-5 py-8 sm:col-span-2 sm:px-8 sm:py-10 md:px-10 md:py-12 lg:col-span-1" variants={itemReveal}>
                 {settings.newsletter.visible ? (
                   <>
                     <h4 className="text-2xl font-semibold text-[#FEFDDF]">{settings.newsletter.title}</h4>

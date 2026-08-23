@@ -57,6 +57,10 @@ export type FooterSettings = {
   contactRows: FooterContactRow[]
   companyTitle: string
   companyLinks: GlobalLink[]
+  informationTitle: string
+  informationLinks: GlobalLink[]
+  resourcesTitle: string
+  resourcesLinks: GlobalLink[]
   newsletter: {
     visible: boolean
     title: string
@@ -112,6 +116,8 @@ export const globalLayoutDefaults: GlobalLayoutSettings = {
       { id: 'projects', label: 'PROJECT', href: '/projects', visible: true },
       { id: 'buildcivil-ai', label: 'AI APP', href: '/ai-cost-estimator', visible: true },
       { id: 'renovaite', label: 'RENOVAITE', href: '/renovaite', visible: true },
+      { id: 'blog', label: 'BLOG', href: '/blog', visible: true },
+      { id: 'careers', label: 'CAREERS', href: '/careers', visible: true },
       { id: 'contact', label: 'CONTACT', href: '/contact', visible: true },
     ],
     cta: { id: 'header-cta', label: 'CONTACT', href: '/contact', visible: true },
@@ -151,6 +157,19 @@ export const globalLayoutDefaults: GlobalLayoutSettings = {
       { id: 'services', label: 'Services', href: '/services', visible: true },
       { id: 'faq', label: 'FAQ', href: '/#faq', visible: true },
       { id: 'contact', label: 'Contact', href: '/contact', visible: true },
+    ],
+    informationTitle: 'Information',
+    informationLinks: [
+      { id: 'terms', label: 'Terms & Condition', href: '/terms-of-service', visible: true },
+      { id: 'privacy', label: 'Privacy Policy', href: '/privacy-policy', visible: true },
+      { id: 'cancellation', label: 'Cancellation Policy', href: '/cancellation-policy', visible: true },
+      { id: 'referral', label: 'Referral Policy', href: '/referral-policy', visible: true },
+      { id: 'faqs', label: 'FAQs', href: '/#faq', visible: true },
+    ],
+    resourcesTitle: 'Resources',
+    resourcesLinks: [
+      { id: 'blogs', label: 'Blogs & News', href: '/blog', visible: true },
+      { id: 'careers', label: 'Careers', href: '/careers', visible: true },
     ],
     newsletter: {
       visible: true,

@@ -80,10 +80,9 @@ export default function AdminPolicyPagesPanel() {
 
   function normalizeSlug(value: string) {
     return value
-      .toLowerCase()
       .trim()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
+      .toLowerCase()
+      .replace(/\s+/g, '-')
   }
 
   async function savePolicy() {
@@ -170,8 +169,13 @@ export default function AdminPolicyPagesPanel() {
         {!connected ? <div className="mt-4 rounded-2xl border border-emerald-200 bg-orange-50 px-4 py-3 text-sm text-slate-600">Live policy table is unavailable here. Saving is paused until Supabase is connected.</div> : null}
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <Field label="Slug" hint="Root URL, for example privacy-policy.">
-            <input className={inputClass} value={draft.slug} onChange={(event) => setDraft((prev) => ({ ...prev, slug: normalizeSlug(event.target.value) }))} />
+          <Field label="Slug" hint="Root URL, for example privacy-policy. Cleaned up automatically on save.">
+            <input
+              className={inputClass}
+              value={draft.slug}
+              onChange={(event) => setDraft((prev) => ({ ...prev, slug: event.target.value }))}
+              onBlur={(event) => setDraft((prev) => ({ ...prev, slug: normalizeSlug(event.target.value) }))}
+            />
           </Field>
           <Field label="Title">
             <input className={inputClass} value={draft.title} onChange={(event) => setDraft((prev) => ({ ...prev, title: event.target.value }))} />
