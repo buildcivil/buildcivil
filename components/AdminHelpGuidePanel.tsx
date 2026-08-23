@@ -91,6 +91,16 @@ const guideSections: GuideSection[] = [
     ],
   },
   {
+    title: 'Blogs & News',
+    affects: 'Public /blog listing and /blog/[slug] article pages.',
+    steps: [
+      'Open Content → Blogs & News and click New.',
+      'Add slug, title, category, author, excerpt, cover image (with alt text), and article content.',
+      'Use blank lines between paragraphs; short single lines become section headings.',
+      'Toggle Featured to pin a post at the top of /blog, then Save post and verify the public URLs.',
+    ],
+  },
+  {
     title: 'SEO Center and Google Setup',
     affects: 'Search appearance, social previews, analytics, and verification tags.',
     steps: [
@@ -105,7 +115,7 @@ const guideSections: GuideSection[] = [
     steps: [
       'Use Logos & Brand for header logo, footer logo, favicon, social image, and logo sizing.',
       'Use Theme Studio for public button colors, hover colors, fonts, and site-wide style controls.',
-      'Use Navigation to add, hide, reorder, or delete header/footer links.',
+      'Use Navigation or Header & Footer to add, hide, reorder, or delete header/footer links (including Blog and Careers).',
       'Use Forms & Fields to edit public form labels, placeholders, options, and success/error text.',
     ],
   },
@@ -121,10 +131,11 @@ const guideSections: GuideSection[] = [
 
 const quickRules = [
   'Keep slugs lowercase with hyphens, for example courtyard-residence.',
-  'Use published=false while drafting new projects, services, packages, or policies.',
+  'Use published=false while drafting new projects, services, packages, policies, or blogs.',
   'Do not delete real leads unless they are spam or test entries.',
   'Use real images and meaningful alt text before launch.',
   'Run Publish refresh after public-facing saves if the frontend appears stale.',
+  'Full written guide for new admins: docs/ADMIN_PANEL_GUIDE.md in the project repository.',
 ]
 
 export default function AdminHelpGuidePanel() {
@@ -141,7 +152,7 @@ export default function AdminHelpGuidePanel() {
               How to manage the BuildCivil website.
             </h2>
             <p className="mt-4 text-sm leading-6 text-slate-500">
-              Use this guide when adding content, handling customer inquiries, updating brand settings, or refreshing the public website after edits.
+              Use this guide when adding content, handling customer inquiries, updating brand settings, or refreshing the public website after edits. For the complete step-by-step admin handbook, see <span className="font-semibold text-slate-700">docs/ADMIN_PANEL_GUIDE.md</span> in the project repository.
             </p>
           </div>
           <div className="rounded-[24px] border border-amber-200 bg-amber-50 p-5">
