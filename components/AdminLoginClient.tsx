@@ -16,28 +16,31 @@ export default function AdminLoginClient() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_15%_10%,rgba(115,165,202,0.18),transparent_42%),radial-gradient(ellipse_at_85%_85%,rgba(232,127,36,0.12),transparent_40%)]" />
 
       <section className="relative mx-auto flex min-h-screen w-full max-w-6xl items-center px-5 py-10 sm:px-8">
-        <div className="grid w-full overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.08)] lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="relative hidden flex-col justify-between bg-gradient-to-br from-[#73A5CA] via-[#5d8fb2] to-[#4a7a9a] p-10 text-white lg:flex">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em]">
-                <ShieldCheck size={13} />
+        <div className="animate-in fade-in zoom-in-95 grid w-full overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.08)] duration-500 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-[#1c2230] via-[#232a3a] to-[#2c2418] p-10 text-white lg:flex">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[#E87F24]/25 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -left-10 h-56 w-56 rounded-full bg-[#73A5CA]/20 blur-3xl" />
+            <div className="relative">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] backdrop-blur">
+                <ShieldCheck size={13} className="text-[#F0954A]" />
                 Secure admin
               </div>
               <h1 className="mt-8 max-w-md text-5xl font-black leading-[0.95] tracking-[-0.06em]">
                 BuildCivil content studio
               </h1>
-              <p className="mt-5 max-w-md text-sm leading-7 text-white/85">
+              <p className="mt-5 max-w-md text-sm leading-7 text-white/60">
                 Manage pages, projects, media, and leads from one clean, organized workspace.
               </p>
             </div>
 
-            <div className="grid gap-3">
+            <div className="relative grid gap-3">
               {[
                 'Edit homepage and section content',
                 'Upload media and update project libraries',
                 'Track enquiries, quotes, and subscribers',
               ].map((item) => (
-                <div key={item} className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white/90 backdrop-blur-sm">
+                <div key={item} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white/85 backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#E87F24]" />
                   {item}
                 </div>
               ))}
@@ -107,7 +110,7 @@ export default function AdminLoginClient() {
 
               <button
                 type="submit"
-                className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#E87F24] px-6 py-3.5 text-sm font-semibold text-white shadow-sm shadow-orange-200 transition hover:bg-[#d6711c]"
+                className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-[#F0954A] to-[#E0711C] px-6 py-3.5 text-sm font-bold text-white shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_10px_24px_-6px_rgba(224,113,28,0.55)] transition-all duration-150 hover:from-[#f4a35f] hover:to-[#d6671a] active:scale-[0.99]"
               >
                 Sign in to dashboard
                 <ArrowRight size={16} />

@@ -55,7 +55,7 @@ export type AdminNavItem = {
   key: AdminViewKey
   label: string
   description?: string
-  icon: ComponentType<{ size?: number; className?: string }>
+  icon: ComponentType<{ size?: number; className?: string; strokeWidth?: number }>
   keywords?: string[]
 }
 
