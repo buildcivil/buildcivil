@@ -1,0 +1,22 @@
+{
+  "format": "custom",
+  "id": "mobile_navbar",
+  "label": "Mobile Navbar",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "mobile_navbr": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    }
+  }
+}

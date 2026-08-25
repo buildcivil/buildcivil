@@ -1,0 +1,80 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"title": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Est labore do elit cupidatat officia minim."
+						}
+					}
+				]
+			},
+			"subtitle": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Esse commodo cupidatat adipisicing Lorem laboris elit deserunt eiusmod non elit id. Ut qui sit esse laboris in consectetur nulla voluptate minim laboris."
+						}
+					}
+				]
+			},
+			"para": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Fugiat sint officia commodo occaecat. Magna deserunt ipsum laborum culpa qui consequat esse eu id laboris et Lorem in incididunt consectetur."
+						}
+					}
+				]
+			},
+			"card": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"cardtitle",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Velit proident do exercitation deserunt aute proident aliqua culpa anim velit mollit minim ut non voluptate. Esse exercitation duis labore in nisi proident ipsum laboris dolore consectetur incididunt in pariatur anim aliquip."
+											}
+										}
+									]
+								}
+							],
+							[
+								"cardpara",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Magna cupidatat quis et. Ex non sint dolore proident. Occaecat sint minim laboris culpa."
+											}
+										}
+									]
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

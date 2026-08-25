@@ -1,14 +1,40 @@
-.next
+# Dependencies
 node_modules
+.pnpm-store
+
+# Builds
+dist
+build
+.next
+.react-router
+out
+tmp
+
+# Env
+.env
 .env.local
 .env*.local
-supabase/.temp
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Tooling / cache
+.nx/cache
+.nx/workspace-data
 .npm-cache/
-.DS_Store
 *.tsbuildinfo
 *.log
+.DS_Store
+
+# Deploy
+.vercel
+.tools
+supabase/.temp
+
+# IDE / agents
+.idea
 .agents/
 skills-lock.json
-.vercel
-.env*
-.tools
+
+# OS
+Thumbs.db

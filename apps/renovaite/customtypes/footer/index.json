@@ -1,0 +1,51 @@
+{
+  "format": "custom",
+  "id": "footer",
+  "label": "Footer",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "contacttitle": {
+        "type": "StructuredText",
+        "config": {
+          "label": "ContactTitle",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "contactcontent": {
+        "type": "StructuredText",
+        "config": {
+          "label": "ContactContent",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "contactimage": {
+        "type": "Image",
+        "config": {
+          "label": "ContactImage",
+          "constraint": {
+            "width": 454,
+            "height": 368
+          },
+          "thumbnails": []
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "footer_column": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    }
+  }
+}

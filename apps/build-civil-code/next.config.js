@@ -1,6 +1,9 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  outputFileTracingRoot: __dirname,
+  // Monorepo root — required for correct file tracing with pnpm
+  outputFileTracingRoot: path.join(__dirname, '../..'),
   async redirects() {
     return [
       {

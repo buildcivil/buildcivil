@@ -1,0 +1,97 @@
+{
+  "id": "landing_page",
+  "type": "SharedSlice",
+  "name": "LandingPage",
+  "description": "LandingPage",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Title",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "heading1"
+          }
+        },
+        "para": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Para",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph"
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "bgimage": {
+          "type": "Group",
+          "config": {
+            "label": "BgImage",
+            "repeat": true,
+            "fields": {
+              "bgimage": {
+                "type": "Image",
+                "config": {
+                  "label": "BgImage",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              }
+            }
+          }
+        },
+        "items": {
+          "type": "Group",
+          "config": {
+            "label": "items",
+            "repeat": true,
+            "fields": {
+              "numbers": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Numbers",
+                  "placeholder": "",
+                  "allowTargetBlank": true,
+                  "multi": "heading2"
+                }
+              },
+              "description": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Description",
+                  "placeholder": "",
+                  "allowTargetBlank": true,
+                  "multi": "paragraph"
+                }
+              }
+            }
+          }
+        },
+        "navlink": {
+          "type": "Link",
+          "config": {
+            "label": "NavLink",
+            "placeholder": "",
+            "select": null
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

@@ -1,44 +1,37 @@
 {
-  "name": "buildcivil-website",
-  "version": "0.1.0",
+  "name": "@buildcivil/source",
+  "version": "0.0.0",
   "private": true,
+  "description": "Build Civil monorepo — build-civil-code, renovaite, and roomify",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@dnd-kit/core": "^6.3.1",
-    "@dnd-kit/sortable": "^10.0.0",
-    "@dnd-kit/utilities": "^3.2.2",
-    "@vercel/analytics": "^2.0.1",
-    "@vercel/blob": "^2.3.3",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "framer-motion": "^11.11.17",
-    "lucide-react": "^0.469.0",
-    "next": "^15.5.18",
-    "openai": "^6.45.0",
-    "radix-ui": "^1.4.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "tailwind-merge": "^3.5.0",
-    "tw-animate-css": "^1.4.0",
-    "zod": "^4.4.3"
+    "dev": "nx serve build-civil-code",
+    "dev:bcc": "nx serve build-civil-code",
+    "dev:renovaite": "nx serve renovaite",
+    "dev:roomify": "nx serve roomify",
+    "build": "nx run-many -t build",
+    "build:bcc": "nx build build-civil-code",
+    "build:renovaite": "nx build renovaite",
+    "build:roomify": "nx build roomify",
+    "lint": "nx run-many -t lint",
+    "start:bcc": "nx start build-civil-code",
+    "start:renovaite": "nx start renovaite",
+    "start:roomify": "nx start roomify",
+    "graph": "nx graph"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "19.2.14",
-    "@types/react-dom": "^19",
-    "autoprefixer": "^10.0.1",
-    "eslint": "^9",
-    "eslint-config-next": "^15.5.18",
-    "postcss": "^8.5.10",
-    "tailwindcss": "^3.4.1",
-    "typescript": "5.9.3"
+    "nx": "^21.4.1",
+    "typescript": "~5.9.3"
   },
-  "overrides": {
-    "postcss": "$postcss"
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.11.0",
+  "pnpm": {
+    "overrides": {
+      "@buildcivil/renovaite>react": "18.3.1",
+      "@buildcivil/renovaite>react-dom": "18.3.1",
+      "@buildcivil/renovaite>@types/react": "18.3.31",
+      "@buildcivil/renovaite>@types/react-dom": "18.3.5"
+    }
   }
 }

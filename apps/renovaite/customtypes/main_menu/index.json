@@ -1,0 +1,40 @@
+{
+  "format": "custom",
+  "id": "main_menu",
+  "label": "Main Menu",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "logo": {
+        "type": "Image",
+        "config": {
+          "label": "Logo",
+          "constraint": {
+            "width": null
+          },
+          "thumbnails": []
+        }
+      },
+      "navlink": {
+        "type": "Link",
+        "config": {
+          "label": "NavLink",
+          "placeholder": "",
+          "select": null
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "navigation_menu": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "renovaite",
+  "projectType": "application",
+  "sourceRoot": "apps/renovaite/src",
+  "tags": ["type:app", "scope:renovaite"],
+  "targets": {
+    "serve": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "serve"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "dev"
+      }
+    },
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build"
+      },
+      "outputs": ["{projectRoot}/.next"]
+    },
+    "start": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "start"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "lint"
+      }
+    }
+  }
+}

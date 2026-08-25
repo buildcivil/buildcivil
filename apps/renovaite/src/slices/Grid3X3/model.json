@@ -1,0 +1,55 @@
+{
+  "id": "grid3_x3",
+  "type": "SharedSlice",
+  "name": "Grid3X3",
+  "description": "Grid3X3",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "stack": {
+          "type": "Group",
+          "config": {
+            "label": "Stack",
+            "repeat": true,
+            "fields": {
+              "number": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Number",
+                  "placeholder": "",
+                  "allowTargetBlank": true,
+                  "single": "heading1"
+                }
+              },
+              "title": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Title",
+                  "placeholder": "",
+                  "allowTargetBlank": true,
+                  "multi": "heading3"
+                }
+              },
+              "para": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Para",
+                  "placeholder": "",
+                  "allowTargetBlank": true,
+                  "multi": "paragraph"
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
