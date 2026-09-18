@@ -8,6 +8,12 @@
       "port": 3000
     },
     {
+      "name": "admin",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:admin"],
+      "port": 3003
+    },
+    {
       "name": "ai-cost-estimator",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["dev:ai"],

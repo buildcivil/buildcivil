@@ -1,8 +1,8 @@
-import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 import { requireAdminPermission } from '@/lib/admin-access'
+import { relayRevalidate } from '@/lib/publish-relay'
 
-const defaultPaths = ['/', '/about', '/services', '/projects', '/contact', '/admin']
+const defaultPaths = ['/', '/about', '/services', '/projects', '/contact']
 
 export async function POST(request: Request) {
   const access = await requireAdminPermission(request, 'revalidate')
@@ -20,8 +20,13 @@ export async function POST(request: Request) {
     paths = defaultPaths
   }
 
-  for (const path of paths) {
-    revalidatePath(path)
+  try {
+    await relayRevalidate(paths)
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed to refresh the public site.' },
+      { status: 502 },
+    )
   }
 
   return NextResponse.json({ ok: true, paths })

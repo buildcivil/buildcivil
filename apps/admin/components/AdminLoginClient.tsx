@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowRight, Eye, EyeOff, Lock, ShieldCheck } from 'lucide-react'
 import { useState } from 'react'
+import { getPublicSiteUrl } from '@buildcivil/cms/seo'
 
 export default function AdminLoginClient() {
   const searchParams = useSearchParams()
@@ -118,7 +119,7 @@ export default function AdminLoginClient() {
             </form>
 
             <div className="mt-6 flex items-center justify-between gap-4 text-sm text-slate-500">
-              <Link href="/" className="transition hover:text-slate-900">
+              <Link href={getPublicSiteUrl()} className="transition hover:text-slate-900">
                 ← Return to site
               </Link>
               <span>Protected area</span>

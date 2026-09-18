@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
 import { constructionPackageDefaults } from '@buildcivil/cms/packages'
 import { requireAdminPermission } from '@/lib/admin-access'
 import { isSupabaseConfigured, supabaseRequest } from '@buildcivil/cms/supabase-admin'
+import { relayRevalidate } from '@/lib/publish-relay'
 
 type PackagePayload = {
   id?: string
@@ -59,9 +59,12 @@ function fallbackRows() {
   }))
 }
 
-function refreshPackageRoutes() {
-  revalidatePath('/')
-  revalidatePath('/admin')
+async function refreshPackageRoutes() {
+  try {
+    await relayRevalidate(['/'])
+  } catch {
+    // Best-effort: don't fail the save if the public site can't be reached right now.
+  }
 }
 
 async function packageRows() {
@@ -126,7 +129,7 @@ export async function POST(request: Request) {
     })
   }
 
-  refreshPackageRoutes()
+  await refreshPackageRoutes()
 
   return NextResponse.json({ ok: true, rows: await packageRows() })
 }
@@ -183,7 +186,7 @@ export async function PATCH(request: Request) {
     })
   }
 
-  refreshPackageRoutes()
+  await refreshPackageRoutes()
 
   return NextResponse.json({ ok: true, rows: await packageRows() })
 }
@@ -204,7 +207,7 @@ export async function DELETE(request: Request) {
     expectJson: false,
   })
 
-  refreshPackageRoutes()
+  await refreshPackageRoutes()
 
   return NextResponse.json({ ok: true, rows: await packageRows() })
 }

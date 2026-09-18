@@ -36,7 +36,7 @@ export default async function AdminPoliciesPage() {
               </p>
             </div>
             <Link
-              href="/admin"
+              href="/"
               className="inline-flex w-fit items-center justify-center rounded-full border border-white/12 bg-white/6 px-5 py-3 text-sm font-semibold text-white transition hover:border-[#D8FF6A]/35 hover:text-[#D8FF6A]"
             >
               Back to dashboard

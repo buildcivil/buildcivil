@@ -7,6 +7,7 @@ import { ArrowDown, ArrowRight, ArrowUp, Copy, ImageIcon, Monitor, Plus, RotateC
 import AdminMediaPicker from './AdminMediaPicker'
 import { publishRefresh } from '@/lib/admin-publish'
 import { readJsonResponse } from '@buildcivil/cms/safe-json'
+import { getPublicSiteUrl } from '@buildcivil/cms/seo'
 
 type PageSlug = 'about' | 'services' | 'projects' | 'contact' | 'renovaite'
 type PageRow = {
@@ -360,7 +361,7 @@ function FullPagePreview({ route }: { route: string }) {
       <div className="text-[11px] uppercase tracking-[0.26em] text-slate-400">Full live page</div>
       <p className="mt-2 text-sm leading-6 text-slate-500">This shows the currently published page. Draft cards above update before saving.</p>
       <div className="mt-4 overflow-hidden rounded-[22px] border border-slate-200 bg-white">
-        <iframe src={route} title="Published page preview" className="h-[560px] w-full bg-white" />
+        <iframe src={`${getPublicSiteUrl()}${route}`} title="Published page preview" className="h-[560px] w-full bg-white" />
       </div>
     </div>
   )

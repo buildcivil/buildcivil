@@ -10,14 +10,6 @@ const ADMIN_SESSION_SECRET =
 
 export const ADMIN_SESSION_COOKIE = 'buildcivil_admin_session'
 
-// Host the admin dashboard is served from at its own subdomain root (e.g. admin.buildcivil.in/
-// instead of buildcivil.in/admin). See middleware.ts for the rewrite that makes this work.
-export const ADMIN_HOST = process.env.ADMIN_HOST?.trim() || 'admin.buildcivil.in'
-
-export function getAdminHomePath(host?: string | null) {
-  return host?.split(':')[0] === ADMIN_HOST ? '/' : '/admin'
-}
-
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
 const sessionMaxAgeSeconds = 60 * 60 * 8
