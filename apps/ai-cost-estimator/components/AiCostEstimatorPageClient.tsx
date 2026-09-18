@@ -10,17 +10,11 @@ import {
   Sparkles,
 } from 'lucide-react'
 
+import AppHeader from '@/components/AppHeader'
 import BuildCivilAiHistoryTable from '@/components/BuildCivilAiHistoryTable'
 import BuildCivilAiPlanResult from '@/components/BuildCivilAiPlanResult'
-import FooterClient from '@/components/FooterClient'
-import NavbarClient from '@/components/NavbarClient'
 import { useBuildCivilAiChat } from '@/features/buildcivil-ai/use-buildcivil-ai-chat'
 import { LEFT_COLUMN_FEATURES } from '@/lib/buildcivil-ai/constants'
-import type { GlobalLayoutSettings } from '@/lib/site-settings-defaults'
-
-type BuildCivilAiPageClientProps = {
-  layoutSettings: GlobalLayoutSettings
-}
 
 function SelectableOption({
   label,
@@ -93,7 +87,7 @@ function ChatIntroColumn() {
   )
 }
 
-export default function BuildCivilAiPageClient({ layoutSettings }: BuildCivilAiPageClientProps) {
+export default function AiCostEstimatorPageClient() {
   const {
     viewportRef,
     pageView,
@@ -115,15 +109,10 @@ export default function BuildCivilAiPageClient({ layoutSettings }: BuildCivilAiP
   } = useBuildCivilAiChat()
 
   const optionSet = getOptions()
-  const showMobileTopBar = Boolean(layoutSettings.header.mobileTopBar?.visible)
-  const headerSpacerClass = showMobileTopBar
-    ? 'h-[10rem] sm:h-[10.5rem] xl:h-[11.5rem]'
-    : 'h-28 sm:h-32 xl:h-36'
 
   return (
-    <main className="public-site cms-section-surface">
-      <NavbarClient settings={layoutSettings.header} />
-      <div className={headerSpacerClass} aria-hidden="true" />
+    <main className="min-h-screen bg-white">
+      <AppHeader />
 
       <section className="relative overflow-hidden pt-6 sm:pt-8">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-header/10 to-transparent" />
@@ -169,7 +158,10 @@ export default function BuildCivilAiPageClient({ layoutSettings }: BuildCivilAiP
                   </div>
                 </div>
 
-                <div ref={viewportRef} className="min-h-[280px] flex-1 space-y-4 overflow-y-auto px-4 py-4 sm:min-h-[320px] sm:px-6 sm:py-5">
+                <div
+                  ref={viewportRef}
+                  className="min-h-[280px] flex-1 space-y-4 overflow-y-auto px-4 py-4 sm:min-h-[320px] sm:px-6 sm:py-5"
+                >
                   {messages.length === 0 && chatLoading ? (
                     <div className="flex justify-center py-10">
                       <Loader2 className="h-6 w-6 animate-spin text-header" />
@@ -249,7 +241,9 @@ export default function BuildCivilAiPageClient({ layoutSettings }: BuildCivilAiP
 
           {historyReady && pageView === 'plan-detail' && viewingEntry && !viewingEntry.plan ? (
             <div className="rounded-2xl border border-black/10 bg-white p-8 text-center">
-              <p className="text-sm text-black/60">This saved plan cannot be opened because it was created before detailed storage was enabled.</p>
+              <p className="text-sm text-black/60">
+                This saved plan cannot be opened because it was created before detailed storage was enabled.
+              </p>
               <button type="button" onClick={goToHistory} className="btn-secondary mt-4 inline-flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" />
                 Back to saved plans
@@ -259,7 +253,9 @@ export default function BuildCivilAiPageClient({ layoutSettings }: BuildCivilAiP
         </div>
       </section>
 
-      <FooterClient settings={layoutSettings.footer} />
+      <footer className="border-t border-black/10 py-8 text-center text-xs text-black/45">
+        BuildCivil AI Cost Estimator
+      </footer>
     </main>
   )
 }

@@ -23,6 +23,7 @@ import {
   type AdminViewKey,
 } from '@/lib/admin/nav'
 import { cn } from '@/lib/cn'
+import { getPublicSiteUrl } from '@/lib/seo'
 import { AdminAlert, AdminAvatar, AdminBadge, AdminButton, AdminIconButton, AdminKbd } from '@/components/admin/ui'
 
 type AdminShellProps = {
@@ -188,7 +189,7 @@ export default function AdminShell({
           {menuOpen ? (
             <div className="animate-in fade-in zoom-in-95 slide-in-from-bottom-1 absolute bottom-[calc(100%+8px)] left-0 right-0 overflow-hidden rounded-[14px] border border-slate-200 bg-white shadow-xl duration-150">
               <Link
-                href="/"
+                href={getPublicSiteUrl()}
                 target="_blank"
                 className="flex items-center gap-2.5 border-b border-slate-100 px-3.5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
               >
@@ -287,7 +288,7 @@ export default function AdminShell({
                   Publish
                 </AdminButton>
                 <Link
-                  href="/"
+                  href={getPublicSiteUrl()}
                   target="_blank"
                   className="hidden items-center gap-2 rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 lg:inline-flex"
                 >

@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "build-civil-code",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:bcc"],
+      "port": 3000
+    },
+    {
+      "name": "ai-cost-estimator",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:ai"],
+      "port": 3002
+    },
+    {
+      "name": "renovaite",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@buildcivil/renovaite", "run", "next:dev"],
+      "port": 3000
+    },
+    {
+      "name": "roomify",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:roomify"],
+      "port": 5173
+    }
+  ]
+}

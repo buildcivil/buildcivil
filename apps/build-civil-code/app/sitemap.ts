@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ])
   const siteUrl = getConfiguredSiteUrl(googleSetup)
   const now = new Date()
-  const staticRoutes = ['/', '/about', '/services', '/projects', '/contact', '/renovaite', '/ai-cost-estimator', '/blog', '/careers']
+  const staticRoutes = ['/', '/about', '/services', '/projects', '/contact', '/renovaite', '/blog', '/careers']
   const routes = [
     ...staticRoutes,
     ...services.map((service) => `/services/${service.slug}`),

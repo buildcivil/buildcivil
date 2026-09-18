@@ -1,3 +1,6 @@
+import { AI_COST_ESTIMATOR_URL } from './ai-cost-estimator-url'
+import { RENOVAITE_URL } from './renovaite-url'
+
 export type GlobalLink = {
   id: string
   label: string
@@ -114,8 +117,8 @@ export const globalLayoutDefaults: GlobalLayoutSettings = {
       { id: 'about', label: 'ABOUT', href: '/about', visible: true },
       { id: 'services', label: 'SERVICES', href: '/services', visible: true },
       { id: 'projects', label: 'PROJECT', href: '/projects', visible: true },
-      { id: 'buildcivil-ai', label: 'AI APP', href: '/ai-cost-estimator', visible: true },
-      { id: 'renovaite', label: 'RENOVAITE', href: '/renovaite', visible: true },
+      { id: 'buildcivil-ai', label: 'AI APP', href: AI_COST_ESTIMATOR_URL, visible: true },
+      { id: 'renovaite', label: 'RENOVAITE', href: RENOVAITE_URL, visible: true },
       { id: 'blog', label: 'BLOG', href: '/blog', visible: true },
       { id: 'careers', label: 'CAREERS', href: '/careers', visible: true },
       { id: 'contact', label: 'CONTACT', href: '/contact', visible: true },

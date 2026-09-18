@@ -7,6 +7,7 @@ import { itemReveal, sectionReveal } from './motion'
 import type { PublicFormDefinition } from '@/lib/form-definitions'
 import type { HomePageContent } from '@/lib/site-pages'
 import { readJsonResponse } from '@/lib/safe-json'
+import { AI_COST_ESTIMATOR_URL } from '@/lib/ai-cost-estimator-url'
 
 const MotionDiv = motion.div
 const MotionSection = motion.section
@@ -199,7 +200,7 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
             </button>
 
             <a
-              href="/ai-cost-estimator"
+              href={AI_COST_ESTIMATOR_URL}
               className="inline-flex items-center justify-center gap-2.5 border border-white/35 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10"
               style={{ borderRadius: 'var(--button-radius, 999px)' }}
             >

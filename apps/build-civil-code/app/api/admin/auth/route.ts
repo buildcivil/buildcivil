@@ -4,6 +4,7 @@ import { getAdminSession } from '@/lib/admin-access'
 import {
   ADMIN_SESSION_COOKIE,
   createAdminSessionValue,
+  getAdminHomePath,
   isAdminAuthConfigured,
 } from '@/lib/admin-session'
 import { checkRateLimit, enforceSameOrigin, getClientIp, rateLimitError } from '@/lib/request-security'
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
   if (sameOriginError) return sameOriginError
 
   if (!isAdminAuthConfigured()) {
-    const url = new URL('/admin', request.url)
+    const url = new URL(getAdminHomePath(request.headers.get('host')), request.url)
     url.searchParams.set('config', '1')
     return NextResponse.redirect(url)
   }
@@ -68,12 +69,12 @@ export async function POST(request: Request) {
   }
 
   if (!adminSession) {
-    const url = new URL('/admin', request.url)
+    const url = new URL(getAdminHomePath(request.headers.get('host')), request.url)
     url.searchParams.set('error', '1')
     return NextResponse.redirect(url)
   }
 
-  const response = NextResponse.redirect(new URL('/admin', request.url))
+  const response = NextResponse.redirect(new URL(getAdminHomePath(request.headers.get('host')), request.url))
   response.cookies.set({
     name: ADMIN_SESSION_COOKIE,
     value: await createAdminSessionValue(adminSession),
