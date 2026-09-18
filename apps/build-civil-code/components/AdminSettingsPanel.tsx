@@ -24,9 +24,9 @@ import {
   type FooterSocialLink,
   type GlobalLayoutSettings,
   type GlobalLink,
-} from '@/lib/site-settings-defaults'
+} from '@buildcivil/cms/site-settings-defaults'
 import { publishRefresh } from '@/lib/admin-publish'
-import { readJsonResponse } from '@/lib/safe-json'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 const inputClass = 'w-full rounded-[16px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#73A5CA] focus:ring-2 focus:ring-[#73A5CA]/20'
 

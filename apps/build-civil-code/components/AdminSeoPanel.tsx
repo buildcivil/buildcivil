@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, CheckCircle2, Loader2, Search } from 'lucide-react'
 import { publishRefresh } from '@/lib/admin-publish'
-import { readJsonResponse } from '@/lib/safe-json'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 import AdminMediaPicker from './AdminMediaPicker'
 
 type PageRow = {

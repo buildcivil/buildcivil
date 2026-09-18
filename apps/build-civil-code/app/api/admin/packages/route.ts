@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
-import { constructionPackageDefaults } from '@/lib/packages'
+import { constructionPackageDefaults } from '@buildcivil/cms/packages'
 import { requireAdminPermission } from '@/lib/admin-access'
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { isSupabaseConfigured, supabaseRequest } from '@buildcivil/cms/supabase-admin'
 
 type PackagePayload = {
   id?: string

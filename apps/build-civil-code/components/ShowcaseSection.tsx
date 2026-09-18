@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { itemReveal, sectionReveal } from './motion'
-import type { ProjectItem } from '@/lib/projects'
-import type { HomePageContent } from '@/lib/site-pages'
+import type { ProjectItem } from '@buildcivil/cms/projects'
+import type { HomePageContent } from '@buildcivil/cms/site-pages'
 
 const MotionDiv = motion.div
 const MotionArticle = motion.article

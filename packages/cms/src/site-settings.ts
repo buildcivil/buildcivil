@@ -1,12 +1,12 @@
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { isSupabaseConfigured, supabaseRequest } from './supabase-admin'
 import {
   globalLayoutDefaults,
   mergeGlobalLayoutSettings,
   type GlobalLayoutSettings,
-} from '@/lib/site-settings-defaults'
+} from './site-settings-defaults'
 import type { PolicyPage } from './policies'
 
-export type { GlobalLayoutSettings, HeaderSettings, FooterSettings } from '@/lib/site-settings-defaults'
+export type { GlobalLayoutSettings, HeaderSettings, FooterSettings } from './site-settings-defaults'
 
 export type SiteSettingRow = {
   id: string

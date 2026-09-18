@@ -1,4 +1,4 @@
-import { readJsonResponse } from './safe-json'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 export async function publishRefresh(paths?: string[]) {
   const response = await fetch('/api/admin/revalidate', {

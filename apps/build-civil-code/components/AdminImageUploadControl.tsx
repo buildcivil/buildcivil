@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Loader2, Upload } from 'lucide-react'
 import AdminMediaPicker from './AdminMediaPicker'
-import { readJsonResponse } from '@/lib/safe-json'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 type MediaUploadRow = {
   file_url: string

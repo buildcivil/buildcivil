@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import CareersPageClient from '@/components/CareersPageClient'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
 
 export const revalidate = 300
 

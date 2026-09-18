@@ -22,8 +22,8 @@ import {
   searchAdminNav,
   type AdminViewKey,
 } from '@/lib/admin/nav'
-import { cn } from '@/lib/cn'
-import { getPublicSiteUrl } from '@/lib/seo'
+import { cn } from '@buildcivil/cms/cn'
+import { getPublicSiteUrl } from '@buildcivil/cms/seo'
 import { AdminAlert, AdminAvatar, AdminBadge, AdminButton, AdminIconButton, AdminKbd } from '@/components/admin/ui'
 
 type AdminShellProps = {

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ArrowRight, ChevronRight, Menu, MessageCircle, X } from "lucide-react";
-import type { HeaderSettings } from "@/lib/site-settings-defaults";
+import type { HeaderSettings } from "@buildcivil/cms/site-settings-defaults";
 
 type NavbarClientProps = {
 	settings: HeaderSettings;

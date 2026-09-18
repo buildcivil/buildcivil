@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { ArrowDown, ArrowRight, ArrowUp, Copy, ImageIcon, Monitor, Plus, RotateCcw, Save, Trash2 } from 'lucide-react'
 import AdminMediaPicker from './AdminMediaPicker'
 import { publishRefresh } from '@/lib/admin-publish'
-import { readJsonResponse } from '@/lib/safe-json'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 type PageSlug = 'about' | 'services' | 'projects' | 'contact' | 'renovaite'
 type PageRow = {

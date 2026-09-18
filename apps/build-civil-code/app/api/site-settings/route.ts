@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
 
 export const revalidate = 300
 

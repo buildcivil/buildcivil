@@ -7,8 +7,8 @@ import { motion } from 'framer-motion'
 import NavbarClient from '@/components/NavbarClient'
 import FooterClient from '@/components/FooterClient'
 import { itemReveal, sectionReveal } from './motion'
-import { formatBlogDate, type BlogPost } from '@/lib/blog'
-import type { GlobalLayoutSettings } from '@/lib/site-settings-defaults'
+import { formatBlogDate, type BlogPost } from '@buildcivil/cms/blog'
+import type { GlobalLayoutSettings } from '@buildcivil/cms/site-settings-defaults'
 
 const MotionDiv = motion.div
 const MotionSection = motion.section

@@ -3,7 +3,7 @@
 import { CheckCircle, Zap, Shield, Clock } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { itemReveal, sectionReveal } from './motion'
-import type { HomePageContent } from '@/lib/site-pages'
+import type { HomePageContent } from '@buildcivil/cms/site-pages'
 
 const MotionDiv = motion.div
 

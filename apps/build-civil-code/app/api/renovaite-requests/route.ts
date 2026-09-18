@@ -5,9 +5,9 @@ import {
   getClientIp,
   isValidEmail,
   rateLimitError,
-} from '@/lib/request-security'
+} from '@buildcivil/cms/request-security'
 import { generateRenovaiteDesigns, isRenovaiteAiConfigured } from '@/lib/renovaite/generate-designs'
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { isSupabaseConfigured, supabaseRequest } from '@buildcivil/cms/supabase-admin'
 
 export const runtime = 'nodejs'
 export const maxDuration = 120

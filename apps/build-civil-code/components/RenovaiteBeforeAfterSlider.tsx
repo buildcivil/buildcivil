@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import Image from 'next/image'
 import { GripVertical, Sparkles } from 'lucide-react'
-import type { RenovaiteSliderItem } from '@/lib/site-pages'
+import type { RenovaiteSliderItem } from '@buildcivil/cms/site-pages'
 
 type RenovaiteBeforeAfterSliderProps = {
   label?: string

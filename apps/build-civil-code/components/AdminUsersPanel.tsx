@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { ShieldCheck, Trash2, UserPlus } from 'lucide-react'
-import { readJsonResponse } from '@/lib/safe-json'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 import {
   AdminAlert,
   AdminBadge,
@@ -15,7 +15,7 @@ import {
   AdminPageHeader,
   AdminSelect,
 } from '@/components/admin/ui'
-import { cn } from '@/lib/cn'
+import { cn } from '@buildcivil/cms/cn'
 
 type AdminUserRow = {
   id: string

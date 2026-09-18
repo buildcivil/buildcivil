@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
-import { getGoogleSetup } from '@/lib/google-setup'
-import { getPublicSiteUrl } from '@/lib/seo'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
-import { getSiteTheme, siteThemeToCssVars } from '@/lib/site-theme'
+import { getGoogleSetup } from '@buildcivil/cms/google-setup'
+import { getPublicSiteUrl } from '@buildcivil/cms/seo'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
+import { getSiteTheme, siteThemeToCssVars } from '@buildcivil/cms/site-theme'
 import './globals.css'
 
 export const metadata: Metadata = {

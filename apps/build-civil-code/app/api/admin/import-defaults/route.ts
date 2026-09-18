@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { requireAdminPermission } from '@/lib/admin-access'
-import { projectCatalog } from '@/lib/projects'
-import { serviceCatalog } from '@/lib/services'
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { projectCatalog } from '@buildcivil/cms/projects'
+import { serviceCatalog } from '@buildcivil/cms/services'
+import { isSupabaseConfigured, supabaseRequest } from '@buildcivil/cms/supabase-admin'
 
 type ImportTarget = 'projects' | 'services'
 

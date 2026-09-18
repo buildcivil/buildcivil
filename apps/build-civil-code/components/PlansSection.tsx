@@ -24,9 +24,9 @@ import {
 } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { itemReveal, sectionReveal } from './motion'
-import type { PublicFormDefinition } from '@/lib/form-definitions'
-import { constructionPackageDefaults, type ConstructionPackage } from '@/lib/packages'
-import { readJsonResponse } from '@/lib/safe-json'
+import type { PublicFormDefinition } from '@buildcivil/cms/form-definitions'
+import { constructionPackageDefaults, type ConstructionPackage } from '@buildcivil/cms/packages'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 const MotionSection = motion.section
 const MotionArticle = motion.article

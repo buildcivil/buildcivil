@@ -15,7 +15,7 @@ import {
 } from 'lucide-react'
 import type { AdminViewKey } from '@/lib/admin/nav'
 import { AdminAvatar, AdminBadge, AdminButton, AdminCard, AdminEmptyState, AdminPageHeader, AdminRing, AdminStat } from '@/components/admin/ui'
-import { cn } from '@/lib/cn'
+import { cn } from '@buildcivil/cms/cn'
 
 type Counts = {
   projects: number

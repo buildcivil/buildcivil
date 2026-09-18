@@ -6,9 +6,9 @@ import NavbarClient from '@/components/NavbarClient'
 import FooterClient from '@/components/FooterClient'
 import RenovaiteBeforeAfterSlider from '@/components/RenovaiteBeforeAfterSlider'
 import RenovaiteDesignForm from '@/components/RenovaiteDesignForm'
-import type { RenovaitePageContent } from '@/lib/site-pages'
-import type { GlobalLayoutSettings } from '@/lib/site-settings-defaults'
-import { sectionStyleVars } from '@/lib/section-style'
+import type { RenovaitePageContent } from '@buildcivil/cms/site-pages'
+import type { GlobalLayoutSettings } from '@buildcivil/cms/site-settings-defaults'
+import { sectionStyleVars } from '@buildcivil/cms/section-style'
 
 type RenovaitePageClientProps = {
   content: Partial<RenovaitePageContent>

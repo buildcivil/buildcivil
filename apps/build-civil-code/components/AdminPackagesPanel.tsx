@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, Package, Plus, Trash2 } from 'lucide-react'
 import { publishRefresh } from '@/lib/admin-publish'
-import { readJsonResponse } from '@/lib/safe-json'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 type PackageRow = {
   id: string

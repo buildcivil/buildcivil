@@ -5,8 +5,8 @@ import Image from 'next/image'
 import { ArrowRight, Send, Instagram, Twitter, Linkedin, Facebook, MapPin, Mail, Phone } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { itemReveal, sectionReveal } from './motion'
-import type { FooterSettings } from '@/lib/site-settings-defaults'
-import { readJsonResponse } from '@/lib/safe-json'
+import type { FooterSettings } from '@buildcivil/cms/site-settings-defaults'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 const MotionDiv = motion.div
 

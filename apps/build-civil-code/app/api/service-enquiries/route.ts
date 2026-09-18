@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import { getFormDefinition } from '@/lib/form-definitions'
-import { checkRateLimit, enforceSameOrigin, extractHoneypot, getClientIp, isValidEmail, rateLimitError } from '@/lib/request-security'
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { getFormDefinition } from '@buildcivil/cms/form-definitions'
+import { checkRateLimit, enforceSameOrigin, extractHoneypot, getClientIp, isValidEmail, rateLimitError } from '@buildcivil/cms/request-security'
+import { isSupabaseConfigured, supabaseRequest } from '@buildcivil/cms/supabase-admin'
 
 const fallbackValidServices = [
   'Turnkey Construction',

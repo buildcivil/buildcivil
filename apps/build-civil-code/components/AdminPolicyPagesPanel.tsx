@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, FileText, Plus, Trash2 } from 'lucide-react'
 import { publishRefresh } from '@/lib/admin-publish'
-import type { PolicyPage } from '@/lib/policies'
-import { readJsonResponse } from '@/lib/safe-json'
+import type { PolicyPage } from '@buildcivil/cms/policies'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 type PolicyResponse = {
   connected?: boolean

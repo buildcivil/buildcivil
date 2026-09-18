@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import BlogDetailPageClient from '@/components/BlogDetailPageClient'
-import { getBlogPostBySlug, getBlogPosts, getRelatedBlogPosts } from '@/lib/blog'
-import { cleanSeoText } from '@/lib/seo'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
+import { getBlogPostBySlug, getBlogPosts, getRelatedBlogPosts } from '@buildcivil/cms/blog'
+import { cleanSeoText } from '@buildcivil/cms/seo'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
 
 export const revalidate = 120
 

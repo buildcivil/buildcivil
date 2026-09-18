@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { requireAdminPermission } from '@/lib/admin-access'
-import { getGoogleSetup, googleSetupDefaults, mergeGoogleSetup } from '@/lib/google-setup'
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
-import type { SiteSettingRow } from '@/lib/site-settings'
+import { getGoogleSetup, googleSetupDefaults, mergeGoogleSetup } from '@buildcivil/cms/google-setup'
+import { isSupabaseConfigured, supabaseRequest } from '@buildcivil/cms/supabase-admin'
+import type { SiteSettingRow } from '@buildcivil/cms/site-settings'
 
 export async function GET(request: Request) {
   const access = await requireAdminPermission(request, 'seo')

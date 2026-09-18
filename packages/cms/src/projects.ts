@@ -183,7 +183,7 @@ export const projectCatalog: ProjectItem[] = [
   },
 ]
 
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { isSupabaseConfigured, supabaseRequest } from './supabase-admin'
 
 export function getProjectBySlug(slug: string) {
   return projectCatalog.find((project) => project.slug === slug)

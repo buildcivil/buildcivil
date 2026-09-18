@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import ServiceDetailPageClient from '@/components/ServiceDetailPageClient'
-import { getServiceBySlugFromCMS, serviceCatalog } from '@/lib/services'
-import { cleanSeoText } from '@/lib/seo'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
+import { getServiceBySlugFromCMS, serviceCatalog } from '@buildcivil/cms/services'
+import { cleanSeoText } from '@buildcivil/cms/seo'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
 
 export function generateStaticParams() {
   return serviceCatalog.map((service) => ({ slug: service.slug }))

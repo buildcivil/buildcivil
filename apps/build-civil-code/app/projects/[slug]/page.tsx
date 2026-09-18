@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import ProjectDetailPageClient from '@/components/ProjectDetailPageClient'
-import { getProjectBySlugFromCMS, projectCatalog } from '@/lib/projects'
-import { cleanSeoText } from '@/lib/seo'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
+import { getProjectBySlugFromCMS, projectCatalog } from '@buildcivil/cms/projects'
+import { cleanSeoText } from '@buildcivil/cms/seo'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
 
 export function generateStaticParams() {
   return projectCatalog.map((project) => ({ slug: project.slug }))

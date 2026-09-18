@@ -3,8 +3,8 @@
 import { type FormEvent, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { CheckCircle2, Download, Loader2, Sparkles, Upload } from 'lucide-react'
-import type { RenovaitePageContent } from '@/lib/site-pages'
-import { readJsonResponse } from '@/lib/safe-json'
+import type { RenovaitePageContent } from '@buildcivil/cms/site-pages'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 type RenovaiteDesignFormProps = {
   content: NonNullable<RenovaitePageContent['form']>

@@ -1,0 +1,38 @@
+{
+  "name": "@buildcivil/cms",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./ai-cost-estimator-url": "./src/ai-cost-estimator-url.ts",
+    "./blog": "./src/blog.ts",
+    "./cn": "./src/cn.ts",
+    "./form-definitions": "./src/form-definitions.ts",
+    "./google-setup": "./src/google-setup.ts",
+    "./packages": "./src/packages.ts",
+    "./policies": "./src/policies.ts",
+    "./projects": "./src/projects.ts",
+    "./renovaite-url": "./src/renovaite-url.ts",
+    "./request-security": "./src/request-security.ts",
+    "./safe-json": "./src/safe-json.ts",
+    "./section-style": "./src/section-style.ts",
+    "./seo": "./src/seo.ts",
+    "./services": "./src/services.ts",
+    "./site-pages": "./src/site-pages.ts",
+    "./site-settings-defaults": "./src/site-settings-defaults.ts",
+    "./site-settings": "./src/site-settings.ts",
+    "./site-theme": "./src/site-theme.ts",
+    "./supabase-admin": "./src/supabase-admin.ts"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.5.0"
+  },
+  "peerDependencies": {
+    "next": "*",
+    "react": "*"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.14",
+    "typescript": "5.9.3"
+  }
+}

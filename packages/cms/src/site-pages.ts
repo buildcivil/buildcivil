@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { isSupabaseConfigured, supabaseRequest } from './supabase-admin'
 
 export type SitePageSlug = 'home' | 'about' | 'services' | 'projects' | 'contact' | 'renovaite'
 

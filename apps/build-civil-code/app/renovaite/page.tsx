@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import RenovaitePageClient from '@/components/RenovaitePageClient'
-import { cleanSeoText } from '@/lib/seo'
-import { getSitePage, type RenovaitePageContent } from '@/lib/site-pages'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
+import { cleanSeoText } from '@buildcivil/cms/seo'
+import { getSitePage, type RenovaitePageContent } from '@buildcivil/cms/site-pages'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getSitePage('renovaite')

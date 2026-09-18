@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, Newspaper, Plus, Star, Trash2 } from 'lucide-react'
 import { publishRefresh } from '@/lib/admin-publish'
-import type { BlogPost } from '@/lib/blog'
-import { readJsonResponse } from '@/lib/safe-json'
+import type { BlogPost } from '@buildcivil/cms/blog'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 import AdminImageUploadControl from './AdminImageUploadControl'
 
 type BlogResponse = {

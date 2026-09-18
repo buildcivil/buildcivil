@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import ServicesPageClient from '@/components/ServicesPageClient'
-import { getServiceCatalogFromCMS } from '@/lib/services'
-import { cleanSeoText } from '@/lib/seo'
-import { getSitePage } from '@/lib/site-pages'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
+import { getServiceCatalogFromCMS } from '@buildcivil/cms/services'
+import { cleanSeoText } from '@buildcivil/cms/seo'
+import { getSitePage } from '@buildcivil/cms/site-pages'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getSitePage('services')

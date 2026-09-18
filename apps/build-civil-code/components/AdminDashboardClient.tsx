@@ -10,9 +10,9 @@ import {
   Wrench,
 } from 'lucide-react'
 import { publishRefresh } from '@/lib/admin-publish'
-import { readJsonResponse } from '@/lib/safe-json'
-import type { ProjectItem } from '@/lib/projects'
-import type { ServiceItem } from '@/lib/services'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
+import type { ProjectItem } from '@buildcivil/cms/projects'
+import type { ServiceItem } from '@buildcivil/cms/services'
 import AdminShell from '@/components/admin/AdminShell'
 import { canViewAdmin, getAdminViewLabel, type AdminViewKey } from '@/lib/admin/nav'
 import { AdminAlert } from '@/components/admin/ui'

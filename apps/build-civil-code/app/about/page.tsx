@@ -4,9 +4,9 @@ import { ArrowRight, Building2, Clock3, Handshake, HardHat, MapPin, Ruler, Shiel
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import TeamSection from '@/components/TeamSection'
-import { sectionStyleVars } from '@/lib/section-style'
-import { cleanSeoText } from '@/lib/seo'
-import { getSitePage, type AboutPageContent } from '@/lib/site-pages'
+import { sectionStyleVars } from '@buildcivil/cms/section-style'
+import { cleanSeoText } from '@buildcivil/cms/seo'
+import { getSitePage, type AboutPageContent } from '@buildcivil/cms/site-pages'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getSitePage('about')

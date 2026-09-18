@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import BlogPageClient from '@/components/BlogPageClient'
-import { getBlogCategories, getBlogPosts } from '@/lib/blog'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
+import { getBlogCategories, getBlogPosts } from '@buildcivil/cms/blog'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
 
 export const revalidate = 120
 

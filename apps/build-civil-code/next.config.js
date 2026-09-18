@@ -4,6 +4,8 @@ const path = require('path');
 const nextConfig = {
   // Monorepo root — required for correct file tracing with pnpm
   outputFileTracingRoot: path.join(__dirname, '../..'),
+  // Shared CMS data-access layer ships raw TS from the workspace, not pre-built JS
+  transpilePackages: ['@buildcivil/cms'],
   async redirects() {
     const aiAppUrl = process.env.NEXT_PUBLIC_AI_COST_ESTIMATOR_URL || 'https://ai.buildcivil.in'
     return [

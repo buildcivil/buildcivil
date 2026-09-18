@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import { projectCatalog } from '@/lib/projects'
-import { getDefaultPageRecord, getPageDefaultsForAdmin, type SitePageSlug } from '@/lib/site-pages'
-import { serviceCatalog } from '@/lib/services'
+import { projectCatalog } from '@buildcivil/cms/projects'
+import { getDefaultPageRecord, getPageDefaultsForAdmin, type SitePageSlug } from '@buildcivil/cms/site-pages'
+import { serviceCatalog } from '@buildcivil/cms/services'
 import { getAdminSession } from '@/lib/admin-access'
 import { createPasswordCredentials, sanitizeAdminUserRow } from '@/lib/admin-users'
 import {
@@ -9,7 +9,7 @@ import {
   isSupabaseConfigured,
   supabaseRequest,
   type SupabaseCollection,
-} from '@/lib/supabase-admin'
+} from '@buildcivil/cms/supabase-admin'
 
 type AdminTable = SupabaseCollection
 

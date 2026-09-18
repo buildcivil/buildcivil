@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import { getPolicyPageBySlug, getPolicyPages } from '@/lib/policies'
-import { cleanSeoText } from '@/lib/seo'
+import { getPolicyPageBySlug, getPolicyPages } from '@buildcivil/cms/policies'
+import { cleanSeoText } from '@buildcivil/cms/seo'
 
 export const revalidate = 300
 

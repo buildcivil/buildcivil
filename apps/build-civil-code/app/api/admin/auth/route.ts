@@ -7,8 +7,8 @@ import {
   getAdminHomePath,
   isAdminAuthConfigured,
 } from '@/lib/admin-session'
-import { checkRateLimit, enforceSameOrigin, getClientIp, rateLimitError } from '@/lib/request-security'
-import { isSupabaseConfigured } from '@/lib/supabase-admin'
+import { checkRateLimit, enforceSameOrigin, getClientIp, rateLimitError } from '@buildcivil/cms/request-security'
+import { isSupabaseConfigured } from '@buildcivil/cms/supabase-admin'
 
 export const runtime = 'nodejs'
 

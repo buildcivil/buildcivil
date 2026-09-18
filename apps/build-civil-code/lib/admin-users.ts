@@ -1,5 +1,5 @@
 import { randomBytes, scryptSync, timingSafeEqual } from 'crypto'
-import { supabaseRequest } from '@/lib/supabase-admin'
+import { supabaseRequest } from '@buildcivil/cms/supabase-admin'
 
 type AdminUserRow = {
   id: string

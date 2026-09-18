@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import ContactPageClient from '@/components/ContactPageClient'
-import { getFormDefinition } from '@/lib/form-definitions'
-import { cleanSeoText } from '@/lib/seo'
-import { getSitePage } from '@/lib/site-pages'
-import { getGlobalLayoutSettings } from '@/lib/site-settings'
+import { getFormDefinition } from '@buildcivil/cms/form-definitions'
+import { cleanSeoText } from '@buildcivil/cms/seo'
+import { getSitePage } from '@buildcivil/cms/site-pages'
+import { getGlobalLayoutSettings } from '@buildcivil/cms/site-settings'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getSitePage('contact')

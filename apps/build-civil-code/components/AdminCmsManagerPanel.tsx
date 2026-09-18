@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import AdminMediaPicker from './AdminMediaPicker'
 import { publishRefresh } from '@/lib/admin-publish'
-import { readJsonResponse } from '@/lib/safe-json'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 type CmsMode = 'sections' | 'theme' | 'brand' | 'fonts' | 'forms' | 'navigation'
 

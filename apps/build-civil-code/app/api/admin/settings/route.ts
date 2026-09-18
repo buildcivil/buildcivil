@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { requireAdminPermission } from '@/lib/admin-access'
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
-import { globalLayoutDefaults, mergeGlobalLayoutSettings } from '@/lib/site-settings-defaults'
-import type { SiteSettingRow } from '@/lib/site-settings'
+import { isSupabaseConfigured, supabaseRequest } from '@buildcivil/cms/supabase-admin'
+import { globalLayoutDefaults, mergeGlobalLayoutSettings } from '@buildcivil/cms/site-settings-defaults'
+import type { SiteSettingRow } from '@buildcivil/cms/site-settings'
 
 export async function GET(request: Request) {
   try {

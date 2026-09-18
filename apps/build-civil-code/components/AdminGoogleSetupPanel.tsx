@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, Search } from 'lucide-react'
 import { publishRefresh } from '@/lib/admin-publish'
-import type { GoogleSetup } from '@/lib/google-setup'
-import { readJsonResponse } from '@/lib/safe-json'
+import type { GoogleSetup } from '@buildcivil/cms/google-setup'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 type GoogleResponse = {
   connected: boolean

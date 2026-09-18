@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { checkRateLimit, enforceSameOrigin, extractHoneypot, getClientIp, isValidEmail, rateLimitError } from '@/lib/request-security'
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { checkRateLimit, enforceSameOrigin, extractHoneypot, getClientIp, isValidEmail, rateLimitError } from '@buildcivil/cms/request-security'
+import { isSupabaseConfigured, supabaseRequest } from '@buildcivil/cms/supabase-admin'
 
 function clean(value: unknown) {
   return typeof value === 'string' ? value.trim() : ''

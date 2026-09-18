@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { getConfiguredSiteUrl, getGoogleSetup } from '@/lib/google-setup'
+import { getConfiguredSiteUrl, getGoogleSetup } from '@buildcivil/cms/google-setup'
 
 export const revalidate = 300
 

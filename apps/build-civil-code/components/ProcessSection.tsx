@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { itemReveal, sectionReveal } from './motion'
-import type { HomePageContent } from '@/lib/site-pages'
+import type { HomePageContent } from '@buildcivil/cms/site-pages'
 
 const MotionDiv = motion.div
 const MotionArticle = motion.article

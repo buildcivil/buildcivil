@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { isSupabaseConfigured, supabaseRequest } from './supabase-admin'
 
 export type SiteTheme = {
   colors: Record<string, string>

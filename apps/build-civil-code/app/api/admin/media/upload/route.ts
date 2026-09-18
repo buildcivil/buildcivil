@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 import { requireAdminPermission } from '@/lib/admin-access'
-import { getSupabaseBaseUrl, isSupabaseConfigured, supabaseRequest } from '@/lib/supabase-admin'
+import { getSupabaseBaseUrl, isSupabaseConfigured, supabaseRequest } from '@buildcivil/cms/supabase-admin'
 
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || ''
 const hasVercelBlob = Boolean(process.env.BLOB_READ_WRITE_TOKEN?.trim())

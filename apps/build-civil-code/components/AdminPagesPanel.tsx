@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { ArrowRight, FileText, ImageIcon, Monitor, Plus, Sparkles, Trash2 } from 'lucide-react'
 import AdminMediaPicker from './AdminMediaPicker'
 import { publishRefresh } from '@/lib/admin-publish'
-import { readJsonResponse } from '@/lib/safe-json'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
 
 type PageRow = {
   id: string

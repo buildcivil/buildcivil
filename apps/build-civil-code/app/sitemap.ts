@@ -1,9 +1,9 @@
 import type { MetadataRoute } from 'next'
-import { getGoogleSetup, getConfiguredSiteUrl } from '@/lib/google-setup'
-import { getBlogPosts } from '@/lib/blog'
-import { getPolicyPages } from '@/lib/policies'
-import { getProjectCatalogFromCMS } from '@/lib/projects'
-import { getServiceCatalogFromCMS } from '@/lib/services'
+import { getGoogleSetup, getConfiguredSiteUrl } from '@buildcivil/cms/google-setup'
+import { getBlogPosts } from '@buildcivil/cms/blog'
+import { getPolicyPages } from '@buildcivil/cms/policies'
+import { getProjectCatalogFromCMS } from '@buildcivil/cms/projects'
+import { getServiceCatalogFromCMS } from '@buildcivil/cms/services'
 
 export const revalidate = 300
 

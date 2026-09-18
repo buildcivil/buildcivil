@@ -4,10 +4,10 @@ import { type FormEvent, useState } from 'react'
 import { ArrowRight, CheckCircle2, Loader2, Send, X } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { itemReveal, sectionReveal } from './motion'
-import type { PublicFormDefinition } from '@/lib/form-definitions'
-import type { HomePageContent } from '@/lib/site-pages'
-import { readJsonResponse } from '@/lib/safe-json'
-import { AI_COST_ESTIMATOR_URL } from '@/lib/ai-cost-estimator-url'
+import type { PublicFormDefinition } from '@buildcivil/cms/form-definitions'
+import type { HomePageContent } from '@buildcivil/cms/site-pages'
+import { readJsonResponse } from '@buildcivil/cms/safe-json'
+import { AI_COST_ESTIMATOR_URL } from '@buildcivil/cms/ai-cost-estimator-url'
 
 const MotionDiv = motion.div
 const MotionSection = motion.section

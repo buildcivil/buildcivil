@@ -15,8 +15,8 @@ import { motion } from "framer-motion";
 import NavbarClient from "@/components/NavbarClient";
 import FooterClient from "@/components/FooterClient";
 import { itemReveal, sectionReveal } from "./motion";
-import { getRelatedProjects, type ProjectItem } from "@/lib/projects";
-import type { GlobalLayoutSettings } from "@/lib/site-settings-defaults";
+import { getRelatedProjects, type ProjectItem } from "@buildcivil/cms/projects";
+import type { GlobalLayoutSettings } from "@buildcivil/cms/site-settings-defaults";
 
 const MotionDiv = motion.div;
 const MotionSection = motion.section;
