@@ -49,6 +49,7 @@ export default async function RootLayout({
         {googleSetup.searchConsoleVerification ? (
           <meta name="google-site-verification" content={googleSetup.searchConsoleVerification} />
         ) : null}
+        <meta name="facebook-domain-verification" content="gbi23s90zmzrdowttb1p9ipstt7yqn" />
       </head>
       <body className="antialiased" style={siteThemeToCssVars(theme)}>
         {hasGtm ? (
