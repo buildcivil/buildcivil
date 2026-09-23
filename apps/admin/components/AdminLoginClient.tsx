@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowRight, Eye, EyeOff, Lock, ShieldCheck } from 'lucide-react'
 import { useState } from 'react'
-import { getPublicSiteUrl } from '@buildcivil/cms/seo'
+import { getPublicSiteUrl } from '@/lib/public-site-url'
 
 export default function AdminLoginClient() {
   const searchParams = useSearchParams()

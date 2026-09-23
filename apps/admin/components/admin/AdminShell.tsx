@@ -23,7 +23,7 @@ import {
   type AdminViewKey,
 } from '@/lib/admin/nav'
 import { cn } from '@buildcivil/cms/cn'
-import { getPublicSiteUrl } from '@buildcivil/cms/seo'
+import { getPublicSiteUrl } from '@/lib/public-site-url'
 import { AdminAlert, AdminAvatar, AdminBadge, AdminButton, AdminIconButton, AdminKbd } from '@/components/admin/ui'
 
 type AdminShellProps = {

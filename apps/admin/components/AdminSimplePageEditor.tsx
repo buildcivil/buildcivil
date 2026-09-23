@@ -7,7 +7,7 @@ import { ArrowDown, ArrowRight, ArrowUp, Copy, ImageIcon, Monitor, Plus, RotateC
 import AdminMediaPicker from './AdminMediaPicker'
 import { publishRefresh } from '@/lib/admin-publish'
 import { readJsonResponse } from '@buildcivil/cms/safe-json'
-import { getPublicSiteUrl } from '@buildcivil/cms/seo'
+import { getPublicSiteUrl } from '@/lib/public-site-url'
 
 type PageSlug = 'about' | 'services' | 'projects' | 'contact' | 'renovaite'
 type PageRow = {
