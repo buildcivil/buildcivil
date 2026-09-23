@@ -1,6 +1,7 @@
 'use client'
 
 import { type FormEvent, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   ArrowUpRight,
   BriefcaseBusiness,
@@ -119,6 +120,7 @@ export default function PlansSection({
   formDefinition?: PublicFormDefinition
 }) {
   const plans = packages.map(toPlan)
+  const router = useRouter()
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null)
   const [quoteOpen, setQuoteOpen] = useState(false)
   const [quoteForm, setQuoteForm] = useState(emptyQuoteForm)
@@ -196,6 +198,7 @@ export default function PlansSection({
 
       setQuoteStatus('success')
       setQuoteForm(emptyQuoteForm)
+      router.push('/thank-you')
     } catch (error) {
       setQuoteStatus('idle')
       setQuoteError(error instanceof Error ? error.message : 'Unable to submit quote request.')

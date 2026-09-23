@@ -1,6 +1,7 @@
 'use client'
 
 import { type FormEvent, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { ArrowRight, CheckCircle2, Loader2, Send, X } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { itemReveal, sectionReveal } from './motion'
@@ -56,6 +57,7 @@ function dedupeRepeatedCopy(value: string) {
 }
 
 export default function HeroSection({ content, formDefinition }: HeroSectionProps) {
+  const router = useRouter()
   const [modalOpen, setModalOpen] = useState(false)
   const [form, setForm] = useState(emptyForm)
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle')
@@ -123,6 +125,7 @@ export default function HeroSection({ content, formDefinition }: HeroSectionProp
 
       setStatus('success')
       setForm(emptyForm)
+      router.push('/thank-you')
     } catch (err) {
       setStatus('idle')
       setError(err instanceof Error ? err.message : 'Unable to submit enquiry.')

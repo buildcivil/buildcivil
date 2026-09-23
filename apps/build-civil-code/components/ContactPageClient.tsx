@@ -1,6 +1,7 @@
 'use client'
 
 import { type FormEvent, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { CheckCircle2, Clock3, Loader2, Mail, MapPin, Phone, Send, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import NavbarClient from '@/components/NavbarClient'
@@ -66,6 +67,7 @@ export default function ContactPageClient({ content, formDefinition, layoutSetti
   const officeHighlights = content?.officeHighlights?.length ? content.officeHighlights : fallbackOfficeHighlights
   const location = { ...fallbackLocation, ...(content?.location ?? {}) }
   const getField = (name: string) => formDefinition?.fields.find((field) => field.name === name || field.id === name)
+  const router = useRouter()
   const [form, setForm] = useState(emptyContactForm)
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle')
   const [error, setError] = useState('')
@@ -106,6 +108,7 @@ export default function ContactPageClient({ content, formDefinition, layoutSetti
 
       setStatus('success')
       setForm(emptyContactForm)
+      router.push('/thank-you')
     } catch (err) {
       setStatus('idle')
       setError(err instanceof Error ? err.message : 'Unable to submit your message.')
