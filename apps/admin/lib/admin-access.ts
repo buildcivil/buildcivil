@@ -6,6 +6,7 @@ export type AdminPermission =
   | 'projects'
   | 'services'
   | 'packages'
+  | 'store'
   | 'media'
   | 'leads'
   | 'settings'
@@ -16,12 +17,12 @@ export type AdminPermission =
   | 'seo'
 
 const rolePermissions: Record<string, AdminPermission[]> = {
-  super_admin: ['overview', 'pages', 'projects', 'services', 'packages', 'media', 'leads', 'settings', 'theme', 'forms', 'users', 'revalidate', 'seo'],
-  admin: ['overview', 'pages', 'projects', 'services', 'packages', 'media', 'leads', 'settings', 'theme', 'forms', 'revalidate', 'seo'],
-  content_manager: ['overview', 'pages', 'projects', 'services', 'packages', 'media', 'settings', 'theme', 'forms', 'revalidate', 'seo'],
+  super_admin: ['overview', 'pages', 'projects', 'services', 'packages', 'store', 'media', 'leads', 'settings', 'theme', 'forms', 'users', 'revalidate', 'seo'],
+  admin: ['overview', 'pages', 'projects', 'services', 'packages', 'store', 'media', 'leads', 'settings', 'theme', 'forms', 'revalidate', 'seo'],
+  content_manager: ['overview', 'pages', 'projects', 'services', 'packages', 'store', 'media', 'settings', 'theme', 'forms', 'revalidate', 'seo'],
   project_manager: ['overview', 'projects', 'services', 'media', 'revalidate', 'seo'],
   media_manager: ['overview', 'media'],
-  leads_manager: ['overview', 'leads'],
+  leads_manager: ['overview', 'leads', 'store'],
   editor: ['overview', 'pages', 'projects', 'services', 'media', 'revalidate', 'seo'],
 }
 

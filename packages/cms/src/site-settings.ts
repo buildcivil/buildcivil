@@ -220,6 +220,28 @@ function applyPolicyLinks(settings: GlobalLayoutSettings, rows: PolicyPage[]) {
   }
 }
 
+/**
+ * The store is a built-in route, so make sure header and footer always link to it,
+ * even when navigation was saved in the admin before the store existed.
+ */
+function ensureStoreLinks(settings: GlobalLayoutSettings) {
+  const hasStore = (links: { href: string }[]) => links.some((link) => link.href === '/store')
+
+  if (!hasStore(settings.header.navLinks)) {
+    const links = [...settings.header.navLinks]
+    const after = links.findIndex((link) => link.href === '/projects')
+    links.splice(after >= 0 ? after + 1 : links.length, 0, { id: 'store', label: 'STORE', href: '/store', visible: true })
+    settings.header.navLinks = links
+  }
+
+  if (!hasStore(settings.footer.companyLinks)) {
+    const links = [...settings.footer.companyLinks]
+    const after = links.findIndex((link) => link.href === '/services')
+    links.splice(after >= 0 ? after + 1 : links.length, 0, { id: 'store', label: 'Store', href: '/store', visible: true })
+    settings.footer.companyLinks = links
+  }
+}
+
 export async function getGlobalLayoutSettings(): Promise<GlobalLayoutSettings> {
   if (!isSupabaseConfigured()) return clone(globalLayoutDefaults)
 
@@ -238,6 +260,7 @@ export async function getGlobalLayoutSettings(): Promise<GlobalLayoutSettings> {
     applyNavigationOverrides(settings, navigationRows)
     applyBrandOverrides(settings, brandRows[0])
     applyPolicyLinks(settings, policyRows)
+    ensureStoreLinks(settings)
     return settings
   } catch {
     return clone(globalLayoutDefaults)

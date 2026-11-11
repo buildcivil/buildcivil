@@ -21,6 +21,7 @@
     "./site-settings-defaults": "./src/site-settings-defaults.ts",
     "./site-settings": "./src/site-settings.ts",
     "./site-theme": "./src/site-theme.ts",
+    "./store": "./src/store.ts",
     "./supabase-admin": "./src/supabase-admin.ts"
   },
   "dependencies": {

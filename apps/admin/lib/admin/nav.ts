@@ -13,6 +13,9 @@ import {
   MessageSquareText,
   Newspaper,
   Package,
+  ShoppingBag,
+  Tag,
+  Receipt,
   Palette,
   Search,
   Settings,
@@ -39,6 +42,10 @@ export type AdminViewKey =
   | 'newsletter'
   | 'media'
   | 'packages'
+  | 'store-products'
+  | 'store-categories'
+  | 'store-orders'
+  | 'store-quotes'
   | 'policy-pages'
   | 'blogs'
   | 'settings'
@@ -97,6 +104,15 @@ export const ADMIN_NAV_GROUPS: AdminNavGroup[] = [
     ],
   },
   {
+    label: 'Store',
+    items: [
+      { key: 'store-products', label: 'Products', icon: ShoppingBag, description: 'Add, edit and price store products', keywords: ['shop', 'ecommerce', 'catalog', 'items'] },
+      { key: 'store-categories', label: 'Categories', icon: Tag, description: 'Organise the store catalog', keywords: ['shop', 'ecommerce'] },
+      { key: 'store-orders', label: 'Orders', icon: Receipt, description: 'Customer orders and fulfilment', keywords: ['shop', 'checkout', 'sales'] },
+      { key: 'store-quotes', label: 'Store Quotes', icon: Handshake, description: 'Get-a-quote requests from the store', keywords: ['shop', 'leads', 'quotes'] },
+    ],
+  },
+  {
     label: 'Leads',
     items: [
       { key: 'enquiries', label: 'Service Enquiries', icon: Handshake, description: 'Service form submissions', keywords: ['inbox', 'leads'] },
@@ -140,6 +156,10 @@ export const ADMIN_VIEW_ACCESS: Record<string, AdminViewKey[]> = {
   admin: ADMIN_NAV_ITEMS.filter((item) => item.key !== 'admin-users').map((item) => item.key),
   content_manager: [
     'overview',
+    'store-products',
+    'store-categories',
+    'store-orders',
+    'store-quotes',
     'page-home',
     'page-about',
     'page-services',
@@ -164,7 +184,7 @@ export const ADMIN_VIEW_ACCESS: Record<string, AdminViewKey[]> = {
   ],
   project_manager: ['overview', 'projects', 'services', 'media', 'seo-center', 'help-guide'],
   media_manager: ['overview', 'media', 'help-guide'],
-  leads_manager: ['overview', 'enquiries', 'package-quotes', 'newsletter', 'messages', 'help-guide'],
+  leads_manager: ['overview', 'store-orders', 'store-quotes', 'enquiries', 'package-quotes', 'newsletter', 'messages', 'help-guide'],
   editor: [
     'overview',
     'page-home',
