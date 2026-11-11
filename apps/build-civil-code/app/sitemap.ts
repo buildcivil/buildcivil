@@ -4,26 +4,29 @@ import { getBlogPosts } from '@buildcivil/cms/blog'
 import { getPolicyPages } from '@buildcivil/cms/policies'
 import { getProjectCatalogFromCMS } from '@buildcivil/cms/projects'
 import { getServiceCatalogFromCMS } from '@buildcivil/cms/services'
+import { getStoreProducts } from '@buildcivil/cms/store'
 
 export const revalidate = 300
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [googleSetup, services, projects, policies, blogPosts] = await Promise.all([
+  const [googleSetup, services, projects, policies, blogPosts, storeProducts] = await Promise.all([
     getGoogleSetup(),
     getServiceCatalogFromCMS(),
     getProjectCatalogFromCMS(),
     getPolicyPages({ publishedOnly: true }),
     getBlogPosts({ publishedOnly: true }),
+    getStoreProducts(),
   ])
   const siteUrl = getConfiguredSiteUrl(googleSetup)
   const now = new Date()
-  const staticRoutes = ['/', '/about', '/services', '/projects', '/contact', '/renovaite', '/blog', '/careers']
+  const staticRoutes = ['/', '/about', '/services', '/projects', '/contact', '/renovaite', '/blog', '/careers', '/store']
   const routes = [
     ...staticRoutes,
     ...services.map((service) => `/services/${service.slug}`),
     ...projects.map((project) => `/projects/${project.slug}`),
     ...policies.map((policy) => `/${policy.slug}`),
     ...blogPosts.map((post) => `/blog/${post.slug}`),
+    ...storeProducts.map((product) => `/store/products/${product.slug}`),
   ]
 
   return routes.map((route) => ({

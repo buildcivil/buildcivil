@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
+import { CartProvider } from '@/components/store/CartProvider'
 import MetaPixelPageViewTracker from '@/components/MetaPixelPageViewTracker'
 import { getGoogleSetup } from '@buildcivil/cms/google-setup'
 import { getPublicSiteUrl } from '@buildcivil/cms/seo'
@@ -62,7 +63,7 @@ export default async function RootLayout({
             />
           </noscript>
         ) : null}
-        {children}
+        <CartProvider>{children}</CartProvider>
         {hasGtm ? (
           <Script id="google-tag-manager" strategy="afterInteractive">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

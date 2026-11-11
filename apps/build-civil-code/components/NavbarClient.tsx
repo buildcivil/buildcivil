@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ArrowRight, ChevronRight, Menu, MessageCircle, X } from "lucide-react";
+import { ArrowRight, ChevronRight, Menu, MessageCircle, ShoppingCart, X } from "lucide-react";
+import { useCart } from "@/components/store/CartProvider";
 import type { HeaderSettings } from "@buildcivil/cms/site-settings-defaults";
 
 type NavbarClientProps = {
@@ -12,6 +13,7 @@ type NavbarClientProps = {
 
 export default function NavbarClient({ settings }: NavbarClientProps) {
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const { count: cartCount, ready: cartReady } = useCart();
 	const pathname = usePathname();
 	const navLinks = useMemo(
 		() => settings.navLinks.filter((link) => link.visible),
@@ -25,7 +27,7 @@ export default function NavbarClient({ settings }: NavbarClientProps) {
 		"border-[#73A5CA]/12 bg-white text-[#1c1712] shadow-[0_12px_28px_rgba(28,23,18,0.08)]";
 
 	const linkClass =
-		"whitespace-nowrap font-display text-sm uppercase tracking-[0.12em] text-[#1c1712]/82 transition-colors duration-300 hover:text-[#E87F24] xl:text-[0.95rem] 2xl:text-base";
+		"whitespace-nowrap font-display text-sm uppercase tracking-[0.12em] text-[#1c1712]/82 transition-colors duration-300 hover:text-[#E87F24] xl:text-[0.82rem] 2xl:text-base";
 
 	const brandPrimary = "text-[#1c1712]";
 	const brandAccent = "text-[#E87F24]";
@@ -196,7 +198,7 @@ export default function NavbarClient({ settings }: NavbarClientProps) {
 					</a>
 
 					<div className="hidden min-w-0 flex-1 items-center justify-center xl:flex">
-						<div className="flex flex-nowrap items-center justify-center gap-4 xl:gap-5 2xl:gap-8">
+						<div className="flex flex-nowrap items-center justify-center gap-3 xl:gap-3.5 2xl:gap-8">
 							{navLinks.map((link) => (
 								<a key={link.id} href={link.href} className={linkClass}>
 									{link.label}
@@ -214,13 +216,27 @@ export default function NavbarClient({ settings }: NavbarClientProps) {
 						<div className="hidden min-w-[140px] shrink-0 xl:block 2xl:min-w-[154px]" />
 					)}
 
-					<button
-						onClick={() => setMobileOpen(!mobileOpen)}
-						className="rounded-full border border-[#73A5CA]/20 bg-[#FEFDDF]/85 p-2.5 text-[#1c1712] transition-colors duration-300 xl:hidden"
-						aria-label="Toggle mobile menu"
+					<div className="flex shrink-0 items-center gap-2 sm:gap-3">
+						<a
+						href="/store/cart"
+						aria-label={cartReady && cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
+						className="relative inline-flex shrink-0 items-center justify-center rounded-full border border-[#73A5CA]/20 bg-[#FEFDDF]/85 p-2.5 text-[#1c1712] transition-colors duration-300 hover:border-[#E87F24]/50 hover:text-[#E87F24]"
 					>
-						{mobileOpen ? <X size={24} /> : <Menu size={24} />}
-					</button>
+						<ShoppingCart size={22} />
+						{cartReady && cartCount > 0 ? (
+							<span className="absolute -right-1 -top-1 inline-flex min-w-[20px] items-center justify-center rounded-full bg-[#E87F24] px-1 py-0.5 text-[11px] font-bold leading-none text-white">
+								{cartCount}
+							</span>
+						) : null}
+					</a>
+						<button
+							onClick={() => setMobileOpen(!mobileOpen)}
+							className="rounded-full border border-[#73A5CA]/20 bg-[#FEFDDF]/85 p-2.5 text-[#1c1712] transition-colors duration-300 xl:hidden"
+							aria-label="Toggle mobile menu"
+						>
+							{mobileOpen ? <X size={24} /> : <Menu size={24} />}
+						</button>
+					</div>
 				</div>
 			</nav>
 
